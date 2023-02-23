@@ -1,0 +1,127 @@
+using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+
+namespace Pirex.UI.Base
+{
+    [RequireComponent(typeof(CanvasGroup))]
+    public class Modal : MonoBehaviour
+    {
+        [Header("Header")]
+        [SerializeField] protected TextMeshProUGUI titleTxt;
+        [Header("Body")]
+        [SerializeField] protected TextMeshProUGUI contentTxt;
+
+        [Header("Bottom")]
+        [SerializeField] protected Button positiveBtn;
+        [SerializeField] protected Button negativeBtn;
+        [SerializeField] protected Button neutralBtn;
+
+        [SerializeField] protected TextMeshProUGUI positiveTxt;
+        [SerializeField] protected TextMeshProUGUI negativeTxt;
+        [SerializeField] protected TextMeshProUGUI neutralTxt;
+
+        [Header("Animation Transition")]
+        [SerializeField] protected AnimationTransition animationTransition;
+        private CallbackStatus _callbackStatus;
+        protected CanvasGroup modalCG;
+        protected void Awake()
+        {
+            modalCG = this.GetComponent<CanvasGroup>();
+            modalCG.alpha = 0;
+        }
+
+        protected async void Start()
+        {
+            await OnOpen();
+        }
+        protected async UniTask OnOpen()
+        {
+            if (animationTransition is not null)
+                await animationTransition.On(modalCG, ModalContainer.rectModalContainer);
+            modalCG.alpha = 1;
+        }
+
+        protected async UniTask OnClose()
+        {
+            if (animationTransition is not null)
+                await animationTransition.Off(modalCG, ModalContainer.rectModalContainer);
+            modalCG.alpha = 0;
+            Destroy(gameObject);
+        }
+
+        public async UniTask<CallbackStatus> Init
+        (
+            string title, GameObject view,
+            string buttonPositive, string buttonNegative, string buttonNeutral
+        )
+        {
+            _callbackStatus = CallbackStatus.None;
+            if (titleTxt.text is not null)
+                titleTxt.text = title;
+            InitButton(buttonPositive, buttonNegative, buttonNeutral);
+
+            await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
+            await OnClose();
+            return _callbackStatus;
+        }
+
+        public async UniTask<CallbackStatus> Init
+        (
+            string title, string content,
+            string buttonPositive, string buttonNegative, string buttonNeutral)
+        {
+            _callbackStatus = CallbackStatus.None;
+            if (titleTxt.text is not null)
+                titleTxt.text = title;
+            contentTxt.text = content;
+            InitButton(buttonPositive, buttonNegative, buttonNeutral);
+
+            await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
+            await OnClose();
+            return _callbackStatus;
+        }
+
+        public void InitButton(string txtPositive, string txtNegative, string txtNeutral)
+        {
+            if (IsValidString(txtPositive))
+            {
+                positiveTxt.text = txtPositive;
+                positiveBtn.onClick.AddListener(PositiveClick);
+            }
+            else positiveBtn.gameObject.SetActive(false);
+
+
+            if (IsValidString(txtNegative))
+            {
+                negativeTxt.text = txtNegative;
+                negativeBtn.onClick.AddListener(NegativeClick);
+            }
+            else negativeBtn.gameObject.SetActive(false);
+
+            if (IsValidString(txtNeutral))
+            {
+                neutralTxt.text = txtNeutral;
+                neutralBtn.onClick.AddListener(NeutralClick);
+            }
+            else neutralBtn.gameObject.SetActive(false);
+        }
+        private bool IsValidString(string str) => (str != string.Empty && str != "" && str != null);
+        private void PositiveClick()
+        {
+            _callbackStatus = CallbackStatus.Positive;
+        }
+
+        private void NegativeClick()
+        {
+            _callbackStatus = CallbackStatus.Negative;
+        }
+
+        private void NeutralClick()
+        {
+            _callbackStatus = CallbackStatus.Neutral;
+        }
+    }
+}
