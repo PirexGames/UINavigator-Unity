@@ -1,0 +1,26 @@
+{
+    "name": "com.pirexgames.uibase",
+    "displayName": "UI Base",
+    "description": "UI Base",
+    "version": "1.0.0",
+    "unity": "2021.3",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/PirexGames/base-ui-unity.git"
+    },
+    "author": {
+        "name": "PirexGames",
+        "email": "nguyenphuc.it14@gmail.com",
+        "url": "https://github.com/PirexGames"
+    },
+    "dependencies": {},
+    "keywords": [
+        "ui base"
+    ],
+    "release": {
+        "branches": [
+            "main"
+        ]
+    }
+}
