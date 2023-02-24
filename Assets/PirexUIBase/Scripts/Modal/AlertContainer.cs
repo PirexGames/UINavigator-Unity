@@ -4,16 +4,16 @@ using Cysharp.Threading.Tasks;
 
 namespace Pirex.UI.Base
 {
-    public class ModalContainer : MonoBehaviour
+    public class AlertContainer : UIContainer
     {
         [SerializeField] protected GameObject modalBlockOverlayOverride;
         public static Transform modalContainer;
         public static RectTransform rectModalContainer;
         private static GameObject modalBlockOverlay;
         protected const string keyModalBlockOverlay = "ModalBlockOverlay";
-        private async void Awake()
+        protected async override void Awake()
         {
-            modalContainer = GameObject.FindObjectOfType<ModalContainer>().transform;
+            modalContainer = GameObject.FindObjectOfType<AlertContainer>().transform;
             rectModalContainer = modalContainer.GetComponent<RectTransform>();
             GameObject modalOverlayPrefab;
             if (modalBlockOverlayOverride)
@@ -67,7 +67,7 @@ namespace Pirex.UI.Base
             var modalPrefab = await AddressableHelperT<GameObject>.GetAsync(keyModal);
             var modalSpawn = Instantiate(modalPrefab, modalContainer);
 
-            var modal = modalSpawn.GetComponent<Modal>();
+            var modal = modalSpawn.GetComponent<Alert>();
             if (modal is null) return CallbackStatus.None;
             var res = await modal.Init(title, content, buttonPositive, buttonNegative, buttonNeutral);
             return res;

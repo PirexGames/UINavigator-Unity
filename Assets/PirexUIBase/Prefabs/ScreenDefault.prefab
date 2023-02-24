@@ -103,8 +103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eca9a5d7bd94d64e9f6596547284fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationTransition: {fileID: 11400000, guid: 95fbbba04f2fa1e4eb6327b3353c31b1, type: 2}
   isHidenOnPushOther: 1
-  transitionAnimation: {fileID: 11400000, guid: 8a4b36499f5beac418217f6ea10e0ff0, type: 2}
 --- !u!1 &241537716460074
 GameObject:
   m_ObjectHideFlags: 0

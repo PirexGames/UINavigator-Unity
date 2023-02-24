@@ -6,8 +6,7 @@ using DG.Tweening;
 
 namespace Pirex.UI.Base
 {
-    [RequireComponent(typeof(CanvasGroup))]
-    public class Modal : MonoBehaviour
+    public class Alert : UIView
     {
         [Header("Header")]
         [SerializeField] protected TextMeshProUGUI titleTxt;
@@ -23,33 +22,13 @@ namespace Pirex.UI.Base
         [SerializeField] protected TextMeshProUGUI negativeTxt;
         [SerializeField] protected TextMeshProUGUI neutralTxt;
 
-        [Header("Animation Transition")]
-        [SerializeField] protected AnimationTransition animationTransition;
         private CallbackStatus _callbackStatus;
         protected CanvasGroup modalCG;
-        protected void Awake()
-        {
-            modalCG = this.GetComponent<CanvasGroup>();
-            modalCG.alpha = 0;
-        }
+
 
         protected async void Start()
         {
-            await OnOpen();
-        }
-        protected async UniTask OnOpen()
-        {
-            if (animationTransition is not null)
-                await animationTransition.On(modalCG, ModalContainer.rectModalContainer);
-            modalCG.alpha = 1;
-        }
-
-        protected async UniTask OnClose()
-        {
-            if (animationTransition is not null)
-                await animationTransition.Off(modalCG, ModalContainer.rectModalContainer);
-            modalCG.alpha = 0;
-            Destroy(gameObject);
+            await OnShow();
         }
 
         public async UniTask<CallbackStatus> Init
@@ -64,7 +43,7 @@ namespace Pirex.UI.Base
             InitButton(buttonPositive, buttonNegative, buttonNeutral);
 
             await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
-            await OnClose();
+            await OnHide();
             return _callbackStatus;
         }
 
@@ -80,7 +59,7 @@ namespace Pirex.UI.Base
             InitButton(buttonPositive, buttonNegative, buttonNeutral);
 
             await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
-            await OnClose();
+            await OnHide();
             return _callbackStatus;
         }
 
