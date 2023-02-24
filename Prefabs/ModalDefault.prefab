@@ -1145,9 +1145,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7727559189360859736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de9837661558bc44eaf93b0451e40ed2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4680f7d6457d3314585794eeeaf1a1b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationTransition: {fileID: 11400000, guid: 8a4b36499f5beac418217f6ea10e0ff0, type: 2}
   titleTxt: {fileID: 1348187245090932304}
   contentTxt: {fileID: 7727559188010631821}
   positiveBtn: {fileID: 1348187245745434872}
@@ -1156,4 +1157,3 @@ MonoBehaviour:
   positiveTxt: {fileID: 1348187246788881844}
   negativeTxt: {fileID: 1348187245624768212}
   neutralTxt: {fileID: 1348187246438445152}
-  animationTransition: {fileID: 11400000, guid: 8a4b36499f5beac418217f6ea10e0ff0, type: 2}

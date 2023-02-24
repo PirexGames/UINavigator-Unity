@@ -10,11 +10,13 @@ namespace Pirex.UI.Base
         [SerializeField] private Button pushBtn;
         [SerializeField] private Button popBtn;
         [SerializeField] private Button alertBtn;
+        [SerializeField] private Button toastBtn;
         void Start()
         {
             pushBtn.onClick.AddListener(Push);
             popBtn.onClick.AddListener(Pop);
             alertBtn.onClick.AddListener(Alert);
+            toastBtn.onClick.AddListener(Toast);
         }
         private void Push()
         {
@@ -27,18 +29,24 @@ namespace Pirex.UI.Base
 
         private void Alert()
         {
-            ModalContainer.Alert(
+            AlertContainer.Alert(
                 "ModalDefault",
                 "Hãy cứ vui tươi và lạc quan lên em ơi",
                 "Aloo xin chao cac bạn",
                 CallBackAlert,
                 "Dồng ý",
-                "Cút");
+                "Cút",
+                "OK");
         }
 
         private void CallBackAlert(CallbackStatus callbackStatus)
         {
             Debug.Log(callbackStatus);
+        }
+
+        private void Toast()
+        {
+            MonoToast.ShowToast("ToastDefault", "Cút mẹ mày đi", 2f);
         }
     }
 }
