@@ -20,46 +20,47 @@ namespace Pirex.UI.Base
                 modalOverlayPrefab = modalBlockOverlayOverride;
             else
                 modalOverlayPrefab = await AddressableHelperT<GameObject>.GetAsync(keyModalBlockOverlay);
+            if (!modalOverlayPrefab) return;
             var modalSpawn = Instantiate(modalOverlayPrefab, modalContainer);
             modalBlockOverlay = modalSpawn;
             modalBlockOverlay.SetActive(false);
         }
         public static void Alert(string keyModal, string title, GameObject content, Action<CallbackStatus> callback, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
         {
-            modalBlockOverlay.SetActive(true);
+            modalBlockOverlay?.SetActive(true);
             callback?.Invoke(CallbackStatus.Positive);
-            modalBlockOverlay.SetActive(false);
+            modalBlockOverlay?.SetActive(false);
         }
 
         public static async void Alert(string keyModal, string title, string content, Action<CallbackStatus> callback, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
         {
-            modalBlockOverlay.SetActive(true);
+            modalBlockOverlay?.SetActive(true);
             var res = await SpawnAndInitModal(keyModal, title, content, buttonPositive, buttonNegative, buttonNeutral);
             callback?.Invoke(res);
-            modalBlockOverlay.SetActive(false);
+            modalBlockOverlay?.SetActive(false);
         }
 
         public static void Alert(string keyModal, string title, GameObject content, Action callback = null, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
         {
-            modalBlockOverlay.SetActive(true);
+            modalBlockOverlay?.SetActive(true);
             callback?.Invoke();
-            modalBlockOverlay.SetActive(false);
+            modalBlockOverlay?.SetActive(false);
         }
 
         public static async void Alert(string keyModal, string title, string content, Action callback = null, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
         {
-            modalBlockOverlay.SetActive(true);
+            modalBlockOverlay?.SetActive(true);
             var res = await SpawnAndInitModal(keyModal, title, content, buttonPositive, buttonNegative, buttonNeutral);
             if (res == CallbackStatus.Positive)
                 callback?.Invoke();
-            modalBlockOverlay.SetActive(false);
+            modalBlockOverlay?.SetActive(false);
         }
 
         public static async void Alert(string keyModal, string title, string content, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
         {
-            modalBlockOverlay.SetActive(true);
+            modalBlockOverlay?.SetActive(true);
             var res = await SpawnAndInitModal(keyModal, title, content, buttonPositive, buttonNegative, buttonNeutral);
-            modalBlockOverlay.SetActive(false);
+            modalBlockOverlay?.SetActive(false);
         }
 
         private static async UniTask<CallbackStatus> SpawnAndInitModal(string keyModal, string title, string content, string buttonPositive, string buttonNegative, string buttonNeutral)
