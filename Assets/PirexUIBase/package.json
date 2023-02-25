@@ -18,7 +18,7 @@
         "com.cysharp.unitask": "2.3.3",
         "com.unity.addressables": "1.19.19",
         "com.unity.textmeshpro": "3.0.6",
-        "com.littlebigfun.addressable-importer": "https://github.com/favoyang/unity-addressable-importer.git#master"
+        "com.littlebigfun.addressable-importer": "https://github.com/favoyang/unity-addressable-importer.git#v0.16.1"
     },
     "keywords": [
         "ui base"

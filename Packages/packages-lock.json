@@ -15,7 +15,7 @@
       "url": "https://package.openupm.com"
     },
     "com.littlebigfun.addressable-importer": {
-      "version": "https://github.com/favoyang/unity-addressable-importer.git#master",
+      "version": "https://github.com/favoyang/unity-addressable-importer.git#v0.16.1",
       "depth": 0,
       "source": "git",
       "dependencies": {
