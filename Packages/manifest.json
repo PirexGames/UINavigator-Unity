@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "com.coffee.upm-git-extension": "2.0.2",
     "com.cysharp.unitask": "2.3.3",
+    "com.littlebigfun.addressable-importer": "https://github.com/favoyang/unity-addressable-importer.git#master",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.addressables": "1.19.19",
     "com.unity.collab-proxy": "1.17.7",
@@ -49,7 +51,8 @@
       "name": "package.openupm.com",
       "url": "https://package.openupm.com",
       "scopes": [
-        "com.cysharp.unitask"
+        "com.cysharp.unitask",
+        "com.coffee.upm-git-extension"
       ]
     }
   ]
