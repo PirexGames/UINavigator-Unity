@@ -25,3 +25,13 @@ MonoBehaviour:
     LabelMode: 1
     simplified: 0
     addressReplacement: ${asset}
+  - path: Packages/PirexUIBase/Prefabs/(?<asset>[^/]+)\.prefab
+    matchType: 1
+    groupName: UIDefault
+    groupTemplate: {fileID: 11400000, guid: 3dda41b629da9d341acc055aa0c1d2b7, type: 2}
+    groupTemplateApplicationMode: 1
+    labelRefs: []
+    dynamicLabels: []
+    LabelMode: 1
+    simplified: 0
+    addressReplacement: ${asset}
