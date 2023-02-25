@@ -2,7 +2,7 @@
     "name": "com.pirexgames.uibase",
     "displayName": "UI Base",
     "description": "UI Base",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "unity": "2021.3",
     "license": "MIT",
     "repository": {
@@ -17,8 +17,7 @@
     "dependencies": {
         "com.cysharp.unitask": "2.3.3",
         "com.unity.addressables": "1.19.19",
-        "com.unity.textmeshpro": "3.0.6",
-        "com.littlebigfun.addressable-importer": "https://github.com/favoyang/unity-addressable-importer.git#v0.16.1"
+        "com.unity.textmeshpro": "3.0.6"
     },
     "keywords": [
         "ui base"
