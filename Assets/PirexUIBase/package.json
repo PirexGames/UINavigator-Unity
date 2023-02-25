@@ -2,7 +2,7 @@
     "name": "com.pirexgames.uibase",
     "displayName": "UI Base",
     "description": "UI Base",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "unity": "2021.3",
     "license": "MIT",
     "repository": {
@@ -14,7 +14,11 @@
         "email": "nguyenphuc.it14@gmail.com",
         "url": "https://github.com/PirexGames"
     },
-    "dependencies": {},
+    "dependencies": {
+        "com.cysharp.unitask": "2.3.3",
+        "com.unity.addressables": "1.19.19",
+        "com.unity.textmeshpro": "3.0.6"
+    },
     "keywords": [
         "ui base"
     ],
