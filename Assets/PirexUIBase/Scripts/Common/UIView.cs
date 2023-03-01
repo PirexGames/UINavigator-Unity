@@ -10,7 +10,7 @@ namespace Pirex.UI.Base
         [Header("Animation Transition")]
         [SerializeField] protected AnimationTransition animationTransition;
         protected CanvasGroup viewCG;
-        protected void Awake()
+        protected virtual void Awake()
         {
             viewCG = this.GetComponent<CanvasGroup>();
             viewCG.alpha = 0;
