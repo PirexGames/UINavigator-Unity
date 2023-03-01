@@ -7,21 +7,21 @@ namespace Pirex.UI.Base
     public class AlertContainer : UIContainer
     {
         [SerializeField] protected GameObject modalBlockOverlayOverride;
-        public static Transform modalContainer;
-        public static RectTransform rectModalContainer;
         private static GameObject modalBlockOverlay;
         protected const string keyModalBlockOverlay = "ModalBlockOverlay";
+        public static UIContainer Container;
         protected async override void Awake()
         {
-            modalContainer = GameObject.FindObjectOfType<AlertContainer>().transform;
-            rectModalContainer = modalContainer.GetComponent<RectTransform>();
+            base.Awake();
+            Container = GetComponent<UIContainer>();
             GameObject modalOverlayPrefab;
             if (modalBlockOverlayOverride)
                 modalOverlayPrefab = modalBlockOverlayOverride;
             else
                 modalOverlayPrefab = await AddressableHelperT<GameObject>.GetAsync(keyModalBlockOverlay);
             if (!modalOverlayPrefab) return;
-            var modalSpawn = Instantiate(modalOverlayPrefab, modalContainer);
+            GameObject modalSpawn;
+            modalSpawn = Instantiate(modalOverlayPrefab, TransformContainer);
             modalBlockOverlay = modalSpawn;
             modalBlockOverlay.SetActive(false);
         }
@@ -66,11 +66,20 @@ namespace Pirex.UI.Base
         private static async UniTask<CallbackStatus> SpawnAndInitModal(string keyModal, string title, string content, string buttonPositive, string buttonNegative, string buttonNeutral)
         {
             var modalPrefab = await AddressableHelperT<GameObject>.GetAsync(keyModal);
-            var modalSpawn = Instantiate(modalPrefab, modalContainer);
+            GameObject modalSpawn;
+            if (Container.PoolSO)
+                modalSpawn = Container.PoolSO.Spawn(modalPrefab, Container.TransformContainer);
+            else
+                modalSpawn = Instantiate(modalPrefab, Container.TransformContainer);
 
             var modal = modalSpawn.GetComponent<Alert>();
             if (modal is null) return CallbackStatus.None;
             var res = await modal.Init(title, content, buttonPositive, buttonNegative, buttonNeutral);
+
+            if (Container.PoolSO)
+                Container.PoolSO.DeSpawn(modalSpawn);
+            else
+                Destroy(modalSpawn);
             return res;
         }
     }
