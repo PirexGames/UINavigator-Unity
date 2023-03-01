@@ -25,7 +25,15 @@ namespace Pirex.UI.Base
         private CallbackStatus _callbackStatus;
         protected CanvasGroup modalCG;
 
-
+        protected override void Awake()
+        {
+            if (positiveBtn)
+                positiveBtn.onClick.AddListener(PositiveClick);
+            if (negativeBtn)
+                negativeBtn.onClick.AddListener(NegativeClick);
+            if (neutralBtn)
+                neutralBtn.onClick.AddListener(NeutralClick);
+        }
         protected async void Start()
         {
             await OnShow();
@@ -68,7 +76,6 @@ namespace Pirex.UI.Base
             if (IsValidString(txtPositive))
             {
                 positiveTxt.text = txtPositive;
-                positiveBtn.onClick.AddListener(PositiveClick);
             }
             else positiveBtn.gameObject.SetActive(false);
 
@@ -76,14 +83,12 @@ namespace Pirex.UI.Base
             if (IsValidString(txtNegative))
             {
                 negativeTxt.text = txtNegative;
-                negativeBtn.onClick.AddListener(NegativeClick);
             }
             else negativeBtn.gameObject.SetActive(false);
 
             if (IsValidString(txtNeutral))
             {
                 neutralTxt.text = txtNeutral;
-                neutralBtn.onClick.AddListener(NeutralClick);
             }
             else neutralBtn.gameObject.SetActive(false);
         }
