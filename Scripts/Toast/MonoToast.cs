@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Pirex.UI.Base
 {
-    public partial class MonoToast : MonoBehaviour
+    public partial class MonoToast : UIContainer
     {
         private static Toast _currentToast = null;
         private static CancellationTokenSource _cancelToken;
@@ -27,7 +27,7 @@ namespace Pirex.UI.Base
             _isCurrentToastShowed = false;
             _cancelToken = new CancellationTokenSource();
             var toastPrefab = await AddressableHelperT<GameObject>.GetAsync(keyAddressable);
-            var parentSpawn = parent ? parent : ScreenContainer.transformContainer;
+            var parentSpawn = parent ? parent : ScreenContainer.Container.TransformContainer;
             var toastSpawn = Instantiate(toastPrefab, parentSpawn);
             var toast = toastSpawn.GetComponent<Toast>();
             if (toast is null) return;

@@ -825,6 +825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d26027b94eb142946b12911d98add676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameObjectPoolSO: {fileID: 11400000, guid: 3924fbf3803de9b4e8759e9b282afc89, type: 2}
 --- !u!114 &1194642287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1036,6 +1037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eb9470e8e44d0b4d958913496f7df71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameObjectPoolSO: {fileID: 11400000, guid: 3924fbf3803de9b4e8759e9b282afc89, type: 2}
   modalBlockOverlayOverride: {fileID: 0}
 --- !u!114 &1265623725
 MonoBehaviour:
@@ -1111,6 +1113,7 @@ GameObject:
   - component: {fileID: 1380865229}
   - component: {fileID: 1380865228}
   - component: {fileID: 1380865232}
+  - component: {fileID: 1380865233}
   m_Layer: 5
   m_Name: MainContainer
   m_TagString: Untagged
@@ -1211,6 +1214,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e706010b58d0ed44fbf0618e809b990a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameObjectPoolSO: {fileID: 11400000, guid: 3924fbf3803de9b4e8759e9b282afc89, type: 2}
+--- !u!114 &1380865233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380865227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f531be95cb4d834d84b562f70865ffa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool: {fileID: 11400000, guid: 3924fbf3803de9b4e8759e9b282afc89, type: 2}
 --- !u!1 &1487570444
 GameObject:
   m_ObjectHideFlags: 0
