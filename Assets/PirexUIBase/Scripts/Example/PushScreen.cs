@@ -12,7 +12,7 @@ namespace Pirex.UI.Base
         [SerializeField] private Button alertBtn;
         [SerializeField] private Button toastBtn;
         [SerializeField] private Button overloadToastBtn;
-        [SerializeField] private OverloadToast overloadToastContainer;
+        [SerializeField] private OverloadToastContainer overloadToastContainer;
 
         void Start()
         {
@@ -40,9 +40,7 @@ namespace Pirex.UI.Base
                 "Hãy cứ vui tươi và lạc quan lên em ơi",
                 "Aloo xin chao cac bạn",
                 CallBackAlert,
-                "Dồng ý",
-                "Cút",
-                "OK");
+                buttonNeutral: "DFDKFJ");
         }
 
         private void CallBackAlert(CallbackStatus callbackStatus)

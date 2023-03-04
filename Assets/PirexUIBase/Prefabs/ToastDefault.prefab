@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2914400718468031804}
   - component: {fileID: 2914400718468031807}
   - component: {fileID: -3837742725955121292}
+  - component: {fileID: 3593581109753620858}
   m_Layer: 5
   m_Name: ToastDefault
   m_TagString: Untagged
@@ -90,8 +91,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33b15635ac715bb4aab025424c091023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationTransition: {fileID: 11400000, guid: 95fbbba04f2fa1e4eb6327b3353c31b1, type: 2}
+  animationTransition: {fileID: 11400000, guid: e6193a72eb873e74a95ccdf897b07054, type: 2}
   contentTxt: {fileID: 2914400718501595631}
+--- !u!225 &3593581109753620858
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2914400718468031801}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2914400718501595625
 GameObject:
   m_ObjectHideFlags: 0
