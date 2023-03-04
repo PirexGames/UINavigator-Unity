@@ -11,17 +11,23 @@ namespace Pirex.UI.Base
         [SerializeField] private Button popBtn;
         [SerializeField] private Button alertBtn;
         [SerializeField] private Button toastBtn;
+        [SerializeField] private Button overloadToastBtn;
+        [SerializeField] private OverloadToastContainer overloadToastContainer;
+
         void Start()
         {
             pushBtn.onClick.AddListener(Push);
             popBtn.onClick.AddListener(Pop);
             alertBtn.onClick.AddListener(Alert);
             toastBtn.onClick.AddListener(Toast);
+            overloadToastBtn.onClick.AddListener(Overload);
         }
-        private void Push()
+
+        public void Push()
         {
             ScreenContainer.Push("ScreenDefault");
         }
+
         private void Pop()
         {
             ScreenContainer.Pop();
@@ -34,9 +40,7 @@ namespace Pirex.UI.Base
                 "Hãy cứ vui tươi và lạc quan lên em ơi",
                 "Aloo xin chao cac bạn",
                 CallBackAlert,
-                "Dồng ý",
-                "Cút",
-                "OK");
+                buttonNeutral: "DFDKFJ");
         }
 
         private void CallBackAlert(CallbackStatus callbackStatus)
@@ -47,6 +51,11 @@ namespace Pirex.UI.Base
         private void Toast()
         {
             MonoToast.ShowToast("ToastDefault", "Cút mẹ mày đi", 2f);
+        }
+
+        private void Overload()
+        {
+            overloadToastContainer.ShowToast("ToastDefault", "Cút mẹ mày đi", 2f);
         }
     }
 }

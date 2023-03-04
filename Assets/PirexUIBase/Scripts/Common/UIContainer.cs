@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Pirex.UI.Base
@@ -16,4 +17,5 @@ namespace Pirex.UI.Base
             rectContainer = (RectTransform)this.transform;
         }
     }
+    
 }
