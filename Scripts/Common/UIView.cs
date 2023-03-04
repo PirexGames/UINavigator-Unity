@@ -10,7 +10,7 @@ namespace Pirex.UI.Base
         [Header("Animation Transition")]
         [SerializeField] protected AnimationTransition animationTransition;
         protected CanvasGroup viewCG;
-        protected void Awake()
+        protected virtual void Awake()
         {
             viewCG = this.GetComponent<CanvasGroup>();
             viewCG.alpha = 0;
@@ -18,7 +18,7 @@ namespace Pirex.UI.Base
         public virtual async UniTask OnShow()
         {
             if (animationTransition is not null)
-                await animationTransition.On(viewCG, ScreenContainer.rectContainer);
+                await animationTransition.On(viewCG, ScreenContainer.Container.RectContainer);
             viewCG.alpha = 1;
             await UniTask.Yield();
         }
@@ -26,7 +26,7 @@ namespace Pirex.UI.Base
         public virtual async UniTask OnHide()
         {
             if (animationTransition is not null)
-                await animationTransition.Off(viewCG, ScreenContainer.rectContainer);
+                await animationTransition.Off(viewCG, ScreenContainer.Container.RectContainer);
             viewCG.alpha = 0;
             await UniTask.Yield();
         }

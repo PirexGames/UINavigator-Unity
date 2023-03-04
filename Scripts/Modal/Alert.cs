@@ -25,10 +25,15 @@ namespace Pirex.UI.Base
         private CallbackStatus _callbackStatus;
         protected CanvasGroup modalCG;
 
-
-        protected async void Start()
+        protected override void Awake()
         {
-            await OnShow();
+            base.Awake();
+            if (positiveBtn)
+                positiveBtn.onClick.AddListener(PositiveClick);
+            if (negativeBtn)
+                negativeBtn.onClick.AddListener(NegativeClick);
+            if (neutralBtn)
+                neutralBtn.onClick.AddListener(NeutralClick);
         }
 
         public async UniTask<CallbackStatus> Init
@@ -37,6 +42,7 @@ namespace Pirex.UI.Base
             string buttonPositive, string buttonNegative, string buttonNeutral
         )
         {
+            await OnShow();
             _callbackStatus = CallbackStatus.None;
             if (titleTxt.text is not null)
                 titleTxt.text = title;
@@ -52,6 +58,7 @@ namespace Pirex.UI.Base
             string title, string content,
             string buttonPositive, string buttonNegative, string buttonNeutral)
         {
+            await OnShow();
             _callbackStatus = CallbackStatus.None;
             if (titleTxt.text is not null)
                 titleTxt.text = title;
@@ -68,7 +75,6 @@ namespace Pirex.UI.Base
             if (IsValidString(txtPositive))
             {
                 positiveTxt.text = txtPositive;
-                positiveBtn.onClick.AddListener(PositiveClick);
             }
             else positiveBtn.gameObject.SetActive(false);
 
@@ -76,14 +82,12 @@ namespace Pirex.UI.Base
             if (IsValidString(txtNegative))
             {
                 negativeTxt.text = txtNegative;
-                negativeBtn.onClick.AddListener(NegativeClick);
             }
             else negativeBtn.gameObject.SetActive(false);
 
             if (IsValidString(txtNeutral))
             {
                 neutralTxt.text = txtNeutral;
-                neutralBtn.onClick.AddListener(NeutralClick);
             }
             else neutralBtn.gameObject.SetActive(false);
         }
