@@ -17,7 +17,7 @@ namespace Pirex.UI.Base
         }
         public virtual async UniTask OnShow()
         {
-            if (animationTransition is not null)
+            if (animationTransition.ShowAnimation)
                 await animationTransition.ShowAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer);
             viewCG.alpha = 1;
             await UniTask.Yield();
@@ -25,7 +25,7 @@ namespace Pirex.UI.Base
 
         public virtual async UniTask OnHide()
         {
-            if (animationTransition is not null)
+            if (animationTransition.HideAnimation)
                 await animationTransition.HideAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer);
             viewCG.alpha = 0;
             await UniTask.Yield();
