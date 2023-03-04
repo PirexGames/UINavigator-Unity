@@ -6,7 +6,8 @@
         "Unity.Addressables",
         "UniTask",
         "Unity.ResourceManager",
-        "DOTween.Modules"
+        "DOTween.Modules",
+        "PirexGames.Pooling.OPool"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

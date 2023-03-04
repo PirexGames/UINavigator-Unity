@@ -23,6 +23,13 @@
       },
       "hash": "dfea8700d057b3c7074c162249ee523c0887f7e4"
     },
+    "com.pirexgames.opool": {
+      "version": "https://github.com/PirexGames/OPool.git#1.0.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "ac156269671a283855a45ff567113d332e9c094d"
+    },
     "com.unity.2d.animation": {
       "version": "7.0.9",
       "depth": 1,
