@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d4fdd04742ae3a4fb7c35ea5c2c9046, type: 3}
-  m_Name: SlideHorizontalAnimationSO
+  m_Script: {fileID: 11500000, guid: ee1c89dc0c7b93c469be3aaf10738be1, type: 3}
+  m_Name: ToastHideTransition
   m_EditorClassIdentifier: 
   durationIn: 0.15
   durationOut: 0.15

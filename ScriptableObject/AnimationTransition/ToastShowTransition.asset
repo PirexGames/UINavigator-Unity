@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d7f0682b6c649adaffb0fd3f4daecd6, type: 3}
-  m_Name: ToastTransition
+  m_Script: {fileID: 11500000, guid: 3a73cba0d6e54ab4eacb8482232aedf5, type: 3}
+  m_Name: ToastShowTransition
   m_EditorClassIdentifier: 
   durationIn: 0.15
   durationOut: 0.15

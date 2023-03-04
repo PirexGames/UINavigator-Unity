@@ -103,7 +103,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eca9a5d7bd94d64e9f6596547284fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationTransition: {fileID: 11400000, guid: 95fbbba04f2fa1e4eb6327b3353c31b1, type: 2}
+  animationTransition:
+    ShowAnimation: {fileID: 11400000, guid: 632c988be8a1bf84887cfbb819c41e76, type: 2}
+    HideAnimation: {fileID: 11400000, guid: fdd30494ebb486f44b7015208d6184fe, type: 2}
   isHidenOnPushOther: 1
 --- !u!1 &241537716460074
 GameObject:

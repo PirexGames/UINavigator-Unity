@@ -1148,7 +1148,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4680f7d6457d3314585794eeeaf1a1b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationTransition: {fileID: 11400000, guid: 8a4b36499f5beac418217f6ea10e0ff0, type: 2}
+  animationTransition:
+    ShowAnimation: {fileID: 11400000, guid: 5a9734b9c096d4946bdc23ba844edc75, type: 2}
+    HideAnimation: {fileID: 11400000, guid: 7b78d761cdc904d4fb2543699b502eb9, type: 2}
   titleTxt: {fileID: 1348187245090932304}
   contentTxt: {fileID: 7727559188010631821}
   positiveBtn: {fileID: 1348187245745434872}
