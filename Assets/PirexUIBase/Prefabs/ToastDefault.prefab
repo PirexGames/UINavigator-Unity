@@ -91,7 +91,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33b15635ac715bb4aab025424c091023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationTransition: {fileID: 11400000, guid: e6193a72eb873e74a95ccdf897b07054, type: 2}
+  animationTransition:
+    ShowAnimation: {fileID: 11400000, guid: 5a9734b9c096d4946bdc23ba844edc75, type: 2}
+    HideAnimation: {fileID: 11400000, guid: 7b78d761cdc904d4fb2543699b502eb9, type: 2}
   contentTxt: {fileID: 2914400718501595631}
 --- !u!225 &3593581109753620858
 CanvasGroup:

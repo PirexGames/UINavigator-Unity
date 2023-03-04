@@ -541,7 +541,6 @@ GameObject:
   - component: {fileID: 229565465}
   - component: {fileID: 229565464}
   - component: {fileID: 229565469}
-  - component: {fileID: 229565468}
   m_Layer: 5
   m_Name: OverloadToastContaner
   m_TagString: Untagged
@@ -621,20 +620,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 650.026}
   m_SizeDelta: {x: 713.986, y: 0}
   m_Pivot: {x: 0.5, y: 1}
---- !u!114 &229565468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 229565463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 2
 --- !u!114 &229565469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -660,7 +645,7 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_ReverseArrangement: 1
 --- !u!1 &593280354
 GameObject:
   m_ObjectHideFlags: 0
