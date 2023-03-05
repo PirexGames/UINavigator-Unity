@@ -18,8 +18,13 @@ public class SlideInVertical : AnimationTransition
         target.alpha = 1;
         target.blocksRaycasts = true;
         await target.transform
-            .DOLocalMoveY(0, durationIn)
+            .DOLocalMoveY(0, duration)
             .AsyncWaitForCompletion();
+    }
+
+    public override UniTask Excute(CanvasGroup target, Vector2 position, bool isLocalPosition = false)
+    {
+        throw new System.NotImplementedException();
     }
 
     enum SlideInVerEnum

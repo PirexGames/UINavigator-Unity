@@ -33,6 +33,14 @@ MonoBehaviour:
     m_Address: ToastDefault
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 2485ddbb31dd13f41abc787aa49094a8
+    m_Address: TooltipDefault
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7c9de972d0822b44f9e4ec79cc3cecff
+    m_Address: TooltipBlockOverlay
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 516532d3200266645bf56827a3a0b87b, type: 2}
   m_SchemaSet:

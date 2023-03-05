@@ -11,7 +11,21 @@ public class ToastShowTransition : AnimationTransition
         var rect = (RectTransform)target.transform;
         rect.localScale = Vector3.one * sizeFrom;
         target.alpha = 0f;
-        target.DOFade(1f, durationIn);
-        await rect.DOScale(Vector3.one, durationIn).AsyncWaitForCompletion();
+        target.DOFade(1f, duration);
+        await rect.DOScale(Vector3.one, duration).AsyncWaitForCompletion();
+    }
+
+    public override async UniTask Excute(CanvasGroup target, Vector2 position, bool isLocalPosition = false)
+    {
+        var rect = (RectTransform)target.transform;
+        rect.localScale = Vector3.one * sizeFrom;
+        if (isLocalPosition)
+            target.transform.localPosition = position;
+        else
+            target.transform.position = position;
+        await UniTask.NextFrame();
+        target.alpha = 0f;
+        target.DOFade(1f, duration);
+        await rect.DOScale(Vector3.one, duration).AsyncWaitForCompletion();
     }
 }

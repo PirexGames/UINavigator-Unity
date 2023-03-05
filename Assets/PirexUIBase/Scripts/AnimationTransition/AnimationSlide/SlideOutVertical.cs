@@ -14,17 +14,23 @@ public class SlideOutVertical : AnimationTransition
             var posEnd = rect.rect.height / 2 + container.rect.height / 2;
             if (typeSlide == SlideOutVerEnum.TOBOTTOM) posEnd *= -1;
             await target.transform
-                .DOLocalMoveY(posEnd, durationOut)
+                .DOLocalMoveY(posEnd, duration)
                 .AsyncWaitForCompletion();
         }
         else
         {
             await target.transform
-                .DOLocalMoveY(container.rect.width, durationOut)
+                .DOLocalMoveY(container.rect.width, duration)
                 .AsyncWaitForCompletion();
         }
 
     }
+
+    public override UniTask Excute(CanvasGroup target, Vector2 position, bool isLocalPosition = false)
+    {
+        throw new System.NotImplementedException();
+    }
+
     enum SlideOutVerEnum
     {
         TOTOP,

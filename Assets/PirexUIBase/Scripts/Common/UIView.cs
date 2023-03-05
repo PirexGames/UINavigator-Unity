@@ -20,7 +20,15 @@ namespace Pirex.UI.Base
             if (animationTransition.ShowAnimation)
                 await animationTransition.ShowAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer);
             viewCG.alpha = 1;
-            await UniTask.Yield();
+            await UniTask.CompletedTask;
+        }
+
+        public virtual async UniTask OnShow(Vector2 position, bool isLocalPosition = false)
+        {
+            if (animationTransition.ShowAnimation)
+                await animationTransition.ShowAnimation.Excute(viewCG, position, isLocalPosition);
+            viewCG.alpha = 1;
+            await UniTask.CompletedTask;
         }
 
         public virtual async UniTask OnHide()
@@ -28,7 +36,7 @@ namespace Pirex.UI.Base
             if (animationTransition.HideAnimation)
                 await animationTransition.HideAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer);
             viewCG.alpha = 0;
-            await UniTask.Yield();
+            await UniTask.CompletedTask;
         }
     }
 }
