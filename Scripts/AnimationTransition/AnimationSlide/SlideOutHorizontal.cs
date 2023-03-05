@@ -15,17 +15,23 @@ public class SlideOutHorizontal : AnimationTransition
             var posEnd = rect.rect.width / 2 + container.rect.width / 2;
             if (typeSlide == SlideOutHorEnum.TOLEFT) posEnd *= -1;
             await target.transform
-                .DOLocalMoveX(posEnd, durationOut)
+                .DOLocalMoveX(posEnd, duration)
                 .AsyncWaitForCompletion();
         }
         else
         {
             await target.transform
-                .DOLocalMoveX(container.rect.width, durationOut)
+                .DOLocalMoveX(container.rect.width, duration)
                 .AsyncWaitForCompletion();
         }
 
     }
+
+    public override UniTask Excute(CanvasGroup target, Vector2 position, bool isLocalPosition = false)
+    {
+        throw new System.NotImplementedException();
+    }
+
     enum SlideOutHorEnum
     {
         TOLEFT,

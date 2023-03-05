@@ -12,14 +12,17 @@ namespace Pirex.UI.Base
         [SerializeField] private Button alertBtn;
         [SerializeField] private Button toastBtn;
         [SerializeField] private Button overloadToastBtn;
+        [SerializeField] private Button tooltipBtn;
+        [SerializeField] private Transform objectTooltipShow;
         [SerializeField] private OverloadToastContainer overloadToastContainer;
-
+        [SerializeField] private TooltipPosition tooltipPosition;
         void Start()
         {
             pushBtn.onClick.AddListener(Push);
             popBtn.onClick.AddListener(Pop);
             alertBtn.onClick.AddListener(Alert);
             toastBtn.onClick.AddListener(Toast);
+            tooltipBtn.onClick.AddListener(TooltipShow);
             overloadToastBtn.onClick.AddListener(Overload);
         }
 
@@ -56,6 +59,11 @@ namespace Pirex.UI.Base
         private void Overload()
         {
             overloadToastContainer.ShowToast("ToastDefault", "Cút mẹ mày đi", 2f);
+        }
+
+        private void TooltipShow()
+        {
+            TooltipContainer.Show("TooltipDefault", "Cái này là Tooltiop giải thích cái gì đó", (RectTransform)objectTooltipShow, tooltipPosition);
         }
     }
 }
