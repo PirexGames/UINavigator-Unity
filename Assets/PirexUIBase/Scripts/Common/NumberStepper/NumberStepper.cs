@@ -16,6 +16,7 @@ public class NumberStepper : MonoBehaviour
     [SerializeField] private int maxValue = 100;
     private int _count = 0;
     public int Value => _count;
+
     private void Awake()
     {
         SetValue(minValue);
@@ -25,7 +26,7 @@ public class NumberStepper : MonoBehaviour
 
     public void Setup(int value) => SetValue(value);
     private void OnDisable() => SetValue(minValue);
-    private void OnChangeValue(int value) => SetValue(value*step + _count);
+    private void OnChangeValue(int value) => SetValue(value * step + _count);
 
     private void SetValue(int value)
     {

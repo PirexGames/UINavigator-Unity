@@ -41,6 +41,14 @@ MonoBehaviour:
     m_Address: TooltipBlockOverlay
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: a9d422b62b2692142a8738c39176b284
+    m_Address: NumberStepper
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0480cd0d3ecd3894ea69ab80efcaf22d
+    m_Address: Purchase
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 516532d3200266645bf56827a3a0b87b, type: 2}
   m_SchemaSet:
