@@ -15,7 +15,12 @@ namespace Pirex.UI.Base
         [SerializeField] private Button tooltipBtn;
         [SerializeField] private Transform objectTooltipShow;
         [SerializeField] private OverloadToastContainer overloadToastContainer;
+
         [SerializeField] private TooltipPosition tooltipPosition;
+
+        // [SerializeField] private 
+        [SerializeField] private Button purchaseBtn;
+
         void Start()
         {
             pushBtn.onClick.AddListener(Push);
@@ -24,7 +29,9 @@ namespace Pirex.UI.Base
             toastBtn.onClick.AddListener(Toast);
             tooltipBtn.onClick.AddListener(TooltipShow);
             overloadToastBtn.onClick.AddListener(Overload);
+            purchaseBtn.onClick.AddListener(Purchase);
         }
+
 
         public void Push()
         {
@@ -63,7 +70,30 @@ namespace Pirex.UI.Base
 
         private void TooltipShow()
         {
-            TooltipContainer.Show("TooltipDefault", "Cái này là Tooltiop giải thích cái gì đó", (RectTransform)objectTooltipShow, tooltipPosition);
+            TooltipContainer.Show("TooltipDefault", "Cái này là Tooltiop giải thích cái gì đó",
+                (RectTransform) objectTooltipShow, tooltipPosition);
+        }
+
+        public Texture2D demoTexture2d;
+
+        public void Callback(int amount, string id)
+        {
+            Debug.Log(amount + " " + id);
+        }
+
+        private void Purchase()
+        {
+            PurchaseModalContainer.Show(
+                "Purchase",
+                "lmaosaodjsaodj",
+                "demo title",
+                null,
+                1,
+                1,
+                "demo scription",
+                demoTexture2d,
+                Callback,
+                "Buy");
         }
     }
 }
