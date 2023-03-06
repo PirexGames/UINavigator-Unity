@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UnityEngine.Events;
 
 namespace Pirex.UI.Base
 {
