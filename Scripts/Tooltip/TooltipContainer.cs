@@ -9,17 +9,17 @@ namespace Pirex.UI.Base
 {
     public class TooltipContainer : UIContainer
     {
+        [SerializeField] private GameObject tooltipOverlay;
         public static UIContainer Container;
         private static Tooltip _currentTooltip = null;
         private static Button tooltipBlock;
         protected const string keyTooltipBlockOverlay = "TooltipBlockOverlay";
         private static CancellationTokenSource _cancelToken;
-        protected async override void Awake()
+        protected override void Awake()
         {
             base.Awake();
             Container = GetComponent<UIContainer>();
-            GameObject modalOverlayPrefab;
-            modalOverlayPrefab = await AddressableHelperT<GameObject>.GetAsync(keyTooltipBlockOverlay);
+            GameObject modalOverlayPrefab = tooltipOverlay;
             if (!modalOverlayPrefab) return;
             GameObject tooltipBlockSpawn;
             tooltipBlockSpawn = Instantiate(modalOverlayPrefab, TransformContainer);

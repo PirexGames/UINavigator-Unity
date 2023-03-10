@@ -3,7 +3,9 @@ guid: c6554ab56593a474bb39d7fe2904b2fb
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - gameObjectPoolSO: {instanceID: 0}
+  - tooltipOverlay: {fileID: 4197216346452054055, guid: 7c9de972d0822b44f9e4ec79cc3cecff, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
