@@ -29,7 +29,6 @@ namespace Pirex.UI.Base
         {
             modalBlockOverlay?.SetActive(true);
             callback?.Invoke(CallbackStatus.Positive);
-            modalBlockOverlay?.SetActive(false);
         }
 
         public static async void Alert(string keyModal, string title, string content, Action<CallbackStatus> callback, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
@@ -37,14 +36,12 @@ namespace Pirex.UI.Base
             modalBlockOverlay?.SetActive(true);
             var res = await SpawnAndInitModal(keyModal, title, content, buttonPositive, buttonNegative, buttonNeutral);
             callback?.Invoke(res);
-            modalBlockOverlay?.SetActive(false);
         }
 
         public static void Alert(string keyModal, string title, GameObject content, Action callback = null, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
         {
             modalBlockOverlay?.SetActive(true);
             callback?.Invoke();
-            modalBlockOverlay?.SetActive(false);
         }
 
         public static async void Alert(string keyModal, string title, string content, Action callback = null, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
@@ -53,14 +50,12 @@ namespace Pirex.UI.Base
             var res = await SpawnAndInitModal(keyModal, title, content, buttonPositive, buttonNegative, buttonNeutral);
             if (res == CallbackStatus.Positive)
                 callback?.Invoke();
-            modalBlockOverlay?.SetActive(false);
         }
 
         public static async void Alert(string keyModal, string title, string content, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
         {
             modalBlockOverlay?.SetActive(true);
             var res = await SpawnAndInitModal(keyModal, title, content, buttonPositive, buttonNegative, buttonNeutral);
-            modalBlockOverlay?.SetActive(false);
         }
 
         private static async UniTask<CallbackStatus> SpawnAndInitModal(string keyModal, string title, string content, string buttonPositive, string buttonNegative, string buttonNeutral)
@@ -75,11 +70,11 @@ namespace Pirex.UI.Base
             var modal = modalSpawn.GetComponent<Alert>();
             if (modal is null) return CallbackStatus.None;
             var res = await modal.Init(title, content, buttonPositive, buttonNegative, buttonNeutral);
-
             if (Container.PoolSO)
                 Container.PoolSO.DeSpawn(modalSpawn);
             else
                 Destroy(modalSpawn);
+            modalBlockOverlay?.SetActive(false);
             return res;
         }
     }

@@ -37,7 +37,6 @@ public class PurchaseModalContainer : UIContainer
     {
         modalBlockOverlay?.SetActive(true);
         await SpawnAndInitModal(keyModal, id, title, unit, pack, cost, description, texture2D, callback, buttonConfirm);
-        modalBlockOverlay?.SetActive(false);
     }
 
     private static async UniTask SpawnAndInitModal(string keyModal, string id, string title, Texture2D unit,
@@ -57,9 +56,8 @@ public class PurchaseModalContainer : UIContainer
         var modal = modalSpawn.GetComponent<PurchaseModal>();
         if (modal is null) return;
         var res = await modal.Init(title, description, texture2D, buttonConfirm);
-
-        if (res.Equals(1)) callback(res, id);
-        
+        modalBlockOverlay?.SetActive(false);
+        if (res.Equals(1)) callback?.Invoke(res, id);
         if (Container.PoolSO)
             Container.PoolSO.DeSpawn(modalSpawn);
         else
