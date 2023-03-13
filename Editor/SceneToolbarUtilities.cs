@@ -1,4 +1,5 @@
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
 
 namespace PirexGames.UI.Editor
 {
@@ -114,3 +115,5 @@ namespace PirexGames.UI.Editor
         }
     }
 }
+
+#endif
