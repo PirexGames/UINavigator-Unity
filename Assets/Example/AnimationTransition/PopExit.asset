@@ -9,8 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a73cba0d6e54ab4eacb8482232aedf5, type: 3}
-  m_Name: ToastShowTransition
+  m_Script: {fileID: 11500000, guid: e28745f68322a5a41a363469dfe61e9b, type: 3}
+  m_Name: PopExit
   m_EditorClassIdentifier: 
-  durationIn: 0.15
-  durationOut: 0.15
+  duration: 0.15
+  alphaBefore: 1
+  scaleBefore: {x: 1, y: 1, z: 1}
+  positionBefore: 0
+  alphaAfter: 1
+  scaleAfter: {x: 1, y: 1, z: 1}
+  positionAfter: 4

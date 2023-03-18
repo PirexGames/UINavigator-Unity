@@ -104,9 +104,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationTransition:
-    ShowAnimation: {fileID: 11400000, guid: 632c988be8a1bf84887cfbb819c41e76, type: 2}
-    HideAnimation: {fileID: 11400000, guid: fdd30494ebb486f44b7015208d6184fe, type: 2}
+    PushEnterAnimation: {fileID: 11400000, guid: 284203af59248eb49a7a3ff876b9ee4f, type: 2}
+    PushExitAnimation: {fileID: 11400000, guid: 5f2f2b359f3371a4f924dd7c34d4445b, type: 2}
+    PopEnterAnimation: {fileID: 11400000, guid: 04bf889a095b8c54a9de3fe2589b845b, type: 2}
+    PopExitAnimation: {fileID: 11400000, guid: b1d6453dcbfacba40a2e795a2e48d6ab, type: 2}
   isHidenOnPushOther: 1
+  btnBack: {fileID: 0}
 --- !u!1 &241537716460074
 GameObject:
   m_ObjectHideFlags: 0

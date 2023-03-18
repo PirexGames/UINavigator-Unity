@@ -92,8 +92,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationTransition:
-    ShowAnimation: {fileID: 11400000, guid: 5a9734b9c096d4946bdc23ba844edc75, type: 2}
-    HideAnimation: {fileID: 11400000, guid: 7b78d761cdc904d4fb2543699b502eb9, type: 2}
+    PushEnterAnimation: {fileID: 11400000, guid: 2fd31a1f72e6dbb4a8f8375921f596a3, type: 2}
+    PushExitAnimation: {fileID: 0}
+    PopEnterAnimation: {fileID: 0}
+    PopExitAnimation: {fileID: 11400000, guid: a9b203c369667984786cc0bb55774ae4, type: 2}
   contentTxt: {fileID: 2914400718501595631}
 --- !u!225 &3593581109753620858
 CanvasGroup:

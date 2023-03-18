@@ -14,29 +14,78 @@ namespace Pirex.UI.Base
         protected virtual void Awake()
         {
             viewCG = this.GetComponent<CanvasGroup>();
-            viewCG.alpha = 0;
         }
-        public virtual async UniTask OnShow()
+        public virtual async UniTask OnPushEnter()
         {
-            if (animationTransition.ShowAnimation)
-                await animationTransition.ShowAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer);
-            viewCG.alpha = 1;
+            if (animationTransition.PushEnterAnimation)
+                await animationTransition.PushEnterAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer);
+            else
+            {
+                transform.localScale = Vector3.one;
+                viewCG.alpha = 1;
+            }
             await UniTask.CompletedTask;
         }
 
-        public virtual async UniTask OnShow(Vector2 position, bool isLocalPosition = false)
+        public virtual async UniTask OnPushEnter(Vector2 position, bool isLocalPosition = false)
         {
-            if (animationTransition.ShowAnimation)
-                await animationTransition.ShowAnimation.Excute(viewCG, position, isLocalPosition);
-            viewCG.alpha = 1;
+            if (animationTransition.PushEnterAnimation)
+                await animationTransition.PushEnterAnimation.Excute(viewCG, position, isLocalPosition);
+            else
+            {
+                transform.localScale = Vector3.one;
+                viewCG.alpha = 1;
+            }
+
             await UniTask.CompletedTask;
         }
 
-        public virtual async UniTask OnHide()
+        public virtual async UniTask OnPushExit()
         {
-            if (animationTransition.HideAnimation)
-                await animationTransition.HideAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer);
-            viewCG.alpha = 0;
+            if (animationTransition.PopExitAnimation)
+                animationTransition.PushExitAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer).Forget();
+            await UniTask.CompletedTask;
+        }
+
+        public virtual async UniTask OnPopEnter()
+        {
+            if (animationTransition.PushEnterAnimation)
+                animationTransition.PopEnterAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer).Forget();
+            else
+            {
+                transform.localScale = Vector3.one;
+                viewCG.alpha = 1;
+            }
+            await UniTask.CompletedTask;
+        }
+        public virtual async UniTask OnPopEnter(Vector2 position, bool isLocalPosition = false)
+        {
+            if (animationTransition.PushEnterAnimation)
+                await animationTransition.PopEnterAnimation.Excute(viewCG, position, isLocalPosition);
+            else
+            {
+                transform.localScale = Vector3.one;
+                viewCG.alpha = 1;
+            }
+            await UniTask.CompletedTask;
+        }
+
+        public virtual async UniTask OnPopExit()
+        {
+            if (animationTransition.PopExitAnimation)
+                await animationTransition.PopExitAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer);
+            await UniTask.CompletedTask;
+        }
+
+        public virtual async UniTask OnPopExit(Vector2 position, bool isLocalPosition = false)
+        {
+            if (animationTransition.PushEnterAnimation)
+                await animationTransition.PopExitAnimation.Excute(viewCG, position, isLocalPosition);
+            else
+            {
+                transform.localScale = Vector3.zero;
+                viewCG.alpha = 1;
+            }
             await UniTask.CompletedTask;
         }
     }
