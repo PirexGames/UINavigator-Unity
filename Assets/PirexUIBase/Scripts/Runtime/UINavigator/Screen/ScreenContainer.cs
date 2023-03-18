@@ -12,6 +12,10 @@ namespace Pirex.UI.Base
         {
             base.Awake();
             Container = GetComponent<UIContainer>();
+            foreach (Transform screenTf in Container.transform)
+            {
+                stackScreen.Push(screenTf.GetComponent<Screen>());
+            }
         }
 
         public static async UniTask<Screen> Push(string keyAddressable)
