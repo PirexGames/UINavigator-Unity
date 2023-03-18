@@ -8,13 +8,17 @@ namespace Pirex.UI.Base
     {
         private static Stack<Screen> stackScreen = new();
         public static UIContainer Container;
-        protected override void Awake()
+        protected async override void Awake()
         {
             base.Awake();
             Container = GetComponent<UIContainer>();
             foreach (Transform screenTf in Container.transform)
             {
                 stackScreen.Push(screenTf.GetComponent<Screen>());
+            }
+            if (stackScreen.TryPeek(out var screen))
+            {
+                await screen.OnShow();
             }
         }
 
