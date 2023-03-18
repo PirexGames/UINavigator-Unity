@@ -13,7 +13,7 @@ namespace Pirex.UI.Base
         {
             if (contentTxt)
                 contentTxt.text = content;
-            await OnShow(position, isLocalPosition);
+            await OnPushEnter(position, isLocalPosition);
         }
     }
 }

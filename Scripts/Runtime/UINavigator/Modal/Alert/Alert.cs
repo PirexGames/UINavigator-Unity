@@ -47,10 +47,10 @@ namespace Pirex.UI.Base
             if (titleTxt.text is not null)
                 titleTxt.text = title;
             InitButton(buttonPositive, buttonNegative, buttonNeutral);
+            await OnPushEnter();
             await UniTask.NextFrame();
-            await OnShow();
             await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
-            await OnHide();
+            await OnPopExit();
             return _callbackStatus;
         }
 
@@ -64,10 +64,10 @@ namespace Pirex.UI.Base
                 titleTxt.text = title;
             contentTxt.text = content;
             InitButton(buttonPositive, buttonNegative, buttonNeutral);
+            await OnPushEnter();
             await UniTask.NextFrame();
-            await OnShow();
             await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
-            await OnHide();
+            await OnPopExit();
             return _callbackStatus;
         }
 

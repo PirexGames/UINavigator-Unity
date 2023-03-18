@@ -16,10 +16,8 @@ namespace Pirex.UI.Base
             if (btnBack != null)
                 btnBack.onClick.AddListener(OnBack);
         }
-        public void OnPushOtherScreen()
-        {
-            gameObject.SetActive(!isHidenOnPushOther);
-        }
+
+        public void HideOnPushOther() => gameObject.SetActive(!isHidenOnPushOther);
 
         private void OnBack()
         {

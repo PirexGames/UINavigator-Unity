@@ -52,10 +52,10 @@ namespace Pirex.UI.Base
             descriptionTxt.text = description;
             itemImage.texture = texture2D;
             InitButton(buttonConfirm);
+            await OnPushEnter();
             await UniTask.NextFrame();
-            await OnShow();
             await UniTask.WaitUntil(() => _checkAmount != 0);
-            await OnHide();
+            await OnPopExit();
             return _buyAmount;
         }
 

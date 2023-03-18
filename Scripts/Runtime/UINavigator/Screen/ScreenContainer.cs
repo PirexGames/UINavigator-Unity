@@ -8,17 +8,23 @@ namespace Pirex.UI.Base
     {
         private static Stack<Screen> stackScreen = new();
         public static UIContainer Container;
-        protected async override void Awake()
+        protected override void Awake()
         {
             base.Awake();
             Container = GetComponent<UIContainer>();
+        }
+
+        private async void Start()
+        {
             foreach (Transform screenTf in Container.transform)
             {
-                stackScreen.Push(screenTf.GetComponent<Screen>());
+                var scr = screenTf.GetComponent<Screen>();
+                if (scr)
+                    stackScreen.Push(scr);
             }
             if (stackScreen.TryPeek(out var screen))
             {
-                await screen.OnShow();
+                await screen.OnPushEnter();
             }
         }
 
@@ -32,10 +38,14 @@ namespace Pirex.UI.Base
                 screenSpawn = Instantiate(screenPrefab, Container.TransformContainer);
             var screen = screenSpawn.GetComponent<Screen>();
             if (screen is null) return null;
-            await screen.OnShow();
-
             if (stackScreen.TryPeek(out var screenToHide))
-                screenToHide.OnPushOtherScreen();
+                await screenToHide.OnPushExit();
+
+            await screen.OnPushEnter();
+
+            if (stackScreen.TryPeek(out var screenToHide1))
+                screenToHide1.HideOnPushOther();
+
             stackScreen.Push(screen);
 
             await UniTask.Yield();
@@ -50,8 +60,11 @@ namespace Pirex.UI.Base
 
                 if (stackScreen.TryPeek(out var screenToShow))
                     if (!screenToShow.gameObject.activeSelf)
+                    {
+                        await screenToShow.OnPopEnter();
                         screenToShow.gameObject.SetActive(true);
-                await screen.OnHide();
+                    }
+                await screen.OnPopExit();
                 if (Container.PoolSO)
                     Container.PoolSO.DeSpawn(screen.gameObject);
                 else
