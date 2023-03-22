@@ -72,6 +72,9 @@ namespace Pirex.UI.Base
             }
             await UniTask.Yield();
         }
-
+        private void OnDestroy()
+        {
+            stackScreen.Clear();
+        }
     }
 }
