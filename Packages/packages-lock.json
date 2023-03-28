@@ -30,6 +30,13 @@
       "dependencies": {},
       "hash": "ac156269671a283855a45ff567113d332e9c094d"
     },
+    "com.pirexgames.soundbase": {
+      "version": "https://github.com/PirexGames/base-sound-unity.git#1.0.1",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f84612c0fa0e6457dc532bde615da6f19db1a9ec"
+    },
     "com.unity.2d.animation": {
       "version": "7.0.9",
       "depth": 1,
