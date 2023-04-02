@@ -45,12 +45,13 @@ namespace Pirex.UI.Base
 
         private void Alert()
         {
-            AlertContainer.Alert(
-                "ModalDefault",
-                "Hãy cứ vui tươi và lạc quan lên em ơi",
-                "Aloo xin chao cac bạn",
-                CallBackAlert,
-                buttonNeutral: "DFDKFJ");
+            ModalContainer.Show("ModalDefault1", "Settings");
+            // AlertContainer.Alert(
+            //     "ModalDefault",
+            //     "Hãy cứ vui tươi và lạc quan lên em ơi",
+            //     "Aloo xin chao cac bạn",
+            //     CallBackAlert,
+            //     buttonNeutral: "DFDKFJ");
         }
 
         private void CallBackAlert(CallbackStatus callbackStatus)

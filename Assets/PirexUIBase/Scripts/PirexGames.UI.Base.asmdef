@@ -1,6 +1,6 @@
 {
     "name": "Pirex.UI.Base",
-    "rootNamespace": "",
+    "rootNamespace": "Pirex.UI.Base",
     "references": [
         "Unity.TextMeshPro",
         "Unity.Addressables",

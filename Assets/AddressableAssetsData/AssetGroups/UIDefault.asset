@@ -49,6 +49,10 @@ MonoBehaviour:
     m_Address: Purchase
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 6a325a10b7c18c84090b935a9a787f2e
+    m_Address: ModalDefault1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 516532d3200266645bf56827a3a0b87b, type: 2}
   m_SchemaSet:
