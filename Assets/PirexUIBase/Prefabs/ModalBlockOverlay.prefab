@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4197216346452054052}
   - component: {fileID: 4197216346452054058}
   - component: {fileID: 4197216346452054053}
+  - component: {fileID: -9035642638728673510}
   m_Layer: 5
   m_Name: ModalBlockOverlay
   m_TagString: Untagged
@@ -76,3 +77,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &-9035642638728673510
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4197216346452054055}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
