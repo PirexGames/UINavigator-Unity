@@ -40,7 +40,7 @@ namespace Pirex.UI.Base
             SheetContainerType sheet = FindSheet(rectTransform);
             if (sheet.toggle.isOn)
             {
-                TransitionSheetAsync(sheet, sheet.toggle.isOn);
+                TransitionSheetAsync(sheet, sheet.toggle.isOn).Forget();
                 return;
             }
             TransitionSheet(sheet);
@@ -56,7 +56,7 @@ namespace Pirex.UI.Base
             }
             if (!toggle.isOn)
             {
-                TransitionSheetAsync(sheet, toggle.isOn);
+                TransitionSheetAsync(sheet, toggle.isOn).Forget();
                 return;
             }
             TransitionSheet(sheet);
@@ -80,9 +80,9 @@ namespace Pirex.UI.Base
             if (sheet == null) return;
             if (activeSheet != null && !allowMultiActive)
                 if (activeSheet.rectTransform != null && activeSheet.canvasGroup != null && activeSheet.toggle != null)
-                    TransitionSheetAsync(activeSheet, false);
+                    TransitionSheetAsync(activeSheet, false).Forget();
             activeSheet = sheet;
-            TransitionSheetAsync(activeSheet, sheet.toggle.isOn);
+            TransitionSheetAsync(activeSheet, sheet.toggle.isOn).Forget();
         }
 
         public void TransitionOff()
