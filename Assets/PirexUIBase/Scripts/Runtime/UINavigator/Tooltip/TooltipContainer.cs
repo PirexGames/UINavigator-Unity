@@ -40,11 +40,8 @@ namespace Pirex.UI.Base
             if (_currentTooltip)
             {
                 _cancelToken?.Cancel();
-                await _currentTooltip.OnPopExit();
-                if (Container.PoolSO)
-                    Container.PoolSO.DeSpawn(_currentTooltip.gameObject);
-                else
-                    Destroy(_currentTooltip.gameObject);
+                await _currentTooltip.OnPopExit(_currentTooltip.transform.localPosition, true);
+                Addressables.ReleaseInstance(_currentTooltip.gameObject);
                 _currentTooltip = null;
             }
 
@@ -100,10 +97,7 @@ namespace Pirex.UI.Base
         private async void CloseTooltipAsync()
         {
             await _currentTooltip.OnPopExit(_currentTooltip.transform.position);
-            if (Container.PoolSO)
-                Container.PoolSO.DeSpawn(_currentTooltip.gameObject);
-            else
-                Destroy(_currentTooltip.gameObject);
+            Addressables.ReleaseInstance(_currentTooltip.gameObject);
             _currentTooltip = null;
             tooltipBlock.gameObject.SetActive(false);
         }

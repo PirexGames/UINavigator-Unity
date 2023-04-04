@@ -13,6 +13,7 @@ namespace Pirex.UI.Base
         {
             if (contentTxt)
                 contentTxt.text = content;
+            await UniTask.NextFrame();
             await OnPushEnter(position, isLocalPosition);
         }
     }
