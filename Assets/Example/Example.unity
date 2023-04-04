@@ -1044,7 +1044,7 @@ MonoBehaviour:
   overloadToastContainer: {fileID: 229565464}
   tooltipPosition: 0
   purchaseBtn: {fileID: 310606187}
-  demoTexture2d: {fileID: 2800000, guid: 988ed84773d02644cbc268043bbd8864, type: 3}
+  demoTexture2d: {fileID: 21300000, guid: f008857e434b98b4eaabda1fd6af3059, type: 3}
 --- !u!224 &829839414 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9076413306121961672, guid: a9d422b62b2692142a8738c39176b284, type: 3}
@@ -1700,6 +1700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameObjectPoolSO: {fileID: 11400000, guid: 3924fbf3803de9b4e8759e9b282afc89, type: 2}
   modalBlockOverlayOverride: {fileID: 0}
+  durationBlockOverlay: 0.15
 --- !u!114 &1265623725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1775,6 +1776,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameObjectPoolSO: {fileID: 0}
   modalBlockOverlayOverride: {fileID: 4197216346452054055, guid: b050981f5c60a274580083ce74d3e1c0, type: 3}
+  durationBlockOverlay: 0.15
 --- !u!1001 &1325755200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3158,11 +3160,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9076413306121961672, guid: a9d422b62b2692142a8738c39176b284, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -743.223
+      value: -441.77
       objectReference: {fileID: 0}
     - target: {fileID: 9076413306121961672, guid: a9d422b62b2692142a8738c39176b284, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -171.534
+      value: -227
       objectReference: {fileID: 0}
     - target: {fileID: 9076413306121961672, guid: a9d422b62b2692142a8738c39176b284, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

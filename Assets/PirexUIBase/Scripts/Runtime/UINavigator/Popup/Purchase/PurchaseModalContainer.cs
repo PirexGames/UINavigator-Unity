@@ -5,12 +5,16 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Pirex.UI.Base;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using DG.Tweening;
+
 namespace Pirex.UI.Base
 {
     public class PurchaseModalContainer : UIContainer
     {
         [SerializeField] protected GameObject modalBlockOverlayOverride;
-        private static GameObject modalBlockOverlay;
+        private static float s_durationBlockOverlay = .15f;
+        private static CanvasGroup modalBlockOverlay;
         protected const string keyModalBlockOverlay = "ModalBlockOverlay";
         public static UIContainer Container;
 
@@ -26,43 +30,37 @@ namespace Pirex.UI.Base
             if (!modalOverlayPrefab) return;
             GameObject modalSpawn;
             modalSpawn = Instantiate(modalOverlayPrefab, TransformContainer);
-            modalBlockOverlay = modalSpawn;
-            modalBlockOverlay.SetActive(false);
+            modalBlockOverlay = modalSpawn.GetComponent<CanvasGroup>();
+            modalBlockOverlay.gameObject.SetActive(false);
         }
 
-        public static async void Show(string keyModal, string id, string title, Texture2D unit, int pack, int cost,
+        public static async void Show(string keyModal, string id, string title, Sprite unitIcon, int pack, int cost,
             string description,
-            Texture2D texture2D,
+            Sprite itemIcon,
             Action<int, string> callback,
             string buttonConfirm = null)
         {
-            modalBlockOverlay?.SetActive(true);
-            await SpawnAndInitModal(keyModal, id, title, unit, pack, cost, description, texture2D, callback, buttonConfirm);
+            modalBlockOverlay?.gameObject.SetActive(true);
+            await modalBlockOverlay.DOFade(1f, s_durationBlockOverlay).AsyncWaitForCompletion();
+            await SpawnAndInitModal(keyModal, id, title, unitIcon, pack, cost, description, itemIcon, callback, buttonConfirm);
         }
 
-        private static async UniTask SpawnAndInitModal(string keyModal, string id, string title, Texture2D unit,
+        private static async UniTask SpawnAndInitModal(string keyModal, string id, string title, Sprite unitIcon,
             int pack, int cost,
             string description,
-            Texture2D texture2D,
+            Sprite itemIcon,
             Action<int, string> callback,
             string buttonConfirm)
         {
-            var modalPrefab = await AddressableHelperT<GameObject>.GetAsync(keyModal);
-            GameObject modalSpawn;
-            if (Container.PoolSO)
-                modalSpawn = Container.PoolSO.Spawn(modalPrefab, Container.TransformContainer);
-            else
-                modalSpawn = Instantiate(modalPrefab, Container.TransformContainer);
+            var modalSpawn = await Addressables.InstantiateAsync(keyModal, Container.TransformContainer).Task;
 
             var modal = modalSpawn.GetComponent<PurchaseModal>();
             if (modal is null) return;
-            var res = await modal.Init(title, description, texture2D, buttonConfirm);
-            modalBlockOverlay?.SetActive(false);
+            var res = await modal.Init(title, description, itemIcon, buttonConfirm);
+            await modalBlockOverlay.DOFade(0f, s_durationBlockOverlay).AsyncWaitForCompletion();
+            modalBlockOverlay?.gameObject.SetActive(false);
             if (res.Equals(1)) callback?.Invoke(res, id);
-            if (Container.PoolSO)
-                Container.PoolSO.DeSpawn(modalSpawn);
-            else
-                Destroy(modalSpawn);
+            Addressables.ReleaseInstance(modalSpawn);
         }
     }
 }

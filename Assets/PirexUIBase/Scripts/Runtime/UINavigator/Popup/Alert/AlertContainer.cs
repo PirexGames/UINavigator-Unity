@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
+using UnityEngine.AddressableAssets;
 using DG.Tweening;
 
 namespace Pirex.UI.Base
@@ -70,20 +71,12 @@ namespace Pirex.UI.Base
 
         private static async UniTask<CallbackStatus> SpawnAndInitModal(string keyModal, string title, string content, string buttonPositive, string buttonNegative, string buttonNeutral)
         {
-            var modalPrefab = await AddressableHelperT<GameObject>.GetAsync(keyModal);
-            GameObject modalSpawn;
-            if (Container.PoolSO)
-                modalSpawn = Container.PoolSO.Spawn(modalPrefab, Container.TransformContainer);
-            else
-                modalSpawn = Instantiate(modalPrefab, Container.TransformContainer);
+            var modalSpawn = await Addressables.InstantiateAsync(keyModal, Container.TransformContainer).Task;
 
             var modal = modalSpawn.GetComponent<Alert>();
             if (modal is null) return CallbackStatus.None;
             var res = await modal.Init(title, content, buttonPositive, buttonNegative, buttonNeutral);
-            if (Container.PoolSO)
-                Container.PoolSO.DeSpawn(modalSpawn);
-            else
-                Destroy(modalSpawn);
+            Addressables.ReleaseInstance(modalSpawn);
             await modalBlockOverlay.DOFade(0f, s_durationBlockOverlay).AsyncWaitForCompletion();
             modalBlockOverlay.gameObject.SetActive(false);
             return res;

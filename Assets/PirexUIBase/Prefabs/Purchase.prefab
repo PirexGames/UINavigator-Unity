@@ -402,7 +402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2196623847209329472}
   - component: {fileID: 272732965315198335}
-  - component: {fileID: 2149038091831971931}
+  - component: {fileID: 1353816775023524613}
   m_Layer: 5
   m_Name: ItemImage
   m_TagString: Untagged
@@ -438,7 +438,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3108567672403254612}
   m_CullTransparentMesh: 1
---- !u!114 &2149038091831971931
+--- !u!114 &1353816775023524613
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -447,7 +447,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3108567672403254612}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -458,13 +458,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &3283183773040273933
 GameObject:
   m_ObjectHideFlags: 0
@@ -978,11 +981,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationTransition:
-    ShowAnimation: {fileID: 11400000, guid: 5a9734b9c096d4946bdc23ba844edc75, type: 2}
-    HideAnimation: {fileID: 11400000, guid: 7b78d761cdc904d4fb2543699b502eb9, type: 2}
+    PushEnterAnimation: {fileID: 0}
+    PushExitAnimation: {fileID: 0}
+    PopEnterAnimation: {fileID: 0}
+    PopExitAnimation: {fileID: 0}
   titleTxt: {fileID: 1348187245090932304}
   descriptionTxt: {fileID: 7727559188010631821}
-  itemImage: {fileID: 2149038091831971931}
+  itemImage: {fileID: 1353816775023524613}
   buyCount: {fileID: 6932829471433705483}
   confirmBtn: {fileID: 1348187245314973795}
   confirmTxt: {fileID: 1348187246438445152}

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Pirex.UI.Base
 {
@@ -42,20 +44,12 @@ namespace Pirex.UI.Base
 
         private static async UniTask SpawnAndInitModal(string keyModal, string title)
         {
-            var modalPrefab = await AddressableHelperT<GameObject>.GetAsync(keyModal);
-            GameObject modalSpawn;
-            if (Container.PoolSO)
-                modalSpawn = Container.PoolSO.Spawn(modalPrefab, Container.TransformContainer);
-            else
-                modalSpawn = Instantiate(modalPrefab, Container.TransformContainer);
+            var modalSpawn = await Addressables.InstantiateAsync(keyModal, Container.TransformContainer).Task;
 
             var modal = modalSpawn.GetComponent<Modal>();
             if (modal is null) return;
             await modal.Init(title);
-            if (Container.PoolSO)
-                Container.PoolSO.DeSpawn(modalSpawn);
-            else
-                Destroy(modalSpawn);
+            Addressables.ReleaseInstance(modalSpawn);
             await modalBlockOverlay.DOFade(0f, s_durationBlockOverlay).AsyncWaitForCompletion();
             modalBlockOverlay.gameObject.SetActive(false);
         }

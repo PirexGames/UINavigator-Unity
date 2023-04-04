@@ -75,7 +75,7 @@ namespace Pirex.UI.Base
                 (RectTransform)objectTooltipShow, tooltipPosition);
         }
 
-        public Texture2D demoTexture2d;
+        public Sprite demoTexture2d;
 
         public void Callback(int amount, string id)
         {

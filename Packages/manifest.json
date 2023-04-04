@@ -4,7 +4,7 @@
     "com.cysharp.unitask": "2.3.3",
     "com.littlebigfun.addressable-importer": "https://github.com/favoyang/unity-addressable-importer.git#v0.16.1",
     "com.pirexgames.opool": "https://github.com/PirexGames/OPool.git#1.0.0",
-    "com.pirexgames.soundbase": "https://github.com/PirexGames/base-sound-unity.git#1.0.1",
+    "com.pirexgames.soundbase": "https://github.com/PirexGames/base-sound-unity.git#1.0.6",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.addressables": "1.19.19",
     "com.unity.collab-proxy": "1.17.7",

@@ -12,10 +12,11 @@ namespace Pirex.UI.Base
         [SerializeField] protected Button closeBtn;
         [SerializeField] protected TextMeshProUGUI titleTxt;
         protected bool isClose = false;
-        
-        protected override void Awake() {
+
+        protected override void Awake()
+        {
             base.Awake();
-            if (closeBtn) 
+            if (closeBtn)
                 closeBtn.onClick.AddListener(OnClose);
         }
         public async UniTask Init
@@ -26,9 +27,9 @@ namespace Pirex.UI.Base
             isClose = false;
             if (titleTxt.text is not null)
                 titleTxt.text = title;
+            await UniTask.NextFrame();
             await OnPushEnter();
             await UniTask.WaitUntil(() => isClose == true);
-            await UniTask.NextFrame();
             await OnPopExit();
         }
 
