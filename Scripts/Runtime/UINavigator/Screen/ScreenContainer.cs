@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine.AddressableAssets;
 
 namespace Pirex.UI.Base
 {
@@ -30,12 +31,8 @@ namespace Pirex.UI.Base
 
         public static async UniTask<Screen> Push(string keyAddressable)
         {
-            var screenPrefab = await AddressableHelperT<GameObject>.GetAsync(keyAddressable);
-            GameObject screenSpawn;
-            if (Container.PoolSO)
-                screenSpawn = Container.PoolSO.Spawn(screenPrefab, Container.TransformContainer);
-            else
-                screenSpawn = Instantiate(screenPrefab, Container.TransformContainer);
+            var screenSpawn = await Addressables.InstantiateAsync(keyAddressable, Container.TransformContainer).Task;
+
             var screen = screenSpawn.GetComponent<Screen>();
             if (screen is null) return null;
             if (stackScreen.TryPeek(out var screenToHide))
@@ -65,15 +62,14 @@ namespace Pirex.UI.Base
                         screenToShow.gameObject.SetActive(true);
                     }
                 await screen.OnPopExit();
-                if (Container.PoolSO)
-                    Container.PoolSO.DeSpawn(screen.gameObject);
-                else
-                    Destroy(screen.gameObject);
+                Addressables.ReleaseInstance(screen.gameObject);
             }
             await UniTask.Yield();
         }
         private void OnDestroy()
         {
+            foreach (var item in stackScreen)
+                Addressables.ReleaseInstance(item.gameObject);
             stackScreen.Clear();
         }
     }

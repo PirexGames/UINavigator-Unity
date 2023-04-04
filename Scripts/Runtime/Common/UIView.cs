@@ -14,6 +14,7 @@ namespace Pirex.UI.Base
         protected virtual void Awake()
         {
             viewCG = this.GetComponent<CanvasGroup>();
+            viewCG.alpha = 0;
         }
         public virtual async UniTask OnPushEnter()
         {

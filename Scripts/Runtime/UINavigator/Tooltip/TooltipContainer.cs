@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
 
 namespace Pirex.UI.Base
 {
@@ -48,12 +49,8 @@ namespace Pirex.UI.Base
             }
 
             _cancelToken = new CancellationTokenSource();
-            var tooltipPrefab = await AddressableHelperT<GameObject>.GetAsync(keyAddressable);
-            GameObject tooltipSpawn;
-            if (Container.PoolSO)
-                tooltipSpawn = Container.PoolSO.Spawn(tooltipPrefab, parent);
-            else
-                tooltipSpawn = Instantiate(tooltipPrefab, parent);
+            var tooltipSpawn = await Addressables.InstantiateAsync(keyAddressable, parent).Task;
+
             var tooltip = tooltipSpawn.GetComponent<Tooltip>();
             _currentTooltip = tooltip;
             var tooltipRect = tooltipSpawn.GetComponent<RectTransform>();

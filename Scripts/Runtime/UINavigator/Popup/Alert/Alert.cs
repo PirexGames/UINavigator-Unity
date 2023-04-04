@@ -47,8 +47,8 @@ namespace Pirex.UI.Base
             if (titleTxt.text is not null)
                 titleTxt.text = title;
             InitButton(buttonPositive, buttonNegative, buttonNeutral);
-            await OnPushEnter();
             await UniTask.NextFrame();
+            await OnPushEnter();
             await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
             await OnPopExit();
             return _callbackStatus;

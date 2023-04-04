@@ -14,7 +14,7 @@ namespace Pirex.UI.Base
         [Header("Header")][SerializeField] private TextMeshProUGUI titleTxt;
 
         [Header("Body")][SerializeField] private TextMeshProUGUI descriptionTxt;
-        [SerializeField] private RawImage itemImage;
+        [SerializeField] private Image itemImage;
 
         [Header("Footer")][SerializeField] private NumberStepper buyCount;
         [SerializeField] private Button confirmBtn;
@@ -43,17 +43,17 @@ namespace Pirex.UI.Base
 
         public async UniTask<int> Init
         (
-            string title, string description, Texture2D texture2D,
+            string title, string description, Sprite sprite,
             string buttonConfirm
         )
         {
             if (titleTxt.text is not null)
                 titleTxt.text = title;
             descriptionTxt.text = description;
-            itemImage.texture = texture2D;
+            itemImage.sprite = sprite;
             InitButton(buttonConfirm);
-            await OnPushEnter();
             await UniTask.NextFrame();
+            await OnPushEnter();
             await UniTask.WaitUntil(() => _checkAmount != 0);
             await OnPopExit();
             return _buyAmount;
