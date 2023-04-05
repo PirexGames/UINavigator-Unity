@@ -30,7 +30,7 @@ namespace Pirex.UI.Base
             if (confirmBtn) confirmBtn.onClick.AddListener(BuyClick);
         }
 
-        protected override void OnEnable()
+        protected void OnEnable()
         {
             _checkAmount = 0;
         }
