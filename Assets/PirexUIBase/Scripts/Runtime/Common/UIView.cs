@@ -17,11 +17,6 @@ namespace Pirex.UI.Base
             viewCG.alpha = 0;
         }
 
-        protected virtual void OnEnable()
-        {
-            viewCG.alpha = 0;
-        }
-
         public virtual async UniTask OnPushEnter()
         {
             if (animationTransition.PushEnterAnimation)
