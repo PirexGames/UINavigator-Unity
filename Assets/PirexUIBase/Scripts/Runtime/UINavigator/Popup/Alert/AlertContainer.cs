@@ -31,32 +31,24 @@ namespace Pirex.UI.Base
             modalBlockOverlay.alpha = 0;
             modalBlockOverlay.gameObject.SetActive(false);
         }
-        public static async void Alert(string keyModal, string title, GameObject content, Action<CallbackStatus> callback, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
+        public static void Alert(string keyModal, string title, GameObject content, Action<CallbackStatus> callback, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
         {
-            modalBlockOverlay.gameObject.SetActive(true);
-            await modalBlockOverlay.DOFade(1f, s_durationBlockOverlay).AsyncWaitForCompletion();
             callback?.Invoke(CallbackStatus.Positive);
         }
 
         public static async void Alert(string keyModal, string title, string content, Action<CallbackStatus> callback, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
         {
-            modalBlockOverlay.gameObject.SetActive(true);
-            await modalBlockOverlay.DOFade(1f, s_durationBlockOverlay).AsyncWaitForCompletion();
             var res = await SpawnAndInitModal(keyModal, title, content, buttonPositive, buttonNegative, buttonNeutral);
             callback?.Invoke(res);
         }
 
-        public static async void Alert(string keyModal, string title, GameObject content, Action callback = null, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
+        public static void Alert(string keyModal, string title, GameObject content, Action callback = null, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
         {
-            modalBlockOverlay.gameObject.SetActive(true);
-            await modalBlockOverlay.DOFade(1f, s_durationBlockOverlay).AsyncWaitForCompletion();
             callback?.Invoke();
         }
 
         public static async void Alert(string keyModal, string title, string content, Action callback = null, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
         {
-            modalBlockOverlay.gameObject.SetActive(true);
-            await modalBlockOverlay.DOFade(1f, s_durationBlockOverlay).AsyncWaitForCompletion();
             var res = await SpawnAndInitModal(keyModal, title, content, buttonPositive, buttonNegative, buttonNeutral);
             if (res == CallbackStatus.Positive)
                 callback?.Invoke();
@@ -64,15 +56,15 @@ namespace Pirex.UI.Base
 
         public static async void Alert(string keyModal, string title, string content, string buttonPositive = null, string buttonNegative = null, string buttonNeutral = null)
         {
-            modalBlockOverlay.gameObject.SetActive(true);
-            await modalBlockOverlay.DOFade(1f, s_durationBlockOverlay).AsyncWaitForCompletion();
             var res = await SpawnAndInitModal(keyModal, title, content, buttonPositive, buttonNegative, buttonNeutral);
         }
 
         private static async UniTask<CallbackStatus> SpawnAndInitModal(string keyModal, string title, string content, string buttonPositive, string buttonNegative, string buttonNeutral)
         {
-            var modalSpawn = await Addressables.InstantiateAsync(keyModal, Container.TransformContainer).Task;
+            modalBlockOverlay.gameObject.SetActive(true);
+            modalBlockOverlay.DOFade(1f, s_durationBlockOverlay);
 
+            var modalSpawn = await Addressables.InstantiateAsync(keyModal, Container.TransformContainer).Task;
             var modal = modalSpawn.GetComponent<Alert>();
             if (modal is null) return CallbackStatus.None;
             var res = await modal.Init(title, content, buttonPositive, buttonNegative, buttonNeutral);

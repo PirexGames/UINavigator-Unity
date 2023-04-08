@@ -37,7 +37,7 @@ namespace Pirex.UI.Base
         public async static UniTask Show(string keyModal, string title = null)
         {
             modalBlockOverlay.gameObject.SetActive(true);
-            await modalBlockOverlay.DOFade(1f, s_durationBlockOverlay).AsyncWaitForCompletion();
+            modalBlockOverlay.DOFade(1f, s_durationBlockOverlay);
             await SpawnAndInitModal(keyModal, title);
 
         }
