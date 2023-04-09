@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using UnityEngine.AddressableAssets;
 
 namespace Pirex.UI.Base
 {
@@ -30,23 +31,13 @@ namespace Pirex.UI.Base
             {
                 if (!_isCurrentToastShowed) return;
                 _cancelToken?.Cancel();
-                if (Container.PoolSO)
-                {
-                    Container.PoolSO.DeSpawn(_currentToast.gameObject);
-                    _currentToast = null;
-                    await UniTask.NextFrame();
-                }
-                else
-                    Destroy(_currentToast.gameObject);
+                Addressables.ReleaseInstance(_currentToast.gameObject);
+                _currentToast = null;
             }
             _isCurrentToastShowed = false;
             _cancelToken = new CancellationTokenSource();
-            var toastPrefab = await AddressableHelperT<GameObject>.GetAsync(keyAddressable);
             var parentSpawn = parent ? parent : ScreenContainer.Container.TransformContainer;
-            GameObject toastSpawn;
-            if (Container.PoolSO)
-                toastSpawn = Container.PoolSO.Spawn(toastPrefab, parentSpawn);
-            else toastSpawn = Instantiate(toastPrefab, parentSpawn);
+            GameObject toastSpawn = await Addressables.InstantiateAsync(keyAddressable, parentSpawn).Task;
 
             var toast = toastSpawn.GetComponent<Toast>();
             if (toast is null) return;
@@ -59,13 +50,8 @@ namespace Pirex.UI.Base
 
             if (_currentToast)
             {
-                if (Container.PoolSO)
-                {
-                    Container.PoolSO.DeSpawn(_currentToast.gameObject);
-                    _currentToast = null;
-                }
-                else
-                    Destroy(_currentToast.gameObject);
+                Addressables.ReleaseInstance(_currentToast.gameObject);
+                _currentToast = null;
             }
 
         }

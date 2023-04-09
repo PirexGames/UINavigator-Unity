@@ -7,9 +7,8 @@
         "UniTask",
         "Unity.ResourceManager",
         "DOTween.Modules",
-        "PirexGames.Pooling.OPool",
-        "PirexGames.Sound.Base",
-        "UniTask.DOTween"
+        "UniTask.DOTween",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

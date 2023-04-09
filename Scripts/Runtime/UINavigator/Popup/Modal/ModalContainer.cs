@@ -11,33 +11,30 @@ namespace Pirex.UI.Base
 {
     public class ModalContainer : UIContainer
     {
-        [SerializeField] protected GameObject modalBlockOverlayOverride;
+        [SerializeField] protected GameObject modalBlockOverlay;
         [SerializeField] protected float durationBlockOverlay = .15f;
-        private static CanvasGroup modalBlockOverlay;
+        private static CanvasGroup s_modalBlockOverlay;
         private static float s_durationBlockOverlay = .15f;
         protected const string keyModalBlockOverlay = "ModalBlockOverlay";
         public static UIContainer Container;
-        protected async override void Awake()
+        protected override void Awake()
         {
             base.Awake();
             s_durationBlockOverlay = durationBlockOverlay;
             Container = GetComponent<UIContainer>();
-            GameObject modalOverlayPrefab;
-            if (modalBlockOverlayOverride)
-                modalOverlayPrefab = modalBlockOverlayOverride;
-            else
-                modalOverlayPrefab = await AddressableHelperT<GameObject>.GetAsync(keyModalBlockOverlay);
+            GameObject modalOverlayPrefab = modalBlockOverlay;
+
             if (!modalOverlayPrefab) return;
             GameObject modalSpawn;
             modalSpawn = Instantiate(modalOverlayPrefab, TransformContainer);
-            modalBlockOverlay = modalSpawn.GetComponent<CanvasGroup>();
-            modalBlockOverlay.alpha = 0;
-            modalBlockOverlay.gameObject.SetActive(false);
+            s_modalBlockOverlay = modalSpawn.GetComponent<CanvasGroup>();
+            s_modalBlockOverlay.alpha = 0;
+            s_modalBlockOverlay.gameObject.SetActive(false);
         }
         public async static UniTask Show(string keyModal, string title = null)
         {
-            modalBlockOverlay.gameObject.SetActive(true);
-            modalBlockOverlay.DOFade(1f, s_durationBlockOverlay);
+            s_modalBlockOverlay.gameObject.SetActive(true);
+            s_modalBlockOverlay.DOFade(1f, s_durationBlockOverlay);
             await SpawnAndInitModal(keyModal, title);
 
         }
@@ -50,8 +47,8 @@ namespace Pirex.UI.Base
             if (modal is null) return;
             await modal.Init(title);
             Addressables.ReleaseInstance(modalSpawn);
-            await modalBlockOverlay.DOFade(0f, s_durationBlockOverlay).AsyncWaitForCompletion();
-            modalBlockOverlay.gameObject.SetActive(false);
+            await s_modalBlockOverlay.DOFade(0f, s_durationBlockOverlay).AsyncWaitForCompletion();
+            s_modalBlockOverlay.gameObject.SetActive(false);
         }
     }
 }

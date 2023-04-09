@@ -8,3 +8,10 @@ public class AnimationContainer
     public AnimationTransition PopEnterAnimation;
     public AnimationTransition PopExitAnimation;
 }
+
+[System.Serializable]
+public class AnimationTab
+{
+    public AnimationTransition ShowAnimation;
+    public AnimationTransition HideAnimation;
+}

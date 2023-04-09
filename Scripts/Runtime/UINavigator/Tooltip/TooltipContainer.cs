@@ -5,29 +5,23 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AddressableAssets;
+using UnityEngine.InputSystem.Utilities;
+using UnityEngine.InputSystem;
 
 namespace Pirex.UI.Base
 {
     public class TooltipContainer : UIContainer
     {
-        [SerializeField] private GameObject tooltipOverlay;
         public static UIContainer Container;
         private static Tooltip _currentTooltip = null;
-        private static Button tooltipBlock;
         protected const string keyTooltipBlockOverlay = "TooltipBlockOverlay";
         private static CancellationTokenSource _cancelToken;
         protected override void Awake()
         {
             base.Awake();
             Container = GetComponent<UIContainer>();
-            GameObject modalOverlayPrefab = tooltipOverlay;
-            if (!modalOverlayPrefab) return;
-            GameObject tooltipBlockSpawn;
-            tooltipBlockSpawn = Instantiate(modalOverlayPrefab, TransformContainer);
-            tooltipBlock = tooltipBlockSpawn.GetComponent<Button>();
-            tooltipBlock.onClick.AddListener(CloseTooltipAsync);
-            tooltipBlock.gameObject.SetActive(false);
         }
+
         public static async UniTask Show(string keyAddressable, string content, RectTransform parent, TooltipPosition tooltipPosition, bool isCloseAnyClick = false)
         {
             await Show(keyAddressable, content, parent, tooltipPosition, Vector2.zero, isCloseAnyClick);
@@ -36,7 +30,6 @@ namespace Pirex.UI.Base
 
         public static async UniTask Show(string keyAddressable, string content, RectTransform parent, TooltipPosition tooltipPosition, Vector2 offset, bool isCloseAnyClick = false)
         {
-            tooltipBlock.gameObject.SetActive(true);
             if (_currentTooltip)
             {
                 _cancelToken?.Cancel();
@@ -90,16 +83,21 @@ namespace Pirex.UI.Base
                 positionShow = new Vector2(wPos, hPos) + offset;
                 tooltip.Init(content, positionShow, true);
             }
+            var mousePressStream = InputSystem.onEvent
+                .Where(_ => Input.GetMouseButtonDown(0))
+                .Call(_ => CloseTooltipAsync());
+
             await UniTask.WaitUntil(() => _currentTooltip == null, cancellationToken: _cancelToken.Token);
+            mousePressStream.Dispose();
             await UniTask.CompletedTask;
         }
 
-        private async void CloseTooltipAsync()
+        private async static void CloseTooltipAsync()
         {
+            if (!_currentTooltip) return;
             await _currentTooltip.OnPopExit(_currentTooltip.transform.position);
             Addressables.ReleaseInstance(_currentTooltip.gameObject);
             _currentTooltip = null;
-            tooltipBlock.gameObject.SetActive(false);
         }
     }
 
