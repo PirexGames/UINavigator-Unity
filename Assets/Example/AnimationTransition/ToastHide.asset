@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28745f68322a5a41a363469dfe61e9b, type: 3}
   m_Name: ToastHide
   m_EditorClassIdentifier: 
-  duration: 0.15
+  duration: 0.1
   alphaBefore: 1
   scaleBefore: {x: 1, y: 1, z: 1}
   positionBefore: 0
-  alphaAfter: 1
-  scaleAfter: {x: 0, y: 0, z: 0}
+  offsetBefore: {x: 0, y: 0, z: 0}
+  alphaAfter: 0
+  scaleAfter: {x: 0.5, y: 0.5, z: 0.5}
   positionAfter: 0
+  offsetAfter: {x: 0, y: 0, z: 0}

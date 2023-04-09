@@ -22,6 +22,7 @@ namespace Pirex.UI.Base
         protected override void Awake()
         {
             base.Awake();
+            currentTime = -timeIntervalPush * 2;
             Container = GetComponent<PurchaseModalContainer>();
             GameObject modalOverlayPrefab = modalBlockOverlayOverride;
             GameObject modalSpawn;
