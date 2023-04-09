@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Example/Example.unity
     guid: f9108dbefbf4e5143a2cb5e3a9d6ffca
+  - enabled: 0
+    path: Assets/Example/Example2.unity
+    guid: 486f61b7a77199d48906a805fc9b3aeb
   m_configObjects:
     addressableimportsettingslist: {fileID: 11400000, guid: 6b8762773e3c76d4ab13d67ab6498e4d, type: 2}
     com.unity.addressableassets: {fileID: 11400000, guid: c18e7a7840c1412468e451addc58b405, type: 2}
