@@ -10,7 +10,7 @@ namespace Pirex.UI.Base
         private static Stack<Screen> stackScreen = new();
         public static UIContainer Container;
 
-        private static float timeIntervalPush = 1f;
+        private static float timeIntervalPush = .25f;
         protected static float currentTime;
         protected override void Awake()
         {
@@ -56,6 +56,7 @@ namespace Pirex.UI.Base
 
         public static async UniTask Pop()
         {
+            currentTime = -timeIntervalPush * 2;
             if (stackScreen.TryPeek(out var screen))
             {
                 stackScreen.Pop();
