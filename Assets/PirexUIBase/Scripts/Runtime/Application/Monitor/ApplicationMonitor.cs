@@ -15,7 +15,7 @@ namespace Pirex.UI.Base
         private TextMeshProUGUI _txtContentLoading;
 
 
-        private const float duration = .24f;
+        private const float duration = .16f;
         private void Awake()
         {
             _loadingOverlay = loadingOverlay;
