@@ -3,7 +3,7 @@ using TMPro;
 
 namespace Pirex.UI.Base
 {
-    public class Toast : UIView
+    public class Toast : EView
     {
         [SerializeField] protected TextMeshProUGUI contentTxt;
         public virtual void Init(string content)

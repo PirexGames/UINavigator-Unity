@@ -17,7 +17,7 @@ namespace Pirex.UI.Base
         protected override void Awake()
         {
             base.Awake();
-            Container = GetComponent<UIContainer>();
+            Container = GetComponent<OverloadToastContainer>();
         }
 
         public static async UniTask ShowToast(
@@ -43,10 +43,10 @@ namespace Pirex.UI.Base
             if (toast is null) return;
             _currentToast = toast;
             _currentToast.Init(content);
-            await _currentToast.OnPushEnter();
+            await _currentToast.OnShow();
             _isCurrentToastShowed = true;
             await UniTask.Delay((int)(timeShow * 1000), cancellationToken: _cancelToken.Token);
-            await _currentToast.OnPopExit();
+            await _currentToast.OnHide();
 
             if (_currentToast)
             {

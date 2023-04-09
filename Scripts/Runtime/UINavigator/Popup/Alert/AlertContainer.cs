@@ -17,7 +17,7 @@ namespace Pirex.UI.Base
         protected override void Awake()
         {
             base.Awake();
-            Container = GetComponent<UIContainer>();
+            Container = GetComponent<AlertContainer>();
             GameObject modalOverlayPrefab = modalBlockOverlayOverride;
             if (!modalOverlayPrefab) return;
             GameObject modalSpawn;

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Pirex.UI.Base
 {
-    public class Screen : UIView
+    public class Screen : ScreenView
     {
         [SerializeField] protected bool isHidenOnPushOther = true;
 

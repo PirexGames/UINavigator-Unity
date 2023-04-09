@@ -21,7 +21,7 @@ namespace Pirex.UI.Base
         {
             base.Awake();
             s_durationBlockOverlay = durationBlockOverlay;
-            Container = GetComponent<UIContainer>();
+            Container = GetComponent<ModalContainer>();
             GameObject modalOverlayPrefab = modalBlockOverlay;
 
             if (!modalOverlayPrefab) return;
@@ -33,14 +33,14 @@ namespace Pirex.UI.Base
         }
         public async static UniTask Show(string keyModal, string title = null)
         {
-            s_modalBlockOverlay.gameObject.SetActive(true);
-            s_modalBlockOverlay.DOFade(1f, s_durationBlockOverlay);
             await SpawnAndInitModal(keyModal, title);
-
         }
 
         private static async UniTask SpawnAndInitModal(string keyModal, string title)
         {
+            s_modalBlockOverlay.gameObject.SetActive(true);
+            s_modalBlockOverlay.DOFade(1f, s_durationBlockOverlay);
+
             var modalSpawn = await Addressables.InstantiateAsync(keyModal, Container.TransformContainer).Task;
 
             var modal = modalSpawn.GetComponent<Modal>();

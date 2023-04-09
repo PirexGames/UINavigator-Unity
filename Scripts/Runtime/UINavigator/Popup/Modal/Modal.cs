@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Pirex.UI.Base
 {
-    public class Modal : UIView
+    public class Modal : EView
     {
         [SerializeField] protected Button closeBtn;
         [SerializeField] protected TextMeshProUGUI titleTxt;
@@ -28,9 +28,9 @@ namespace Pirex.UI.Base
             if (titleTxt.text is not null)
                 titleTxt.text = title;
             await UniTask.NextFrame();
-            await OnPushEnter();
+            await OnShow();
             await UniTask.WaitUntil(() => isClose == true);
-            await OnPopExit();
+            await OnHide();
         }
 
         private void OnClose()

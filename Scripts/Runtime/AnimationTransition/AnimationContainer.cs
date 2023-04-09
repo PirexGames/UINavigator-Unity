@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class AnimationContainer
+public class AnimationContainerCView
 {
     public AnimationTransition PushEnterAnimation;
     public AnimationTransition PushExitAnimation;
@@ -10,7 +10,7 @@ public class AnimationContainer
 }
 
 [System.Serializable]
-public class AnimationTab
+public class AnimationContainerEView
 {
     public AnimationTransition ShowAnimation;
     public AnimationTransition HideAnimation;

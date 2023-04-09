@@ -19,7 +19,8 @@ namespace Pirex.UI.Base
         protected override void Awake()
         {
             base.Awake();
-            Container = GetComponent<UIContainer>();
+            Container = GetComponent<OverloadToastContainer>();
+            _currentTooltip = null;
         }
 
         public static async UniTask Show(string keyAddressable, string content, RectTransform parent, TooltipPosition tooltipPosition, bool isCloseAnyClick = false)
@@ -30,15 +31,7 @@ namespace Pirex.UI.Base
 
         public static async UniTask Show(string keyAddressable, string content, RectTransform parent, TooltipPosition tooltipPosition, Vector2 offset, bool isCloseAnyClick = false)
         {
-            if (_currentTooltip)
-            {
-                _cancelToken?.Cancel();
-                await _currentTooltip.OnPopExit(_currentTooltip.transform.localPosition, true);
-                Addressables.ReleaseInstance(_currentTooltip.gameObject);
-                _currentTooltip = null;
-            }
-
-            _cancelToken = new CancellationTokenSource();
+            await UniTask.WaitUntil(() => _currentTooltip == null);
             var tooltipSpawn = await Addressables.InstantiateAsync(keyAddressable, parent).Task;
 
             var tooltip = tooltipSpawn.GetComponent<Tooltip>();
@@ -87,16 +80,24 @@ namespace Pirex.UI.Base
                 .Where(_ => Input.GetMouseButtonDown(0))
                 .Call(_ => CloseTooltipAsync());
 
-            await UniTask.WaitUntil(() => _currentTooltip == null, cancellationToken: _cancelToken.Token);
+            await UniTask.WaitUntil(() => _currentTooltip == null);
             mousePressStream.Dispose();
             await UniTask.CompletedTask;
         }
 
         private async static void CloseTooltipAsync()
         {
-            if (!_currentTooltip) return;
-            await _currentTooltip.OnPopExit(_currentTooltip.transform.position);
-            Addressables.ReleaseInstance(_currentTooltip.gameObject);
+            if (!_currentTooltip)
+                if (!_currentTooltip.gameObject) return;
+            await _currentTooltip.OnHide(_currentTooltip.transform.position);
+            try
+            {
+                Addressables.ReleaseInstance(_currentTooltip.gameObject);
+            }
+            catch
+            {
+
+            }
             _currentTooltip = null;
         }
     }

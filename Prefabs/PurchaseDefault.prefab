@@ -981,10 +981,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationTransition:
-    PushEnterAnimation: {fileID: 11400000, guid: 2fd31a1f72e6dbb4a8f8375921f596a3, type: 2}
-    PushExitAnimation: {fileID: 0}
-    PopEnterAnimation: {fileID: 0}
-    PopExitAnimation: {fileID: 11400000, guid: a9b203c369667984786cc0bb55774ae4, type: 2}
+    ShowAnimation: {fileID: 11400000, guid: 2fd31a1f72e6dbb4a8f8375921f596a3, type: 2}
+    HideAnimation: {fileID: 11400000, guid: a9b203c369667984786cc0bb55774ae4, type: 2}
   titleTxt: {fileID: 1348187245090932304}
   descriptionTxt: {fileID: 7727559188010631821}
   itemImage: {fileID: 1353816775023524613}
@@ -998,22 +996,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7727559189360859739}
     m_Modifications:
-    - target: {fileID: 9076413305991621017, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_text
-      value: +
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413305991621017, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_fontSize
-      value: 87.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413305991621017, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_fontStyle
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413305991621017, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 87.5
-      objectReference: {fileID: 0}
     - target: {fileID: 9076413306121961672, guid: a9d422b62b2692142a8738c39176b284, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1101,46 +1083,6 @@ PrefabInstance:
     - target: {fileID: 9076413306121961675, guid: a9d422b62b2692142a8738c39176b284, type: 3}
       propertyPath: m_Name
       value: NumberStepper
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413306147495431, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 111.6536
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413306147495431, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -55.826782
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413306359358877, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 108.2565
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413306359358877, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 54.1288
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413306430797346, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -219.91
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413306430797346, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -1.6979065
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413307205166347, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_text
-      value: '-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413307205166347, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_fontSize
-      value: 87.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413307205166347, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_fontStyle
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076413307205166347, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 87.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9d422b62b2692142a8738c39176b284, type: 3}

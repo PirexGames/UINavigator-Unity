@@ -9,7 +9,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 namespace Pirex.UI.Base
 {
-    public class PurchaseModal : UIView
+    public class PurchaseModal : EView
     {
         [Header("Header")][SerializeField] private TextMeshProUGUI titleTxt;
 
@@ -20,31 +20,29 @@ namespace Pirex.UI.Base
         [SerializeField] private Button confirmBtn;
         [SerializeField] private TextMeshProUGUI confirmTxt;
 
-        private byte _checkAmount;
+        private CallbackStatus _callbackStatus;
 
         private int _buyAmount = 0;
 
         protected override void Awake()
         {
             base.Awake();
+            _callbackStatus = CallbackStatus.None;
             if (confirmBtn) confirmBtn.onClick.AddListener(BuyClick);
-        }
-
-        protected void OnEnable()
-        {
-            _checkAmount = 0;
+            buyCount.Setup(1);
         }
 
         private void BuyClick()
         {
             _buyAmount = buyCount.Value;
-            _checkAmount = 1;
+            _callbackStatus = CallbackStatus.Positive;
         }
 
-        public async UniTask<int> Init
+        public async UniTask Init
         (
+            string id,
             string title, string description, Sprite sprite,
-            string buttonConfirm
+            string buttonConfirm, Action<int, string> callback
         )
         {
             if (titleTxt.text is not null)
@@ -53,10 +51,11 @@ namespace Pirex.UI.Base
             itemImage.sprite = sprite;
             InitButton(buttonConfirm);
             await UniTask.NextFrame();
-            await OnPushEnter();
-            await UniTask.WaitUntil(() => _checkAmount != 0);
-            await OnPopExit();
-            return _buyAmount;
+            await OnShow();
+            await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
+            if (_callbackStatus == CallbackStatus.Positive)
+                callback?.Invoke(_buyAmount, id);
+            await OnHide();
         }
 
         public void InitButton(string buttonConfirm)
@@ -70,7 +69,7 @@ namespace Pirex.UI.Base
 
         public void Close()
         {
-            _checkAmount = 2;
+            _callbackStatus = CallbackStatus.Neutral;
         }
         private bool IsValidString(string str) => (str != string.Empty && str != "" && str != null);
     }

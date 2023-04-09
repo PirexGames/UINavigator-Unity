@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace Pirex.UI.Base
 {
-    public class Alert : UIView
+    public class Alert : EView
     {
         [Header("Header")]
         [SerializeField] protected TextMeshProUGUI titleTxt;
@@ -48,9 +48,9 @@ namespace Pirex.UI.Base
                 titleTxt.text = title;
             InitButton(buttonPositive, buttonNegative, buttonNeutral);
             await UniTask.NextFrame();
-            await OnPushEnter();
+            await OnShow();
             await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
-            await OnPopExit();
+            await OnHide();
             return _callbackStatus;
         }
 
@@ -64,10 +64,10 @@ namespace Pirex.UI.Base
                 titleTxt.text = title;
             contentTxt.text = content;
             InitButton(buttonPositive, buttonNegative, buttonNeutral);
-            await OnPushEnter();
+            await OnShow();
             await UniTask.NextFrame();
             await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
-            await OnPopExit();
+            await OnHide();
             return _callbackStatus;
         }
 

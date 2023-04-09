@@ -15,7 +15,7 @@ namespace Pirex.UI.Base
         protected override void Awake()
         {
             base.Awake();
-            Container = GetComponent<UIContainer>();
+            Container = GetComponent<OverloadToastContainer>();
         }
 
         public async UniTask ShowToast(
@@ -25,7 +25,6 @@ namespace Pirex.UI.Base
             Transform parent = null
         )
         {
-
             parent = Container.TransformContainer;
             var parentSpawn = parent ? parent : ScreenContainer.Container.TransformContainer;
 
@@ -34,9 +33,9 @@ namespace Pirex.UI.Base
             var toast = toastSpawn.GetComponent<Toast>();
             if (toast is null) return;
             toast.Init(content);
-            await toast.OnPushEnter();
+            await toast.OnShow();
             await UniTask.Delay((int)(timeShow * 1000));
-            await toast.OnPopExit();
+            await toast.OnHide();
 
             Addressables.ReleaseInstance(toast.gameObject);
         }
