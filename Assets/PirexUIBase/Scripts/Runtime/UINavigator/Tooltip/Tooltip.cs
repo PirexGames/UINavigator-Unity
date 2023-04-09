@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Pirex.UI.Base
 {
-    public class Tooltip : UIView
+    public class Tooltip : EView
     {
         [SerializeField] private TextMeshProUGUI contentTxt;
         public async void Init(string content, Vector2 position, bool isLocalPosition = false)
@@ -14,7 +14,7 @@ namespace Pirex.UI.Base
             if (contentTxt)
                 contentTxt.text = content;
             await UniTask.NextFrame();
-            await OnPushEnter(position, isLocalPosition);
+            await OnShow(position, isLocalPosition);
         }
     }
 }

@@ -241,10 +241,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationTransition:
-    PushEnterAnimation: {fileID: 0}
-    PushExitAnimation: {fileID: 0}
-    PopEnterAnimation: {fileID: 0}
-    PopExitAnimation: {fileID: 0}
+    ShowAnimation: {fileID: 11400000, guid: 2fd31a1f72e6dbb4a8f8375921f596a3, type: 2}
+    HideAnimation: {fileID: 11400000, guid: a9b203c369667984786cc0bb55774ae4, type: 2}
   closeBtn: {fileID: 7437125941451120673}
   titleTxt: {fileID: 3378447125440892987}
 --- !u!1 &8278797251181296857

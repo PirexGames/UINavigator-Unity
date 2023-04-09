@@ -77,7 +77,7 @@ namespace Pirex.UI.Base
 
         private void TooltipShow()
         {
-            TooltipContainer.Show("TooltipDefault", "This is the tooltip",
+            TooltipContainer.Show("TooltipDefault", $"This is the tooltip {tooltipPosition.ToString()}",
                 (RectTransform)objectTooltipShow, tooltipPosition).Forget();
         }
 
@@ -86,9 +86,9 @@ namespace Pirex.UI.Base
         public void Callback(int amount, string id)
         {
             AlertContainer.Alert(
-               "ModalDefault",
+               "AlertDefault",
                "Purchase Alert",
-               $"You get {amount} with the product {id}", buttonNeutral: "Ahihi");
+               $"You get {amount} with the product {id}", buttonNeutral: "Yay!");
         }
 
         private void Purchase()

@@ -38,8 +38,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 124}
-  m_SizeDelta: {x: 433.2345, y: 65.468}
+  m_AnchoredPosition: {x: 0, y: 99}
+  m_SizeDelta: {x: 540.0878, y: 82.1638}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2914400718468031804
 CanvasRenderer:
@@ -92,10 +92,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationTransition:
-    PushEnterAnimation: {fileID: 11400000, guid: 2fd31a1f72e6dbb4a8f8375921f596a3, type: 2}
-    PushExitAnimation: {fileID: 0}
-    PopEnterAnimation: {fileID: 0}
-    PopExitAnimation: {fileID: 11400000, guid: a9b203c369667984786cc0bb55774ae4, type: 2}
+    ShowAnimation: {fileID: 11400000, guid: 2fd31a1f72e6dbb4a8f8375921f596a3, type: 2}
+    HideAnimation: {fileID: 11400000, guid: a9b203c369667984786cc0bb55774ae4, type: 2}
   contentTxt: {fileID: 2914400718501595631}
 --- !u!225 &3593581109753620858
 CanvasGroup:
@@ -202,8 +200,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
