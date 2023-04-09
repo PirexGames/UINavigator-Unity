@@ -82,6 +82,7 @@ namespace Pirex.UI.Base
         }
 
         public Sprite demoTexture2d;
+        public Sprite demoUnit;
 
         public void Callback(int amount, string id)
         {
@@ -97,13 +98,14 @@ namespace Pirex.UI.Base
                 "PurchaseDefault",
                 "id234324",
                 "Purchase title",
-                null,
-                1,
-                1,
+                demoUnit,
+                7,
+                19,
+                "PxPoint",
                 "demo scription",
                 demoTexture2d,
                 Callback,
-                "Buy");
+                "Buy", maxPack: 6);
         }
     }
 }

@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+
 namespace Pirex.UI.Base
 {
     public class PurchaseModal : EView
@@ -15,26 +16,39 @@ namespace Pirex.UI.Base
 
         [Header("Body")][SerializeField] private TextMeshProUGUI descriptionTxt;
         [SerializeField] private Image itemImage;
+        [SerializeField] private TextMeshProUGUI txtAmountItem;
 
-        [Header("Footer")][SerializeField] private NumberStepper buyCount;
+        [Header("Footer")][SerializeField] private NumberStepper buyCountPack;
         [SerializeField] private Button confirmBtn;
         [SerializeField] private TextMeshProUGUI confirmTxt;
+        [SerializeField] private TextMeshProUGUI txtCost;
+        [SerializeField] private Image iconUnit;
 
         private CallbackStatus _callbackStatus;
 
-        private int _buyAmount = 0;
+        private int _buyAmountPack = 0;
+        private int _pack = 0;
+        private string _nameUnit;
+        private int _cost;
 
         protected override void Awake()
         {
             base.Awake();
             _callbackStatus = CallbackStatus.None;
+            if (buyCountPack) buyCountPack.AddListener(OnChangeBuyCount);
             if (confirmBtn) confirmBtn.onClick.AddListener(BuyClick);
-            buyCount.Setup(1);
+            if (buyCountPack) buyCountPack.Setup(1);
+        }
+
+        private void OnChangeBuyCount(int count)
+        {
+            txtAmountItem.text = String.Format("x{0}", _pack * count);
+            txtCost.text = String.Format("{0} {1}", _cost * count, _nameUnit);
         }
 
         private void BuyClick()
         {
-            _buyAmount = buyCount.Value;
+            _buyAmountPack = buyCountPack.Value;
             _callbackStatus = CallbackStatus.Positive;
         }
 
@@ -42,19 +56,28 @@ namespace Pirex.UI.Base
         (
             string id,
             string title, string description, Sprite sprite,
-            string buttonConfirm, Action<int, string> callback
+            int pack, int cost, Sprite unitIcon, string nameUnit,
+            string buttonConfirm, Action<int, string> callback,
+            int maxPack = 1
         )
         {
             if (titleTxt.text is not null)
                 titleTxt.text = title;
             descriptionTxt.text = description;
             itemImage.sprite = sprite;
+            iconUnit.sprite = unitIcon;
+            _pack = pack;
+            _nameUnit = nameUnit;
+            _cost = cost;
+            buyCountPack.SetMaxValue(maxPack);
+            if (maxPack == 1) buyCountPack.gameObject.SetActive(false);
+            OnChangeBuyCount(1);
             InitButton(buttonConfirm);
             await UniTask.NextFrame();
             await OnShow();
             await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
             if (_callbackStatus == CallbackStatus.Positive)
-                callback?.Invoke(_buyAmount, id);
+                callback?.Invoke(_buyAmountPack, id);
             await OnHide();
         }
 

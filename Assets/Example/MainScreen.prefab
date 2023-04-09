@@ -124,6 +124,7 @@ MonoBehaviour:
   tooltipPosition: 2
   purchaseBtn: {fileID: 4383730977098208791}
   demoTexture2d: {fileID: 21300000, guid: 6ba7cd2f98f20b24d9ff10b2f8644b3e, type: 3}
+  demoUnit: {fileID: 21300000, guid: 2fdaa92554ea74641ba44b7347cb21c8, type: 3}
 --- !u!1 &241537716460074
 GameObject:
   m_ObjectHideFlags: 0

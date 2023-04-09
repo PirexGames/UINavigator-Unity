@@ -31,22 +31,27 @@ namespace Pirex.UI.Base
             modalBlockOverlay.gameObject.SetActive(false);
         }
 
-        public static async void Show(string keyModal, string id, string title, Sprite unitIcon, int pack, int cost,
+        public static async void Show(string keyModal, string id, string title,
+            Sprite unitIcon, int pack, int cost, string nameUnit,
             string description,
             Sprite itemIcon,
             Action<int, string> callback,
-            string buttonConfirm = null)
+            string buttonConfirm = null,
+            int maxPack = 1
+            )
         {
 
-            await SpawnAndInitModal(keyModal, id, title, unitIcon, pack, cost, description, itemIcon, callback, buttonConfirm);
+            await SpawnAndInitModal(keyModal, id, title, unitIcon, nameUnit, pack, cost, description, itemIcon, callback, buttonConfirm, maxPack);
         }
 
-        private static async UniTask SpawnAndInitModal(string keyModal, string id, string title, Sprite unitIcon,
-            int pack, int cost,
+        private static async UniTask SpawnAndInitModal(string keyModal, string id, string title,
+            Sprite unitIcon, string nameUnit, int pack, int cost,
             string description,
             Sprite itemIcon,
             Action<int, string> callback,
-            string buttonConfirm)
+            string buttonConfirm,
+            int maxPack = 1
+            )
         {
             if (!ValidPush()) return;
 
@@ -56,7 +61,7 @@ namespace Pirex.UI.Base
             var modalSpawn = await Addressables.InstantiateAsync(keyModal, Container.TransformContainer).Task;
 
             var modal = modalSpawn.GetComponent<PurchaseModal>();
-            await modal.Init(id, title, description, itemIcon, buttonConfirm, callback);
+            await modal.Init(id, title, description, itemIcon, pack, cost, unitIcon, nameUnit, buttonConfirm, callback, maxPack);
             await modalBlockOverlay.DOFade(0f, s_durationBlockOverlay).AsyncWaitForCompletion();
             modalBlockOverlay?.gameObject.SetActive(false);
             Addressables.ReleaseInstance(modalSpawn);
