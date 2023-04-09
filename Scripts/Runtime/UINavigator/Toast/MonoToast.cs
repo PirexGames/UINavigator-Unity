@@ -31,6 +31,7 @@ namespace Pirex.UI.Base
             {
                 if (!_isCurrentToastShowed) return;
                 _cancelToken?.Cancel();
+                await _currentToast.OnHide();
                 Addressables.ReleaseInstance(_currentToast.gameObject);
                 _currentToast = null;
             }
