@@ -16,7 +16,7 @@ namespace Pirex.UI.Base
         private static float s_durationBlockOverlay = .15f;
         private static CanvasGroup modalBlockOverlay;
         public static UIContainer Container;
-        private static float timeIntervalPush = 1f;
+        private static float timeIntervalPush = .25f;
         protected static float currentTime;
 
         protected override void Awake()
@@ -65,6 +65,7 @@ namespace Pirex.UI.Base
             await modalBlockOverlay.DOFade(0f, s_durationBlockOverlay).AsyncWaitForCompletion();
             modalBlockOverlay?.gameObject.SetActive(false);
             Addressables.ReleaseInstance(modalSpawn);
+            currentTime = -timeIntervalPush * 2;
         }
         protected static bool ValidPush()
         {
