@@ -23,20 +23,6 @@
       },
       "hash": "dfea8700d057b3c7074c162249ee523c0887f7e4"
     },
-    "com.pirexgames.opool": {
-      "version": "https://github.com/PirexGames/OPool.git#1.0.0",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "ac156269671a283855a45ff567113d332e9c094d"
-    },
-    "com.pirexgames.soundbase": {
-      "version": "https://github.com/PirexGames/base-sound-unity.git#1.0.6",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "a483302990d230d68479aa566ba54cb2e71db423"
-    },
     "com.unity.2d.animation": {
       "version": "7.0.9",
       "depth": 1,
@@ -219,6 +205,15 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.inputsystem": {
+      "version": "1.4.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.uielements": "1.0.0"
+      },
       "url": "https://packages.unity.com"
     },
     "com.unity.mathematics": {

@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Pirex.UI.Base
 {
-    public class Example : MonoBehaviour
+    public class MainScreen : Screen
     {
         [SerializeField] private Button pushBtn;
-        [SerializeField] private Button popBtn;
         [SerializeField] private Button alertBtn;
+        [SerializeField] private Button modalBtn;
         [SerializeField] private Button toastBtn;
         [SerializeField] private Button overloadToastBtn;
         [SerializeField] private Button tooltipBtn;
@@ -24,8 +25,8 @@ namespace Pirex.UI.Base
         void Start()
         {
             pushBtn.onClick.AddListener(Push);
-            popBtn.onClick.AddListener(Pop);
             alertBtn.onClick.AddListener(Alert);
+            modalBtn.onClick.AddListener(ShowModal);
             toastBtn.onClick.AddListener(Toast);
             tooltipBtn.onClick.AddListener(TooltipShow);
             overloadToastBtn.onClick.AddListener(Overload);
@@ -35,59 +36,67 @@ namespace Pirex.UI.Base
 
         public void Push()
         {
-            ScreenContainer.Push("ScreenDefault");
+            ScreenContainer.Push("ScreenDefault").Forget();
         }
 
         private void Pop()
         {
-            ScreenContainer.Pop();
+            ScreenContainer.Pop().Forget();
+        }
+
+        private void ShowModal()
+        {
+            ModalContainer.Show("ModalDefault", "Settings").Forget();
         }
 
         private void Alert()
         {
-            ModalContainer.Show("ModalDefault1", "Settings");
-            // AlertContainer.Alert(
-            //     "ModalDefault",
-            //     "Hãy cứ vui tươi và lạc quan lên em ơi",
-            //     "Aloo xin chao cac bạn",
-            //     CallBackAlert,
-            //     buttonNeutral: "DFDKFJ");
+            AlertContainer.Alert(
+                "AlertDefault",
+                "This is the title",
+                "This is the content alert",
+                CallBackAlert,
+                buttonPositive: "OK", buttonNegative: "Cancel");
         }
 
         private void CallBackAlert(CallbackStatus callbackStatus)
         {
-            Debug.Log(callbackStatus);
+            if (callbackStatus == CallbackStatus.Positive)
+                Alert();
         }
 
         private void Toast()
         {
-            MonoToast.ShowToast("ToastDefault", "Cút mẹ mày đi", 2f);
+            MonoToast.ShowToast("ToastDefault", "This is the toast", 2f).Forget();
         }
 
         private void Overload()
         {
-            overloadToastContainer.ShowToast("ToastDefault", "Cút mẹ mày đi", 2f);
+            overloadToastContainer.ShowToast("ToastDefault", "This is the overload toast", 2f).Forget();
         }
 
         private void TooltipShow()
         {
-            TooltipContainer.Show("TooltipDefault", "Cái này là Tooltiop giải thích cái gì đó",
-                (RectTransform)objectTooltipShow, tooltipPosition);
+            TooltipContainer.Show("TooltipDefault", "This is the tooltip",
+                (RectTransform)objectTooltipShow, tooltipPosition).Forget();
         }
 
         public Sprite demoTexture2d;
 
         public void Callback(int amount, string id)
         {
-            Debug.Log(amount + " " + id);
+            AlertContainer.Alert(
+               "ModalDefault",
+               "Purchase Alert",
+               $"You get {amount} with the product {id}", buttonNeutral: "Ahihi");
         }
 
         private void Purchase()
         {
             PurchaseModalContainer.Show(
-                "Purchase",
-                "lmaosaodjsaodj",
-                "demo title",
+                "PurchaseDefault",
+                "id234324",
+                "Purchase title",
                 null,
                 1,
                 1,

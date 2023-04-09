@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Pirex.UI.Base
 {
@@ -26,29 +27,18 @@ namespace Pirex.UI.Base
         {
 
             parent = Container.TransformContainer;
-            var toastPrefab = await AddressableHelperT<GameObject>.GetAsync(keyAddressable);
             var parentSpawn = parent ? parent : ScreenContainer.Container.TransformContainer;
 
-            GameObject toastSpawn;
-
-            if (Container.PoolSO)
-                toastSpawn = Container.PoolSO.Spawn(toastPrefab, parentSpawn);
-            else
-                toastSpawn = Instantiate(toastPrefab, parentSpawn);
-
-            // Tính vị trí 
+            GameObject toastSpawn = await Addressables.InstantiateAsync(keyAddressable, parentSpawn).Task;
 
             var toast = toastSpawn.GetComponent<Toast>();
-            // if (toast is null) return;
+            if (toast is null) return;
             toast.Init(content);
             await toast.OnPushEnter();
             await UniTask.Delay((int)(timeShow * 1000));
             await toast.OnPopExit();
 
-            if (Container.PoolSO)
-                Container.PoolSO.DeSpawn(toast.gameObject);
-            else
-                Destroy(toast.gameObject);
+            Addressables.ReleaseInstance(toast.gameObject);
         }
     }
 }

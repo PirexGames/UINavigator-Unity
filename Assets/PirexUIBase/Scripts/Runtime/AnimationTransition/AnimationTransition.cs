@@ -19,23 +19,18 @@ public class AnimationTransition : ScriptableObject
     [SerializeField] protected PositionTransitionEnum positionAfter;
     [SerializeField] protected Vector3 offsetAfter;
 
-    [Header("AudioTranstion")]
-    [SerializeField] protected AudioClip audioTransition;
-
     public virtual async UniTask Excute(CanvasGroup target, RectTransform container = null)
     {
         target.alpha = alphaBefore;
         target.transform.localScale = scaleBefore;
         target.transform.localPosition = GetPosition(positionBefore, (RectTransform)target.transform, container, offsetBefore);
 
-        SoundManager.PlayAudioSFX(audioTransition);
-
         target.DOFade(alphaAfter, duration);
         target.transform.DOScale(scaleAfter, duration);
 
         if (container == null)
         {
-            container = (RectTransform)target.transform.parent;
+            container = (RectTransform)target.transform;
         }
 
         await target.transform.DOLocalMove
@@ -47,7 +42,6 @@ public class AnimationTransition : ScriptableObject
     {
         target.alpha = alphaBefore;
         target.transform.localScale = scaleBefore;
-        SoundManager.PlayAudioSFX(audioTransition);
 
         if (isLocalPosition)
             target.transform.localPosition = position;

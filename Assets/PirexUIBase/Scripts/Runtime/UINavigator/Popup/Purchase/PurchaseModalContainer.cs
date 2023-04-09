@@ -15,19 +15,13 @@ namespace Pirex.UI.Base
         [SerializeField] protected GameObject modalBlockOverlayOverride;
         private static float s_durationBlockOverlay = .15f;
         private static CanvasGroup modalBlockOverlay;
-        protected const string keyModalBlockOverlay = "ModalBlockOverlay";
         public static UIContainer Container;
 
-        protected async override void Awake()
+        protected override void Awake()
         {
             base.Awake();
             Container = GetComponent<UIContainer>();
-            GameObject modalOverlayPrefab;
-            if (modalBlockOverlayOverride)
-                modalOverlayPrefab = modalBlockOverlayOverride;
-            else
-                modalOverlayPrefab = await AddressableHelperT<GameObject>.GetAsync(keyModalBlockOverlay);
-            if (!modalOverlayPrefab) return;
+            GameObject modalOverlayPrefab = modalBlockOverlayOverride;
             GameObject modalSpawn;
             modalSpawn = Instantiate(modalOverlayPrefab, TransformContainer);
             modalBlockOverlay = modalSpawn.GetComponent<CanvasGroup>();
@@ -41,7 +35,7 @@ namespace Pirex.UI.Base
             string buttonConfirm = null)
         {
             modalBlockOverlay?.gameObject.SetActive(true);
-            await modalBlockOverlay.DOFade(1f, s_durationBlockOverlay).AsyncWaitForCompletion();
+            modalBlockOverlay.DOFade(1f, s_durationBlockOverlay);
             await SpawnAndInitModal(keyModal, id, title, unitIcon, pack, cost, description, itemIcon, callback, buttonConfirm);
         }
 
