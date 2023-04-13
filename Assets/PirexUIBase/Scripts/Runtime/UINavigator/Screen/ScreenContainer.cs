@@ -36,7 +36,7 @@ namespace Pirex.UI.Base
         public static async UniTask<Screen> Push(string keyAddressable)
         {
             if (!ValidPush()) return null;
-            var screenSpawn = await Addressables.InstantiateAsync(keyAddressable, Container.TransformContainer).Task;
+            var screenSpawn = await SpawnGO(keyAddressable, Container.TransformContainer);
 
             var screen = screenSpawn.GetComponent<Screen>();
             if (screen is null) return null;
@@ -68,14 +68,14 @@ namespace Pirex.UI.Base
                         screenToShow.gameObject.SetActive(true);
                     }
                 await screen.OnPopExit();
-                Addressables.ReleaseInstance(screen.gameObject);
+                Destroy(screen.gameObject);
             }
             await UniTask.Yield();
         }
         private void OnDestroy()
         {
             foreach (var item in stackScreen)
-                Addressables.ReleaseInstance(item.gameObject);
+                Destroy(item.gameObject);
             stackScreen.Clear();
         }
         protected static bool ValidPush()

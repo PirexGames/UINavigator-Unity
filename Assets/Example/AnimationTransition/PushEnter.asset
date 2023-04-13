@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: PushEnter
   m_EditorClassIdentifier: 
   duration: 0.15
-  alphaBefore: 1
+  alphaBefore: 0
   scaleBefore: {x: 1, y: 1, z: 1}
-  positionBefore: 4
-  offsetBefore: {x: 0, y: 0, z: 0}
+  positionBefore: 0
+  offsetBefore: {x: 300, y: 0, z: 0}
   alphaAfter: 1
   scaleAfter: {x: 1, y: 1, z: 1}
   positionAfter: 0
   offsetAfter: {x: 0, y: 0, z: 0}
-  audioTransition: {fileID: 8300000, guid: 37bf72ef068a556418dd2480480b68f1, type: 3}
