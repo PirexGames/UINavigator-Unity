@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Pirex.UI.Base
@@ -15,6 +16,12 @@ namespace Pirex.UI.Base
         {
             transformContainer = this.transform;
             rectContainer = (RectTransform)this.transform;
+        }
+
+        protected static async UniTask<GameObject> SpawnGO(string key, Transform parent)
+        {
+            var res = await SpawnGOHelper.Spawn(key, parent);
+            return Instantiate(res, parent);
         }
 
     }

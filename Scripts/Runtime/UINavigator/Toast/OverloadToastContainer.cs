@@ -28,7 +28,7 @@ namespace Pirex.UI.Base
             parent = Container.TransformContainer;
             var parentSpawn = parent ? parent : ScreenContainer.Container.TransformContainer;
 
-            GameObject toastSpawn = await Addressables.InstantiateAsync(keyAddressable, parentSpawn).Task;
+            GameObject toastSpawn = await SpawnGOHelper.Spawn(keyAddressable, parentSpawn);
 
             var toast = toastSpawn.GetComponent<Toast>();
             if (toast is null) return;
