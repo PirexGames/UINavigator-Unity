@@ -25,7 +25,7 @@ namespace Pirex.UI.Base
         )
         {
             isClose = false;
-            if (titleTxt.text is not null)
+            if (titleTxt.text is not null && !string.IsNullOrEmpty(title))
                 titleTxt.text = title;
             await UniTask.NextFrame();
             await OnShow();
