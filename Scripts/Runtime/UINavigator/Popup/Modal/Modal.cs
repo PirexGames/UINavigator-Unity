@@ -29,13 +29,11 @@ namespace Pirex.UI.Base
                 titleTxt.text = title;
             await UniTask.NextFrame();
             await OnShow();
-            await UniTask.WaitUntil(() => isClose == true);
-            await OnHide();
         }
 
         private void OnClose()
         {
-            isClose = true;
+            ModalContainer.Pop().Forget();
         }
     }
 }

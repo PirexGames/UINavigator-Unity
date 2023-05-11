@@ -13,10 +13,13 @@ namespace Pirex.UI.Base
     {
         [SerializeField] protected GameObject modalBlockOverlay;
         [SerializeField] protected float durationBlockOverlay = .15f;
+
+        private static Stack<Modal> stackModal = new();
         private static CanvasGroup s_modalBlockOverlay;
         private static float s_durationBlockOverlay = .15f;
         protected const string keyModalBlockOverlay = "ModalBlockOverlay";
         public static UIContainer Container;
+
         protected override void Awake()
         {
             base.Awake();
@@ -31,12 +34,12 @@ namespace Pirex.UI.Base
             s_modalBlockOverlay.alpha = 0;
             s_modalBlockOverlay.gameObject.SetActive(false);
         }
-        public async static UniTask Show(string keyModal, string title = null)
+        public async static UniTask<Modal> Show(string keyModal, string title = null)
         {
-            await SpawnAndInitModal(keyModal, title);
+            return await SpawnAndInitModal(keyModal, title);
         }
 
-        private static async UniTask SpawnAndInitModal(string keyModal, string title)
+        private static async UniTask<Modal> SpawnAndInitModal(string keyModal, string title)
         {
             s_modalBlockOverlay.gameObject.SetActive(true);
             s_modalBlockOverlay.DOFade(1f, s_durationBlockOverlay);
@@ -44,9 +47,18 @@ namespace Pirex.UI.Base
             var modalSpawn = await Addressables.InstantiateAsync(keyModal, Container.TransformContainer).Task;
 
             var modal = modalSpawn.GetComponent<Modal>();
-            if (modal is null) return;
-            await modal.Init(title);
-            Addressables.ReleaseInstance(modalSpawn);
+            stackModal.Push(modal);
+            modal.Init(title).Forget();
+            return modal;
+        }
+
+        public async static UniTask Pop()
+        {
+            if (stackModal.TryPeek(out var modal))
+            {
+                await modal.OnHide();
+                Addressables.ReleaseInstance(modal.gameObject);
+            }
             await s_modalBlockOverlay.DOFade(0f, s_durationBlockOverlay).AsyncWaitForCompletion();
             s_modalBlockOverlay.gameObject.SetActive(false);
         }
