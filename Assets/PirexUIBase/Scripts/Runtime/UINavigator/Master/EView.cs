@@ -11,7 +11,7 @@ namespace Pirex.UI.Base
         [SerializeField] protected AnimationContainerEView animationTransition;
         public virtual async UniTask OnShow()
         {
-
+            await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.ShowAnimation)
                 await animationTransition.ShowAnimation.Excute(viewCG);
             else
@@ -24,6 +24,7 @@ namespace Pirex.UI.Base
 
         public virtual async UniTask OnShow(Vector2 position, bool isLocalPosition = false)
         {
+            await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.ShowAnimation)
                 await animationTransition.ShowAnimation.Excute(viewCG, position, isLocalPosition);
             else
@@ -38,6 +39,7 @@ namespace Pirex.UI.Base
 
         public virtual async UniTask OnHide()
         {
+            await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.HideAnimation)
                 await animationTransition.HideAnimation.Excute(viewCG);
             await UniTask.CompletedTask;
@@ -45,6 +47,7 @@ namespace Pirex.UI.Base
 
         public virtual async UniTask OnHide(Vector2 position, bool isLocalPosition = false)
         {
+            await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.HideAnimation)
                 await animationTransition.HideAnimation.Excute(viewCG, position, isLocalPosition);
             else

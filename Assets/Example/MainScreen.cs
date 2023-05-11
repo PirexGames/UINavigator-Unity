@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,7 +27,7 @@ namespace Pirex.UI.Base
         {
             pushBtn.onClick.AddListener(Push);
             alertBtn.onClick.AddListener(Alert);
-            modalBtn.onClick.AddListener(ShowModal);
+            modalBtn.onClick.AddListener(ShowModalAsync);
             toastBtn.onClick.AddListener(Toast);
             tooltipBtn.onClick.AddListener(TooltipShow);
             overloadToastBtn.onClick.AddListener(Overload);
@@ -44,9 +45,10 @@ namespace Pirex.UI.Base
             ScreenContainer.Pop().Forget();
         }
 
-        private void ShowModal()
+        private async void ShowModalAsync()
         {
-            ModalContainer.Show("ModalDefault", "Settings").Forget();
+            var modal = (ModalCustomize)await ModalContainer.Show("ModalDefault", "Settings");
+            modal.SetUpAsync("sdkfjlksdjflkds");
         }
 
         private void Alert()
