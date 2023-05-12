@@ -17,7 +17,6 @@ namespace Pirex.UI.Base
         }
         protected async override UniTask Initialize()
         {
-            await UniTask.Delay(2000);
             await base.Initialize();
         }
 
