@@ -41,13 +41,9 @@ namespace Pirex.UI.Base
             var screen = screenSpawn.GetComponent<Screen>();
             if (screen is null) return null;
             if (stackScreen.TryPeek(out var screenToHide))
-                await screenToHide.OnPushExit();
+                await screenToHide.OnPushExit(screen);
 
             await screen.OnPushEnter();
-
-            if (stackScreen.TryPeek(out var screenToHide1))
-                screenToHide1.HideOnPushOther();
-
             stackScreen.Push(screen);
 
             await UniTask.Yield();

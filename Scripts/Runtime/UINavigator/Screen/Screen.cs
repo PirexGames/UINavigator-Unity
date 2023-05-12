@@ -7,7 +7,6 @@ namespace Pirex.UI.Base
 {
     public class Screen : ScreenView
     {
-        [SerializeField] protected bool isHidenOnPushOther = true;
 
         [SerializeField] protected Button btnBack;
         protected override void Awake()
@@ -16,8 +15,11 @@ namespace Pirex.UI.Base
             if (btnBack != null)
                 btnBack.onClick.AddListener(OnBack);
         }
-
-        public void HideOnPushOther() => gameObject.SetActive(!isHidenOnPushOther);
+        protected async override UniTask Initialize()
+        {
+            await UniTask.Delay(2000);
+            await base.Initialize();
+        }
 
         private void OnBack()
         {

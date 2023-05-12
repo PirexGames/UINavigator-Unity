@@ -12,6 +12,7 @@ namespace Pirex.UI.Base
         [SerializeField] protected AnimationContainerCView animationTransition;
         public virtual async UniTask OnPushEnter()
         {
+            await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.PushEnterAnimation)
                 await animationTransition.PushEnterAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer);
             else
@@ -24,6 +25,7 @@ namespace Pirex.UI.Base
 
         public virtual async UniTask OnPushEnter(Vector2 position, bool isLocalPosition = false)
         {
+            await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.PushEnterAnimation)
                 await animationTransition.PushEnterAnimation.Excute(viewCG, position, isLocalPosition);
             else
@@ -35,8 +37,9 @@ namespace Pirex.UI.Base
             await UniTask.CompletedTask;
         }
 
-        public virtual async UniTask OnPushExit()
+        public virtual async UniTask OnPushExit(Screen screen)
         {
+            await UniTask.WaitUntil(() => screen.IsInitalized);
             if (animationTransition.PopExitAnimation)
                 animationTransition.PushExitAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer).Forget();
             await UniTask.CompletedTask;
@@ -44,6 +47,7 @@ namespace Pirex.UI.Base
 
         public virtual async UniTask OnPopEnter()
         {
+            await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.PushEnterAnimation)
                 animationTransition.PopEnterAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer).Forget();
             else
@@ -55,6 +59,7 @@ namespace Pirex.UI.Base
         }
         public virtual async UniTask OnPopEnter(Vector2 position, bool isLocalPosition = false)
         {
+            await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.PushEnterAnimation)
                 await animationTransition.PopEnterAnimation.Excute(viewCG, position, isLocalPosition);
             else
@@ -67,6 +72,7 @@ namespace Pirex.UI.Base
 
         public virtual async UniTask OnPopExit()
         {
+            await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.PopExitAnimation)
                 await animationTransition.PopExitAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer);
             await UniTask.CompletedTask;
@@ -74,6 +80,7 @@ namespace Pirex.UI.Base
 
         public virtual async UniTask OnPopExit(Vector2 position, bool isLocalPosition = false)
         {
+            await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.PushEnterAnimation)
                 await animationTransition.PopExitAnimation.Excute(viewCG, position, isLocalPosition);
             else

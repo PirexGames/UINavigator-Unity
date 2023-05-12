@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 7727559189360859717}
   - component: {fileID: 7727559189360859738}
   - component: {fileID: 1068113110993035751}
-  - component: {fileID: -5544072419094022293}
+  - component: {fileID: 4129898175170528893}
   m_Layer: 5
   m_Name: ModalDefault
   m_TagString: Untagged
@@ -228,7 +228,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &-5544072419094022293
+--- !u!114 &4129898175170528893
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -237,7 +237,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7727559189360859736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 745871ac7f3d56044a0cc334de0fab9d, type: 3}
+  m_Script: {fileID: 11500000, guid: e57d74a3a8310fa4da5f4452b157eb0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animationTransition:

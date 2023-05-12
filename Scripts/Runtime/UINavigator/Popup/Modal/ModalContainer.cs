@@ -47,8 +47,8 @@ namespace Pirex.UI.Base
             var modalSpawn = await Addressables.InstantiateAsync(keyModal, Container.TransformContainer).Task;
 
             var modal = modalSpawn.GetComponent<Modal>();
-            stackModal.Push(modal);
             modal.Init(title).Forget();
+            stackModal.Push(modal);
             return modal;
         }
 
