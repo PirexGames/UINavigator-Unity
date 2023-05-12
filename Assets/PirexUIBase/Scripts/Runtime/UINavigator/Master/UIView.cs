@@ -21,7 +21,6 @@ namespace Pirex.UI.Base
 
         protected async virtual UniTask Initialize()
         {
-            Debug.Log("true is true");
             isInitialized = true;
             await UniTask.CompletedTask;
         }
