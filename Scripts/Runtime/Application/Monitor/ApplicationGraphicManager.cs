@@ -9,8 +9,16 @@ namespace Pirex.UI.Base
     {
         [SerializeField] private FPSEnum fpsEnum;
 
-        void Awake()
+        protected virtual void Awake()
         {
+            try
+            {
+                fpsEnum = (FPSEnum)UnityEngine.Screen.currentResolution.refreshRate;
+            }
+            catch
+            {
+                fpsEnum = FPSEnum.FPS60;
+            }
             SetFPS(fpsEnum);
         }
 
