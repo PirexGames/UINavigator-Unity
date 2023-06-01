@@ -10,12 +10,9 @@ namespace Pirex.UI.Base
         private static Stack<Screen> stackScreen = new();
         public static UIContainer Container;
 
-        private static float timeIntervalPush = .25f;
-        protected static float currentTime;
         protected override void Awake()
         {
             base.Awake();
-            currentTime = -timeIntervalPush * 2;
             Container = GetComponent<ScreenContainer>();
         }
 
@@ -35,7 +32,6 @@ namespace Pirex.UI.Base
 
         public static async UniTask<Screen> Push(string keyAddressable)
         {
-            if (!ValidPush()) return null;
             var screenSpawn = await SpawnGO(keyAddressable, Container.TransformContainer);
 
             var screen = screenSpawn.GetComponent<Screen>();
@@ -52,7 +48,6 @@ namespace Pirex.UI.Base
 
         public static async UniTask Pop()
         {
-            currentTime = -timeIntervalPush * 2;
             if (stackScreen.TryPeek(out var screen))
             {
                 stackScreen.Pop();
@@ -74,14 +69,6 @@ namespace Pirex.UI.Base
                 Destroy(item.gameObject);
             stackScreen.Clear();
         }
-        protected static bool ValidPush()
-        {
-            if (Time.fixedTime - currentTime >= timeIntervalPush)
-            {
-                currentTime = Time.fixedTime;
-                return true;
-            }
-            return false;
-        }
+
     }
 }
