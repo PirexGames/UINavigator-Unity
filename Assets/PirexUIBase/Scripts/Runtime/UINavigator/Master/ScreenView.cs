@@ -26,6 +26,7 @@ namespace Pirex.UI.Base
         public virtual async UniTask OnPushEnter(Vector2 position, bool isLocalPosition = false)
         {
             await UniTask.WaitUntil(() => isInitialized);
+            this.gameObject.SetActive(true);
             if (animationTransition.PushEnterAnimation)
                 await animationTransition.PushEnterAnimation.Excute(viewCG, position, isLocalPosition);
             else
@@ -33,7 +34,6 @@ namespace Pirex.UI.Base
                 transform.localScale = Vector3.one;
                 viewCG.alpha = 1;
             }
-
             await UniTask.CompletedTask;
         }
 
@@ -43,11 +43,13 @@ namespace Pirex.UI.Base
             if (animationTransition.PopExitAnimation)
                 animationTransition.PushExitAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer).Forget();
             await UniTask.CompletedTask;
+            this.gameObject.SetActive(false);
         }
 
         public virtual async UniTask OnPopEnter()
         {
             await UniTask.WaitUntil(() => isInitialized);
+            this.gameObject.SetActive(true);
             if (animationTransition.PushEnterAnimation)
                 animationTransition.PopEnterAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer).Forget();
             else
@@ -60,6 +62,7 @@ namespace Pirex.UI.Base
         public virtual async UniTask OnPopEnter(Vector2 position, bool isLocalPosition = false)
         {
             await UniTask.WaitUntil(() => isInitialized);
+            this.gameObject.SetActive(true);
             if (animationTransition.PushEnterAnimation)
                 await animationTransition.PopEnterAnimation.Excute(viewCG, position, isLocalPosition);
             else
@@ -75,6 +78,7 @@ namespace Pirex.UI.Base
             await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.PopExitAnimation)
                 await animationTransition.PopExitAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer);
+            this.gameObject.SetActive(false);
             await UniTask.CompletedTask;
         }
 
@@ -88,6 +92,7 @@ namespace Pirex.UI.Base
                 transform.localScale = Vector3.zero;
                 viewCG.alpha = 1;
             }
+            this.gameObject.SetActive(false);
             await UniTask.CompletedTask;
         }
     }
