@@ -11,8 +11,8 @@ namespace Pirex.UI.Base
         [SerializeField] private CanvasGroup loadingOverlay;
         [SerializeField] private TextMeshProUGUI txtContentLoading;
 
-        private CanvasGroup _loadingOverlay;
-        private TextMeshProUGUI _txtContentLoading;
+        private static CanvasGroup _loadingOverlay;
+        private static TextMeshProUGUI _txtContentLoading;
 
 
         private const float duration = .16f;
@@ -25,7 +25,7 @@ namespace Pirex.UI.Base
             _loadingOverlay.alpha = 0f;
         }
 
-        public void Processing(bool process, string contentProcess = null)
+        public static async void Processing(bool process, string contentProcess = null)
         {
             if (_txtContentLoading) _txtContentLoading.text = contentProcess;
             if (process)
@@ -35,7 +35,7 @@ namespace Pirex.UI.Base
             }
             else
             {
-                _loadingOverlay.DOFade(0f, duration);
+                await _loadingOverlay.DOFade(0f, duration).AsyncWaitForCompletion();
                 _loadingOverlay.gameObject.SetActive(false);
             }
         }
