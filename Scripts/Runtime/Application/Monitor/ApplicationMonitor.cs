@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class ApplicationMonitor : MonoBehaviour
     {

@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class Tab : EView

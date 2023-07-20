@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public abstract class UIUpdateComp : MonoBehaviour
     {

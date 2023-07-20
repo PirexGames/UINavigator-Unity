@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class Toast : EView
     {

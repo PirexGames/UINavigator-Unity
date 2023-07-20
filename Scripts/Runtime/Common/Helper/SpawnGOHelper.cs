@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public static class SpawnGOHelper
     {

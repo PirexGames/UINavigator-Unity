@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class ApplicationGraphicManager : MonoBehaviour
     {
@@ -35,6 +35,7 @@ namespace Pirex.UI.Base
         FPS60 = 60,
         FPS90 = 90,
         FPS120 = 120,
+        FPS144 = 144,
     }
 
 }

@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using Pirex.UI.Base;
+using PirexGames.UI.Base;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using DG.Tweening;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class PurchaseModalContainer : UIContainer
     {

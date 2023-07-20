@@ -2,13 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Pirex.UI.Base;
+using PirexGames.UI.Base;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class PurchaseModal : EView
     {

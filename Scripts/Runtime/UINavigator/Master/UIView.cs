@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class UIView : MonoBehaviour

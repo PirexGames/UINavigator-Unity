@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class ScreenContainer : UIContainer
     {

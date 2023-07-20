@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class ToggleGroupPublish : ToggleGroup
     {

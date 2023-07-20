@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine.AddressableAssets;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public partial class MonoToast : UIContainer
     {

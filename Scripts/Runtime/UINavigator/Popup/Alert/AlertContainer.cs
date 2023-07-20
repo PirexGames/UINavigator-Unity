@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using DG.Tweening;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class AlertContainer : UIContainer
     {
