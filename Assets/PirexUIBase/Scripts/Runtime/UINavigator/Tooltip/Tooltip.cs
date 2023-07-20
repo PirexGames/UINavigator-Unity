@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using Cysharp.Threading.Tasks;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class Tooltip : EView
     {

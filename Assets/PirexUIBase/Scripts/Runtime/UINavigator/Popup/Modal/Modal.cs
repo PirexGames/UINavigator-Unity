@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Cysharp.Threading.Tasks;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class Modal : EView
     {

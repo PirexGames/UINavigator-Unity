@@ -3,7 +3,7 @@ using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using UnityEngine.UI;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class Screen : ScreenView
     {

@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine.Events;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class Alert : EView
     {

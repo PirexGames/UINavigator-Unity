@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class DynamicSheetContainer : MonoBehaviour
     {

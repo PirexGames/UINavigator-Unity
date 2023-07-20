@@ -7,7 +7,7 @@ using DG.Tweening;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class ModalContainer : UIContainer
     {

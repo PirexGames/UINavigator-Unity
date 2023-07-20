@@ -6,7 +6,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class ButtonHandle : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public static class AddressableHelper<T>
     {

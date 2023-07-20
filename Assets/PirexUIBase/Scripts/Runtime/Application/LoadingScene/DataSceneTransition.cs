@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 using DG.Tweening;
 using TMPro;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
 
     [CreateAssetMenu(fileName = "DataSceneTransition", menuName = "Pirex.UI.Base/UIBase/DataSceneTransition", order = 0)]

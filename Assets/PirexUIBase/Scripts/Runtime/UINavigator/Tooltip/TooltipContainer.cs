@@ -8,7 +8,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem;
 
-namespace Pirex.UI.Base
+namespace PirexGames.UI.Base
 {
     public class TooltipContainer : UIContainer
     {
