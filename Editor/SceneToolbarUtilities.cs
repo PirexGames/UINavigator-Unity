@@ -1,16 +1,17 @@
-using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 
+using UnityEditor;
+using UnityEngine.SceneManagement;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using UnityEngine;
+using UnityEditor.SceneManagement;
+using UnityEngine.UIElements;
 namespace PirexGames.UI.Editor
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Reflection;
-    using UnityEngine;
-    using UnityEditor;
-    using UnityEditor.SceneManagement;
-    using UnityEngine.UIElements;
+
 
     [InitializeOnLoad]
     public static class SceneToolbarUtilities
@@ -32,7 +33,7 @@ namespace PirexGames.UI.Editor
         {
             if (_toolbar == null)
             {
-                var editorAssembly = typeof(Editor).Assembly;
+                var editorAssembly = typeof(EditorApplication).Assembly;
                 var toolbars = Resources.FindObjectsOfTypeAll(editorAssembly.GetType("UnityEditor.Toolbar"));
                 _toolbar = toolbars.Length > 0 ? (ScriptableObject)toolbars[0] : null;
                 if (_toolbar != null)
