@@ -40,7 +40,7 @@ namespace PirexGames.UI.Base
         public virtual async UniTask OnPushExit(Screen screen)
         {
             await UniTask.WaitUntil(() => screen.IsInitalized);
-            if (animationTransition.PopExitAnimation)
+            if (animationTransition.PushExitAnimation)
                 animationTransition.PushExitAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer).Forget();
             await UniTask.CompletedTask;
             this.gameObject.SetActive(false);
@@ -50,7 +50,7 @@ namespace PirexGames.UI.Base
         {
             await UniTask.WaitUntil(() => isInitialized);
             this.gameObject.SetActive(true);
-            if (animationTransition.PushEnterAnimation)
+            if (animationTransition.PopEnterAnimation)
                 animationTransition.PopEnterAnimation.Excute(viewCG, ScreenContainer.Container.RectContainer).Forget();
             else
             {
@@ -63,7 +63,7 @@ namespace PirexGames.UI.Base
         {
             await UniTask.WaitUntil(() => isInitialized);
             this.gameObject.SetActive(true);
-            if (animationTransition.PushEnterAnimation)
+            if (animationTransition.PopEnterAnimation)
                 await animationTransition.PopEnterAnimation.Excute(viewCG, position, isLocalPosition);
             else
             {
@@ -85,7 +85,7 @@ namespace PirexGames.UI.Base
         public virtual async UniTask OnPopExit(Vector2 position, bool isLocalPosition = false)
         {
             await UniTask.WaitUntil(() => isInitialized);
-            if (animationTransition.PushEnterAnimation)
+            if (animationTransition.PopExitAnimation)
                 await animationTransition.PopExitAnimation.Excute(viewCG, position, isLocalPosition);
             else
             {
