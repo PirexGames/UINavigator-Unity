@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using Cysharp.Threading.Tasks;
 
 public class UIDragItem : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
@@ -10,6 +12,9 @@ public class UIDragItem : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoi
     [SerializeField] private DragType dragType;
     [SerializeField] private DirHVType dirType;
     [SerializeField] private float ratio = 1f;
+
+    [Header("Disable ClickButton When Drag")]
+    [SerializeField] private Button buttonDisableWhenDrag;
 
     [Header("Resize UI")]
     [SerializeField] private float minSize;
@@ -69,15 +74,25 @@ public class UIDragItem : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoi
     }
     public void OnPointerDown(PointerEventData data)
     {
+
     }
 
-    public void OnPointerUp(PointerEventData data)
+    public async void OnPointerUp(PointerEventData data)
     {
         _prevDir = Vector3.zero;
+        if (buttonDisableWhenDrag)
+        {
+            await UniTask.NextFrame();
+            buttonDisableWhenDrag.interactable = true;
+        }
     }
 
     public void OnDrag(PointerEventData data)
     {
+        if (buttonDisableWhenDrag)
+        {
+            buttonDisableWhenDrag.interactable = false;
+        }
         callbacks?.Invoke(data);
         float x = (dirType & DirHVType.HORIZONTAL) == DirHVType.HORIZONTAL ? data.delta.x * ratio : 0;
         float y = (dirType & DirHVType.VERTICAL) == DirHVType.VERTICAL ? data.delta.y * ratio : 0;
