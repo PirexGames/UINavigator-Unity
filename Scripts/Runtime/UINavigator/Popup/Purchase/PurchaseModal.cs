@@ -12,24 +12,24 @@ namespace PirexGames.UI.Base
 {
     public class PurchaseModal : EView
     {
-        [Header("Header")][SerializeField] private TextMeshProUGUI titleTxt;
+        [Header("Header")][SerializeField] protected TextMeshProUGUI titleTxt;
 
-        [Header("Body")][SerializeField] private TextMeshProUGUI descriptionTxt;
-        [SerializeField] private Image itemImage;
-        [SerializeField] private TextMeshProUGUI txtAmountItem;
+        [Header("Body")][SerializeField] protected TextMeshProUGUI descriptionTxt;
+        [SerializeField] protected Image itemImage;
+        [SerializeField] protected TextMeshProUGUI txtAmountItem;
 
-        [Header("Footer")][SerializeField] private NumberStepper buyCountPack;
-        [SerializeField] private Button confirmBtn;
-        [SerializeField] private TextMeshProUGUI confirmTxt;
-        [SerializeField] private TextMeshProUGUI txtCost;
-        [SerializeField] private Image iconUnit;
+        [Header("Footer")][SerializeField] protected NumberStepper buyCountPack;
+        [SerializeField] protected Button confirmBtn;
+        [SerializeField] protected TextMeshProUGUI confirmTxt;
+        [SerializeField] protected TextMeshProUGUI txtCost;
+        [SerializeField] protected Image iconUnit;
 
-        private CallbackStatus _callbackStatus;
+        protected CallbackStatus _callbackStatus;
 
-        private int _buyAmountPack = 0;
-        private int _pack = 0;
-        private string _nameUnit;
-        private int _cost;
+        protected int _buyAmountPack = 0;
+        protected int _pack = 0;
+        protected string _nameUnit;
+        protected int _cost;
 
         protected override void Awake()
         {
@@ -40,13 +40,18 @@ namespace PirexGames.UI.Base
             if (buyCountPack) buyCountPack.Setup(1);
         }
 
-        private void OnChangeBuyCount(int count)
+        protected virtual void OnChangeBuyCount(int count)
         {
             txtAmountItem.text = String.Format("x{0}", _pack * count);
+            SetupTextCost(count);
+        }
+
+        protected virtual void SetupTextCost(int count)
+        {
             txtCost.text = String.Format("{0} {1}", _cost * count, _nameUnit);
         }
 
-        private void BuyClick()
+        protected void BuyClick()
         {
             _buyAmountPack = buyCountPack.Value;
             _callbackStatus = CallbackStatus.Positive;
@@ -81,7 +86,7 @@ namespace PirexGames.UI.Base
             await OnHide();
         }
 
-        public void InitButton(string buttonConfirm)
+        public virtual void InitButton(string buttonConfirm)
         {
             if (IsValidString(buttonConfirm))
             {
