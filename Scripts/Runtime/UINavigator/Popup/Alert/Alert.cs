@@ -93,17 +93,17 @@ namespace PirexGames.UI.Base
             else neutralBtn.gameObject.SetActive(false);
         }
         private bool IsValidString(string str) => (str != string.Empty && str != "" && str != null);
-        private void PositiveClick()
+        protected virtual void PositiveClick()
         {
             _callbackStatus = CallbackStatus.Positive;
         }
 
-        private void NegativeClick()
+        protected virtual void NegativeClick()
         {
             _callbackStatus = CallbackStatus.Negative;
         }
 
-        private void NeutralClick()
+        protected virtual void NeutralClick()
         {
             _callbackStatus = CallbackStatus.Neutral;
         }

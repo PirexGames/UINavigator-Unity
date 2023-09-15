@@ -31,7 +31,7 @@ namespace PirexGames.UI.Base
             await OnShow();
         }
 
-        private void OnClose()
+        protected virtual void OnClose()
         {
             ModalContainer.Pop().Forget();
         }
