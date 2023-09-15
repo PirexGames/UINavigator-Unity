@@ -95,7 +95,7 @@ namespace PirexGames.UI.Base
             else confirmBtn.gameObject.SetActive(false);
         }
 
-        public void Close()
+        public virtual void Close()
         {
             _callbackStatus = CallbackStatus.Neutral;
         }

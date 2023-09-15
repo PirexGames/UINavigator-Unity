@@ -20,7 +20,7 @@ namespace PirexGames.UI.Base
             await base.Initialize();
         }
 
-        private void OnBack()
+        protected virtual void OnBack()
         {
             ScreenContainer.Pop().Forget();
         }
