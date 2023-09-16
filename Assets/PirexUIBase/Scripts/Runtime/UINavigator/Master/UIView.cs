@@ -19,6 +19,21 @@ namespace PirexGames.UI.Base
             Initialize().Forget();
         }
 
+        protected virtual void OnEnable()
+        {
+
+        }
+
+        protected virtual void Start()
+        {
+
+        }
+
+        protected virtual void OnDestroy()
+        {
+
+        }
+
         protected async virtual UniTask Initialize()
         {
             isInitialized = true;
