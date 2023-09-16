@@ -19,6 +19,8 @@ public class AnimationTransition : ScriptableObject
     [SerializeField] protected PositionTransitionEnum positionAfter;
     [SerializeField] protected Vector3 offsetAfter;
 
+    public float Duration => duration;
+
     public virtual async UniTask Excute(CanvasGroup target, RectTransform container = null)
     {
         target.alpha = alphaBefore;
