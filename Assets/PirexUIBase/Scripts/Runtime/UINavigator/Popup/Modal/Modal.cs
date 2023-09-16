@@ -13,16 +13,11 @@ namespace PirexGames.UI.Base
         [SerializeField] protected TextMeshProUGUI titleTxt;
         protected bool isClose = false;
 
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
-        }
-
-        protected async override UniTask Initialize()
-        {
-            await base.Initialize();
             if (closeBtn)
                 closeBtn.onClick.AddListener(OnClose);
+            base.Start();
         }
 
         public async UniTask Init
