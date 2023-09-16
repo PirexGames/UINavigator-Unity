@@ -15,7 +15,7 @@ namespace PirexGames.UI.Base
             if (btnBack != null)
                 btnBack.onClick.AddListener(OnBack);
         }
-        protected async override UniTask Initialize()
+        protected override async UniTask Initialize()
         {
             await base.Initialize();
         }
