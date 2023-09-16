@@ -16,9 +16,15 @@ namespace PirexGames.UI.Base
         protected override void Awake()
         {
             base.Awake();
+        }
+
+        protected async override UniTask Initialize()
+        {
+            await base.Initialize();
             if (closeBtn)
                 closeBtn.onClick.AddListener(OnClose);
         }
+
         public async UniTask Init
         (
             string title
