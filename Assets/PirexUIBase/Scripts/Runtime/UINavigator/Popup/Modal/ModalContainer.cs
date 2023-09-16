@@ -34,7 +34,7 @@ namespace PirexGames.UI.Base
             s_modalBlockOverlay.alpha = 0;
             s_modalBlockOverlay.gameObject.SetActive(false);
         }
-        public async static UniTask<Modal> Show(string keyModal, string title = null)
+        public static async UniTask<Modal> Show(string keyModal, string title = null)
         {
             return await SpawnAndInitModal(keyModal, title);
         }
@@ -52,7 +52,7 @@ namespace PirexGames.UI.Base
             return modal;
         }
 
-        public async static UniTask Pop()
+        public static async UniTask Pop()
         {
             if (stackModal.TryPeek(out var modal))
             {
