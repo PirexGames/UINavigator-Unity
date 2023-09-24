@@ -5,6 +5,15 @@
     "version": "1.3.0",
     "unity": "2022.3",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/PirexGames/UINavigator-Unity.git"
+    },
+    "author": {
+        "name": "PirexGames",
+        "email": "nguyenphuc.it14@gmail.com",
+        "url": "https://github.com/PirexGames"
+    },
     "dependencies": {
         "com.cysharp.unitask": "2.3.3",
         "com.unity.addressables": "1.19.19",
