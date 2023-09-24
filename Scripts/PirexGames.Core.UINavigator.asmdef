@@ -1,0 +1,22 @@
+{
+    "name": "PirexGames.Core.UINavigator",
+    "rootNamespace": "PirexGames.Core.UINavigator",
+    "references": [
+        "Unity.TextMeshPro",
+        "Unity.Addressables",
+        "UniTask",
+        "Unity.ResourceManager",
+        "DOTween.Modules",
+        "UniTask.DOTween",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

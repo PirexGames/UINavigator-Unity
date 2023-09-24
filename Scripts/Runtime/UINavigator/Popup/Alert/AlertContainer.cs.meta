@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 2eb9470e8e44d0b4d958913496f7df71
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - gameObjectPoolSO: {instanceID: 0}
+  - modalBlockOverlayOverride: {fileID: 4197216346452054055, guid: b050981f5c60a274580083ce74d3e1c0, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
