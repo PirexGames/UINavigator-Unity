@@ -23,7 +23,7 @@ namespace PirexGames.Core.UINavigator
         [SerializeField] protected TextMeshProUGUI negativeTxt;
         [SerializeField] protected TextMeshProUGUI neutralTxt;
 
-        private CallbackStatus _callbackStatus;
+        private UniTaskCompletionSource<CallbackStatus> _callbackStatus;
         protected CanvasGroup modalCG;
 
         protected override void Awake()
@@ -43,15 +43,15 @@ namespace PirexGames.Core.UINavigator
             string buttonPositive, string buttonNegative, string buttonNeutral
         )
         {
-            _callbackStatus = CallbackStatus.None;
+            _callbackStatus = new();
             if (titleTxt.text is not null)
                 titleTxt.text = title;
             InitButton(buttonPositive, buttonNegative, buttonNeutral);
             await UniTask.NextFrame();
             await OnShow();
-            await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
+            await _callbackStatus.Task;
             await OnHide();
-            return _callbackStatus;
+            return _callbackStatus.GetResult(new short());
         }
 
         public async UniTask<CallbackStatus> Init
@@ -59,16 +59,17 @@ namespace PirexGames.Core.UINavigator
             string title, string content,
             string buttonPositive, string buttonNegative, string buttonNeutral)
         {
-            _callbackStatus = CallbackStatus.None;
+            _callbackStatus = new();
             if (titleTxt.text is not null)
                 titleTxt.text = title;
             contentTxt.text = content;
             InitButton(buttonPositive, buttonNegative, buttonNeutral);
             await OnShow();
             await UniTask.NextFrame();
-            await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
+            await _callbackStatus.Task;
+
             await OnHide();
-            return _callbackStatus;
+            return _callbackStatus.GetResult(new short());
         }
 
         public void InitButton(string txtPositive, string txtNegative, string txtNeutral)
@@ -95,17 +96,17 @@ namespace PirexGames.Core.UINavigator
         private bool IsValidString(string str) => (str != string.Empty && str != "" && str != null);
         protected virtual void PositiveClick()
         {
-            _callbackStatus = CallbackStatus.Positive;
+            _callbackStatus.TrySetResult(CallbackStatus.Positive);
         }
 
         protected virtual void NegativeClick()
         {
-            _callbackStatus = CallbackStatus.Negative;
+            _callbackStatus.TrySetResult(CallbackStatus.Negative);
         }
 
         protected virtual void NeutralClick()
         {
-            _callbackStatus = CallbackStatus.Neutral;
+            _callbackStatus.TrySetResult(CallbackStatus.Neutral);
         }
     }
 }
