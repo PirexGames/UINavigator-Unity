@@ -2,7 +2,7 @@
     "name": "com.pirexgames.uinavigator",
     "displayName": "PirexGames UINavigator",
     "description": "PirexGames Turbo UI Navigator: UI management for Unity games.",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "unity": "2022.3",
     "license": "MIT",
     "repository": {
