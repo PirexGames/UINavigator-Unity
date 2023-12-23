@@ -65,7 +65,8 @@ namespace PirexGames.Core.UINavigator
                 if (titleTxt)
                     titleTxt.text = title;
             if (!string.IsNullOrEmpty(content))
-                contentTxt.text = content;
+                if (contentTxt)
+                    contentTxt.text = content;
             InitButton(buttonPositive, buttonNegative, buttonNeutral);
             await OnShow();
             await UniTask.NextFrame();
@@ -78,16 +79,25 @@ namespace PirexGames.Core.UINavigator
         public void InitButton(string txtPositive, string txtNegative, string txtNeutral)
         {
             if (!string.IsNullOrEmpty(txtPositive))
-                positiveTxt.text = txtPositive;
-            else positiveBtn.gameObject.SetActive(false);
+            {
+                if (positiveTxt)
+                    positiveTxt.text = txtPositive;
+            }
+            else positiveBtn?.gameObject.SetActive(false);
 
             if (!string.IsNullOrEmpty(txtNegative))
-                negativeTxt.text = txtNegative;
-            else negativeBtn.gameObject.SetActive(false);
+            {
+                if (negativeTxt)
+                    negativeTxt.text = txtNegative;
+            }
+            else negativeBtn?.gameObject.SetActive(false);
 
             if (!string.IsNullOrEmpty(txtNeutral))
-                neutralTxt.text = txtNeutral;
-            else neutralBtn.gameObject.SetActive(false);
+            {
+                if (neutralTxt)
+                    neutralTxt.text = txtNeutral;
+            }
+            else neutralBtn?.gameObject.SetActive(false);
 
             if (string.IsNullOrEmpty(txtPositive + txtNegative + txtNeutral)) positiveBtn.gameObject.SetActive(true);
         }
