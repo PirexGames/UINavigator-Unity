@@ -44,8 +44,9 @@ namespace PirexGames.Core.UINavigator
         )
         {
             _callbackStatus = new();
-            if (titleTxt.text is not null)
-                titleTxt.text = title;
+            if (!string.IsNullOrEmpty(title))
+                if (titleTxt)
+                    titleTxt.text = title;
             InitButton(buttonPositive, buttonNegative, buttonNeutral);
             await UniTask.NextFrame();
             await OnShow();
@@ -60,9 +61,11 @@ namespace PirexGames.Core.UINavigator
             string buttonPositive, string buttonNegative, string buttonNeutral)
         {
             _callbackStatus = new();
-            if (titleTxt.text is not null)
-                titleTxt.text = title;
-            contentTxt.text = content;
+            if (!string.IsNullOrEmpty(title))
+                if (titleTxt)
+                    titleTxt.text = title;
+            if (!string.IsNullOrEmpty(content))
+                contentTxt.text = content;
             InitButton(buttonPositive, buttonNegative, buttonNeutral);
             await OnShow();
             await UniTask.NextFrame();
@@ -74,26 +77,20 @@ namespace PirexGames.Core.UINavigator
 
         public void InitButton(string txtPositive, string txtNegative, string txtNeutral)
         {
-            if (IsValidString(txtPositive))
-            {
+            if (!string.IsNullOrEmpty(txtPositive))
                 positiveTxt.text = txtPositive;
-            }
             else positiveBtn.gameObject.SetActive(false);
 
-
-            if (IsValidString(txtNegative))
-            {
+            if (!string.IsNullOrEmpty(txtNegative))
                 negativeTxt.text = txtNegative;
-            }
             else negativeBtn.gameObject.SetActive(false);
 
-            if (IsValidString(txtNeutral))
-            {
+            if (!string.IsNullOrEmpty(txtNeutral))
                 neutralTxt.text = txtNeutral;
-            }
             else neutralBtn.gameObject.SetActive(false);
+
+            if (string.IsNullOrEmpty(txtPositive + txtNegative + txtNeutral)) positiveBtn.gameObject.SetActive(true);
         }
-        private bool IsValidString(string str) => (str != string.Empty && str != "" && str != null);
         protected virtual void PositiveClick()
         {
             _callbackStatus.TrySetResult(CallbackStatus.Positive);
