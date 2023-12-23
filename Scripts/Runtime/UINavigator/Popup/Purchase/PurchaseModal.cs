@@ -6,6 +6,7 @@ using PirexGames.Core.UINavigator;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 namespace PirexGames.Core.UINavigator
@@ -24,7 +25,7 @@ namespace PirexGames.Core.UINavigator
         [SerializeField] protected TextMeshProUGUI txtCost;
         [SerializeField] protected Image iconUnit;
 
-        protected CallbackStatus _callbackStatus;
+        protected UniTaskCompletionSource<CallbackStatus> _callbackStatus;
 
         protected int _buyAmountPack = 0;
         protected int _pack = 0;
@@ -34,7 +35,7 @@ namespace PirexGames.Core.UINavigator
         protected override void Awake()
         {
             base.Awake();
-            _callbackStatus = CallbackStatus.None;
+            _callbackStatus = new();
             if (buyCountPack) buyCountPack.AddListener(OnChangeBuyCount);
             if (confirmBtn) confirmBtn.onClick.AddListener(BuyClick);
             if (buyCountPack) buyCountPack.Setup(1);
@@ -54,22 +55,29 @@ namespace PirexGames.Core.UINavigator
         protected void BuyClick()
         {
             _buyAmountPack = buyCountPack.Value;
-            _callbackStatus = CallbackStatus.Positive;
+            _callbackStatus.TrySetResult(CallbackStatus.Positive);
         }
 
         public async UniTask Init
         (
             string id,
-            string title, string description, Sprite sprite,
-            int pack, int cost, Sprite unitIcon, string nameUnit,
-            string buttonConfirm, Action<int, string> callback,
+            string title,
+            string description,
+            Sprite iconItem,
+            int pack, int cost,
+            Sprite unitIcon,
+            string nameUnit,
+            string buttonConfirm,
+            Action<int, string> callback,
             int maxPack = 1
         )
         {
-            if (titleTxt.text is not null)
-                titleTxt.text = title;
-            descriptionTxt.text = description;
-            itemImage.sprite = sprite;
+            if (!string.IsNullOrEmpty(title))
+                if (titleTxt.text is not null)
+                    titleTxt.text = title;
+            if (!string.IsNullOrEmpty(description))
+                descriptionTxt.text = description;
+            itemImage.sprite = iconItem;
             iconUnit.sprite = unitIcon;
             _pack = pack;
             _nameUnit = nameUnit;
@@ -80,25 +88,19 @@ namespace PirexGames.Core.UINavigator
             InitButton(buttonConfirm);
             await UniTask.NextFrame();
             await OnShow();
-            await UniTask.WaitUntil(() => _callbackStatus != CallbackStatus.None);
-            if (_callbackStatus == CallbackStatus.Positive)
+            await _callbackStatus.Task;
+
+            if (_callbackStatus.GetResult(new()) == CallbackStatus.Positive)
                 callback?.Invoke(_buyAmountPack, id);
             await OnHide();
         }
 
         public virtual void InitButton(string buttonConfirm)
         {
-            if (IsValidString(buttonConfirm))
-            {
+            if (!string.IsNullOrEmpty(buttonConfirm))
                 confirmTxt.text = buttonConfirm;
-            }
-            else confirmBtn.gameObject.SetActive(false);
         }
 
-        public virtual void Close()
-        {
-            _callbackStatus = CallbackStatus.Neutral;
-        }
-        private bool IsValidString(string str) => (str != string.Empty && str != "" && str != null);
+        public virtual void Close() => _callbackStatus.TrySetResult(CallbackStatus.Neutral);
     }
 }
