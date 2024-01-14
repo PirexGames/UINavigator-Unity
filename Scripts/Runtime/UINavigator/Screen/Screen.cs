@@ -8,12 +8,15 @@ namespace PirexGames.Core.UINavigator
     public class Screen : ScreenView
     {
 
-        [SerializeField] protected Button btnBack;
+        [SerializeField] protected Button[] btnsBack;
         protected override void Awake()
         {
             base.Awake();
-            if (btnBack != null)
-                btnBack.onClick.AddListener(OnBack);
+            if (btnsBack != null)
+            {
+                foreach (var item in btnsBack)
+                    item.onClick.AddListener(OnBack);
+            }
         }
         protected override async UniTask Initialize()
         {
