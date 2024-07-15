@@ -60,6 +60,10 @@ namespace PirexGames.Core.UINavigator
             UnityEditor.EditorUtility.SetDirty(this);
         }
 
+        private void OnValidate() {
+            s_lastTimeStampTriggerAction = 0f;
+        }
+
 #endif
 
         private void Awake()
