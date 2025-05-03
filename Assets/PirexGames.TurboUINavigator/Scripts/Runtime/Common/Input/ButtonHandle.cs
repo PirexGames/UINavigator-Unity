@@ -63,6 +63,12 @@ namespace PirexGames.Core.UINavigator
         private void OnValidate() {
             s_lastTimeStampTriggerAction = 0f;
         }
+        
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        public static void ResetWhenPlayDisableReloadDomain()
+        {
+            s_lastTimeStampTriggerAction = 0;
+        }
 
 #endif
 

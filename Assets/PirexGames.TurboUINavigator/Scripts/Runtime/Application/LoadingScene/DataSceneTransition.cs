@@ -9,7 +9,7 @@ using TMPro;
 namespace PirexGames.Core.UINavigator
 {
 
-    [CreateAssetMenu(fileName = "DataSceneTransition", menuName = "Pirex.UI.Base/UIBase/DataSceneTransition", order = 0)]
+    [CreateAssetMenu(fileName = "DataSceneTransition", menuName = "PirexGames.Core.UINavigator/Scene/DataSceneTransition", order = 0)]
     public class DataSceneTransition : ScriptableObject
     {
         private string keyAddressableScene;
