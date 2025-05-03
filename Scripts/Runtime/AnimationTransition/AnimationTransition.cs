@@ -21,7 +21,10 @@ namespace PirexGames.Core.UINavigator
         [SerializeField] protected Vector3 scaleAfter;
         [SerializeField] protected PositionTransitionEnum positionAfter;
         [SerializeField] protected Vector3 offsetAfter;
-
+        
+        [Header("Ease")]
+        [SerializeField] protected Ease ease;
+        
         public float Duration => duration;
 
         public virtual async UniTask Excute(CanvasGroup target, RectTransform container = null)
@@ -30,8 +33,8 @@ namespace PirexGames.Core.UINavigator
             target.transform.localScale = scaleBefore;
             target.transform.localPosition = GetPosition(positionBefore, (RectTransform)target.transform, container, offsetBefore);
 
-            target.DOFade(alphaAfter, duration);
-            target.transform.DOScale(scaleAfter, duration);
+            target.DOFade(alphaAfter, duration).SetEase(ease);
+            target.transform.DOScale(scaleAfter, duration).SetEase(ease);
 
             if (container == null)
             {
@@ -40,6 +43,7 @@ namespace PirexGames.Core.UINavigator
 
             await target.transform.DOLocalMove
                 (GetPosition(positionAfter, (RectTransform)target.transform, container, offsetAfter), duration)
+                .SetEase(ease)
                 .AsyncWaitForCompletion();
 
         }
@@ -53,8 +57,8 @@ namespace PirexGames.Core.UINavigator
             else
                 target.transform.position = position;
 
-            target.DOFade(alphaAfter, duration);
-            await target.transform.DOScale(scaleAfter, duration).AsyncWaitForCompletion();
+            target.DOFade(alphaAfter, duration).SetEase(ease);
+            await target.transform.DOScale(scaleAfter, duration).SetEase(ease).AsyncWaitForCompletion();
         }
 
         private Vector3 GetPosition(PositionTransitionEnum position, RectTransform target, RectTransform container, Vector3 offset)
