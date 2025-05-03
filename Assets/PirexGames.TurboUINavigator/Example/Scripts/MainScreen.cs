@@ -48,10 +48,6 @@ namespace PirexGames.Core.UINavigator
         private async void ShowModalAsync()
         {
             var modal = await ModalContainer.Show("ModalDefault", "Settings");
-            if (modal is ModalCustomize customize)
-            {
-                customize.SetUpAsync("sdkfjlksdjflkds");
-            }
         }
 
         private void Alert()

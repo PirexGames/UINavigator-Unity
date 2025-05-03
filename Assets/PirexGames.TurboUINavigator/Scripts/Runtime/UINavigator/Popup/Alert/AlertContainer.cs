@@ -13,7 +13,7 @@ namespace PirexGames.Core.UINavigator
         [SerializeField] protected float durationBlockOverlay = .15f;
         private static CanvasGroup modalBlockOverlay;
         private static float s_durationBlockOverlay = .15f;
-        public static UIContainer Container;
+        internal static UIContainer Container;
         protected override void Awake()
         {
             base.Awake();

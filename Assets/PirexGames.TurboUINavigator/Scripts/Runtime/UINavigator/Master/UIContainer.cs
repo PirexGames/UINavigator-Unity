@@ -18,7 +18,7 @@ namespace PirexGames.Core.UINavigator
             rectContainer = (RectTransform)this.transform;
         }
 
-        protected static async UniTask<GameObject> SpawnGO(string key, Transform parent)
+        internal static async UniTask<GameObject> SpawnGO(string key, Transform parent)
         {
             var res = await SpawnGOHelper.Spawn(key, parent);
             return Instantiate(res, parent);

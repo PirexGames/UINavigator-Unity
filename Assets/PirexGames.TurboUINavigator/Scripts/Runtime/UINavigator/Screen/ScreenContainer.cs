@@ -8,7 +8,7 @@ namespace PirexGames.Core.UINavigator
     public class ScreenContainer : UIContainer
     {
         private static Stack<Screen> stackScreen = new();
-        public static UIContainer Container;
+        internal static UIContainer Container;
 
         protected override void Awake()
         {
