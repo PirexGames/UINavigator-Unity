@@ -15,7 +15,7 @@ namespace PirexGames.Core.UINavigator
         [SerializeField] protected GameObject modalBlockOverlayOverride;
         private static float s_durationBlockOverlay = .15f;
         private static CanvasGroup modalBlockOverlay;
-        public static UIContainer Container;
+        internal static UIContainer Container;
         private static float timeIntervalPush = .25f;
         protected static float currentTime;
 
@@ -67,6 +67,7 @@ namespace PirexGames.Core.UINavigator
             Addressables.ReleaseInstance(modalSpawn);
             currentTime = -timeIntervalPush * 2;
         }
+        
         protected static bool ValidPush()
         {
             if (Time.fixedTime - currentTime >= timeIntervalPush)

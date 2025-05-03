@@ -9,7 +9,7 @@ namespace PirexGames.Core.UINavigator
     {
         [Header("Animation Transition")]
         [SerializeField] protected AnimationContainerEView animationTransition;
-        public virtual async UniTask OnShow()
+        internal virtual async UniTask OnShow()
         {
             await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.ShowAnimation)
@@ -22,7 +22,7 @@ namespace PirexGames.Core.UINavigator
             await UniTask.CompletedTask;
         }
 
-        public virtual async UniTask OnShow(Vector2 position, bool isLocalPosition = false)
+        internal virtual async UniTask OnShow(Vector2 position, bool isLocalPosition = false)
         {
             await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.ShowAnimation)
@@ -37,7 +37,7 @@ namespace PirexGames.Core.UINavigator
         }
 
 
-        public virtual async UniTask OnHide()
+        internal virtual async UniTask OnHide()
         {
             await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.HideAnimation)
@@ -45,7 +45,7 @@ namespace PirexGames.Core.UINavigator
             await UniTask.CompletedTask;
         }
 
-        public virtual async UniTask OnHide(Vector2 position, bool isLocalPosition = false)
+        internal virtual async UniTask OnHide(Vector2 position, bool isLocalPosition = false)
         {
             await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.HideAnimation)

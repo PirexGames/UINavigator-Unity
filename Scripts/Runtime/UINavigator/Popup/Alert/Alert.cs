@@ -55,7 +55,7 @@ namespace PirexGames.Core.UINavigator
             return _callbackStatus.GetResult(new short());
         }
 
-        public async UniTask<CallbackStatus> Init
+        internal async UniTask<CallbackStatus> Init
         (
             string title, string content,
             string buttonPositive, string buttonNegative, string buttonNeutral)
@@ -76,7 +76,7 @@ namespace PirexGames.Core.UINavigator
             return _callbackStatus.GetResult(new short());
         }
 
-        public void InitButton(string txtPositive, string txtNegative, string txtNeutral)
+        internal void InitButton(string txtPositive, string txtNegative, string txtNeutral)
         {
             if (!string.IsNullOrEmpty(txtPositive))
             {

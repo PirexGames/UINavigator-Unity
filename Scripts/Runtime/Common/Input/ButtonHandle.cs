@@ -32,7 +32,7 @@ namespace PirexGames.Core.UINavigator
         [SerializeField] private bool useCustomTransform = false;
         [SerializeField] private Transform customTransform;
 
-        private static float s_lastTimeStampTriggerAction;
+        public static float s_lastTimeStampTriggerAction;
 
         private Tweener scaleTween = default;
 

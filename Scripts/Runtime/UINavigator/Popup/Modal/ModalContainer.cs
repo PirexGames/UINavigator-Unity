@@ -18,7 +18,7 @@ namespace PirexGames.Core.UINavigator
         private static CanvasGroup s_modalBlockOverlay;
         private static float s_durationBlockOverlay = .15f;
         protected const string keyModalBlockOverlay = "ModalBlockOverlay";
-        public static UIContainer Container;
+        internal static UIContainer Container;
 
         protected override void Awake()
         {

@@ -10,7 +10,7 @@ namespace PirexGames.Core.UINavigator
 
         [Header("Animation Transition")]
         [SerializeField] protected AnimationContainerCView animationTransition;
-        public virtual async UniTask OnPushEnter()
+        internal virtual async UniTask OnPushEnter()
         {
             await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.PushEnterAnimation)
@@ -23,7 +23,7 @@ namespace PirexGames.Core.UINavigator
             await UniTask.CompletedTask;
         }
 
-        public virtual async UniTask OnPushEnter(Vector2 position, bool isLocalPosition = false)
+        internal virtual async UniTask OnPushEnter(Vector2 position, bool isLocalPosition = false)
         {
             await UniTask.WaitUntil(() => isInitialized);
             this.gameObject.SetActive(true);
@@ -37,7 +37,7 @@ namespace PirexGames.Core.UINavigator
             await UniTask.CompletedTask;
         }
 
-        public virtual async UniTask OnPushExit(Screen screen)
+        internal virtual async UniTask OnPushExit(Screen screen)
         {
             await UniTask.WaitUntil(() => screen.IsInitalized);
             if (animationTransition.PushExitAnimation)
@@ -46,7 +46,7 @@ namespace PirexGames.Core.UINavigator
             this.gameObject.SetActive(false);
         }
 
-        public virtual async UniTask OnPopEnter()
+        internal virtual async UniTask OnPopEnter()
         {
             await UniTask.WaitUntil(() => isInitialized);
             this.gameObject.SetActive(true);
@@ -59,7 +59,7 @@ namespace PirexGames.Core.UINavigator
             }
             await UniTask.CompletedTask;
         }
-        public virtual async UniTask OnPopEnter(Vector2 position, bool isLocalPosition = false)
+        internal virtual async UniTask OnPopEnter(Vector2 position, bool isLocalPosition = false)
         {
             await UniTask.WaitUntil(() => isInitialized);
             this.gameObject.SetActive(true);
@@ -73,7 +73,7 @@ namespace PirexGames.Core.UINavigator
             await UniTask.CompletedTask;
         }
 
-        public virtual async UniTask OnPopExit()
+        internal virtual async UniTask OnPopExit()
         {
             await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.PopExitAnimation)
@@ -82,7 +82,7 @@ namespace PirexGames.Core.UINavigator
             await UniTask.CompletedTask;
         }
 
-        public virtual async UniTask OnPopExit(Vector2 position, bool isLocalPosition = false)
+        internal virtual async UniTask OnPopExit(Vector2 position, bool isLocalPosition = false)
         {
             await UniTask.WaitUntil(() => isInitialized);
             if (animationTransition.PopExitAnimation)

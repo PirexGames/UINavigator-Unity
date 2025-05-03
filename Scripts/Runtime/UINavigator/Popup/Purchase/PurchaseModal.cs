@@ -58,7 +58,7 @@ namespace PirexGames.Core.UINavigator
             _callbackStatus.TrySetResult(CallbackStatus.Positive);
         }
 
-        public async UniTask Init
+        internal async UniTask Init
         (
             string id,
             string title,
@@ -95,7 +95,7 @@ namespace PirexGames.Core.UINavigator
             await OnHide();
         }
 
-        public virtual void InitButton(string buttonConfirm)
+        protected virtual void InitButton(string buttonConfirm)
         {
             if (!string.IsNullOrEmpty(buttonConfirm))
                 confirmTxt.text = buttonConfirm;
