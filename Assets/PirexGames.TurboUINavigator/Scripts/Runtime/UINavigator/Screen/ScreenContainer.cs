@@ -9,6 +9,8 @@ namespace PirexGames.Core.UINavigator
     {
         private static Stack<Screen> stackScreen = new();
         internal static UIContainer Container;
+        
+        public static int Count => stackScreen.Count;
 
         protected override void Awake()
         {
@@ -37,7 +39,12 @@ namespace PirexGames.Core.UINavigator
             var screen = screenSpawn.GetComponent<Screen>();
             if (screen is null) return null;
             if (stackScreen.TryPeek(out var screenToHide))
-                await screenToHide.OnPushExit(screen);
+            {
+                if (screenToHide != null)
+                    await screenToHide.OnPushExit(screen);
+                else
+                    stackScreen.Pop();
+            }
 
             await screen.OnPushEnter();
             stackScreen.Push(screen);
@@ -53,11 +60,21 @@ namespace PirexGames.Core.UINavigator
                 stackScreen.Pop();
 
                 if (stackScreen.TryPeek(out var screenToShow))
-                    if (!screenToShow.gameObject.activeSelf)
+                {
+                    if (screenToShow != null)
                     {
-                        await screenToShow.OnPopEnter();
-                        screenToShow.gameObject.SetActive(true);
+                        if (!screenToShow.gameObject.activeSelf)
+                        {
+                            screenToShow.gameObject.SetActive(true);
+                            await screenToShow.OnPopEnter();
+                        }
+                    } 
+                    else
+                    {
+                        stackScreen.Pop();
                     }
+                }
+
                 await screen.OnPopExit();
                 Destroy(screen.gameObject);
             }
