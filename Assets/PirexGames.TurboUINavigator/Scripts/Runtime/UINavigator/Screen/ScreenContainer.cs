@@ -15,6 +15,7 @@ namespace PirexGames.Core.UINavigator
         protected override void Awake()
         {
             base.Awake();
+            stackScreen = new();
             Container = GetComponent<ScreenContainer>();
         }
 
