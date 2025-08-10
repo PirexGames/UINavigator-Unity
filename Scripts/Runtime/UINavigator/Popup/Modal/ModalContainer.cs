@@ -23,6 +23,7 @@ namespace PirexGames.Core.UINavigator
         protected override void Awake()
         {
             base.Awake();
+            stackModal = new();
             s_durationBlockOverlay = durationBlockOverlay;
             Container = GetComponent<ModalContainer>();
             GameObject modalOverlayPrefab = modalBlockOverlay;
