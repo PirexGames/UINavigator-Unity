@@ -54,13 +54,18 @@ namespace PirexGames.Core.UINavigator
 
         public static async UniTask Pop()
         {
-            if (stackModal.TryPeek(out var modal))
+            if (stackModal.TryPop(out var modal))
             {
                 await modal.OnHide();
                 Addressables.ReleaseInstance(modal.gameObject);
+ 
             }
-            await s_modalBlockOverlay.DOFade(0f, s_durationBlockOverlay).AsyncWaitForCompletion();
-            s_modalBlockOverlay.gameObject.SetActive(false);
+
+            if (stackModal.Count <= 0)
+            {
+                await s_modalBlockOverlay.DOFade(0f, s_durationBlockOverlay).AsyncWaitForCompletion();
+                s_modalBlockOverlay.gameObject.SetActive(false);
+            }
         }
     }
 }
