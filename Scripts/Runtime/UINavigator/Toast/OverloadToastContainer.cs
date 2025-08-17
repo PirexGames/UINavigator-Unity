@@ -8,7 +8,7 @@ using UnityEngine.AddressableAssets;
 
 namespace PirexGames.Core.UINavigator
 {
-    public partial class OverloadToastContainer : UIContainer
+    public class OverloadToastContainer : UIContainer
     {
         [HideInInspector] public UIContainer Container;
 

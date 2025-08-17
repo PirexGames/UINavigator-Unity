@@ -7,7 +7,7 @@ using UnityEngine.AddressableAssets;
 
 namespace PirexGames.Core.UINavigator
 {
-    public partial class MonoToast : UIContainer
+    public class MonoToast : UIContainer
     {
         private static Toast _currentToast = null;
         private static CancellationTokenSource _cancelToken;
@@ -17,7 +17,7 @@ namespace PirexGames.Core.UINavigator
         protected override void Awake()
         {
             base.Awake();
-            Container = GetComponent<OverloadToastContainer>();
+            Container = GetComponent<MonoToast>();
         }
 
         public static async UniTask ShowToast(
