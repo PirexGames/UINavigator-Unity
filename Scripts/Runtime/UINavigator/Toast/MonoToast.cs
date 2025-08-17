@@ -37,7 +37,7 @@ namespace PirexGames.Core.UINavigator
             }
             _isCurrentToastShowed = false;
             _cancelToken = new CancellationTokenSource();
-            var parentSpawn = parent ? parent : ScreenContainer.Container.TransformContainer;
+            var parentSpawn = parent ? parent : Container.TransformContainer;
             GameObject toastSpawn = await Addressables.InstantiateAsync(keyAddressable, parentSpawn).Task;
 
             var toast = toastSpawn.GetComponent<Toast>();
