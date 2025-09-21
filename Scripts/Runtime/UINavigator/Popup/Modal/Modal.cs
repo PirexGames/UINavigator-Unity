@@ -13,13 +13,6 @@ namespace PirexGames.Core.UINavigator
         [SerializeField] protected TextMeshProUGUI titleTxt;
         protected bool isClose = false;
 
-        protected override void Start()
-        {
-            if (closeBtn)
-                closeBtn.onClick.AddListener(OnClose);
-            base.Start();
-        }
-
         public async UniTask Init
         (
             string title
@@ -30,6 +23,8 @@ namespace PirexGames.Core.UINavigator
                 titleTxt.text = title;
             await UniTask.NextFrame();
             await OnShow();
+            if (closeBtn)
+                closeBtn.onClick.AddListener(OnClose);
         }
 
         protected virtual void OnClose()
