@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7727559189360859739}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -147,7 +146,7 @@ GameObject:
   - component: {fileID: 7727559189360859717}
   - component: {fileID: 7727559189360859738}
   - component: {fileID: 1068113110993035751}
-  - component: {fileID: 4129898175170528893}
+  - component: {fileID: 8609398974835711896}
   m_Layer: 5
   m_Name: ModalDefault
   m_TagString: Untagged
@@ -171,13 +170,12 @@ RectTransform:
   - {fileID: 1945447009800604247}
   - {fileID: 3318867035658128873}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.000061035156}
-  m_SizeDelta: {x: 1425.0912, y: 801.6138}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.000061035156, y: 139.19312}
+  m_SizeDelta: {x: -494.9088, y: -278.38623}
+  m_Pivot: {x: 0.50000006, y: -0.000000037252903}
 --- !u!222 &7727559189360859717
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -228,7 +226,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &4129898175170528893
+--- !u!114 &8609398974835711896
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -237,14 +235,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 7727559189360859736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e57d74a3a8310fa4da5f4452b157eb0c, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a9ab6faf3862084383e5f26ea2e1ae1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationTransition:
+  isPooling: 1
+  modalAnimation:
     ShowAnimation: {fileID: 11400000, guid: 2fd31a1f72e6dbb4a8f8375921f596a3, type: 2}
-    HideAnimation: {fileID: 11400000, guid: a9b203c369667984786cc0bb55774ae4, type: 2}
-  closeBtn: {fileID: 7437125941451120673}
-  titleTxt: {fileID: 3378447125440892987}
+    HideAnimation: {fileID: 0}
+  btnsClose:
+  - {fileID: 7437125941451120673}
 --- !u!1 &8278797251181296857
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +276,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7727559189360859739}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -397,7 +395,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7727559189360859739}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

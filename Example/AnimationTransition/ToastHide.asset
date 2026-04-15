@@ -19,6 +19,6 @@ MonoBehaviour:
   offsetBefore: {x: 0, y: 0, z: 0}
   alphaAfter: 0
   scaleAfter: {x: 0.5, y: 0.5, z: 0.5}
-  positionAfter: 0
+  positionAfter: 2
   offsetAfter: {x: 0, y: 0, z: 0}
   ease: 26

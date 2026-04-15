@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7727559189360859739}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -168,7 +167,6 @@ RectTransform:
   m_Children:
   - {fileID: 1348187246438445153}
   m_Father: {fileID: 7727559189360859739}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -288,7 +286,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1348187245314973796}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -424,7 +421,6 @@ RectTransform:
   m_Children:
   - {fileID: 16170791549259318}
   m_Father: {fileID: 7727559189360859739}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -500,7 +496,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 35600427557784563}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -635,7 +630,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1817620080886298019}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -713,7 +707,6 @@ RectTransform:
   m_Children:
   - {fileID: 1611469229901154586}
   m_Father: {fileID: 7727559189360859739}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -802,7 +795,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -5357027545468729442}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PurchaseModal, Pirex.UI.Base
         m_MethodName: Close
         m_Mode: 1
@@ -845,7 +838,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7727559189360859739}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -961,7 +953,6 @@ GameObject:
   - component: {fileID: 7727559189360859717}
   - component: {fileID: 7727559189360859738}
   - component: {fileID: 1068113110993035751}
-  - component: {fileID: -5357027545468729442}
   m_Layer: 5
   m_Name: PurchaseDefault
   m_TagString: Untagged
@@ -989,7 +980,6 @@ RectTransform:
   - {fileID: 6932829471433705476}
   - {fileID: 1817620080886298019}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1046,30 +1036,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &-5357027545468729442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7727559189360859736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34edc519d39bfb24aabdd5fef11f41eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animationTransition:
-    ShowAnimation: {fileID: 11400000, guid: 2fd31a1f72e6dbb4a8f8375921f596a3, type: 2}
-    HideAnimation: {fileID: 11400000, guid: a9b203c369667984786cc0bb55774ae4, type: 2}
-  titleTxt: {fileID: 1348187245090932304}
-  descriptionTxt: {fileID: 7727559188010631821}
-  itemImage: {fileID: 1353816775023524613}
-  txtAmountItem: {fileID: 3178625200478135052}
-  buyCountPack: {fileID: 6932829471433705483}
-  confirmBtn: {fileID: 1348187245314973795}
-  confirmTxt: {fileID: 1348187246438445152}
-  txtCost: {fileID: 7825541940534099443}
-  iconUnit: {fileID: 4492638663353640240}
 --- !u!1 &7983446240716893972
 GameObject:
   m_ObjectHideFlags: 0
@@ -1101,7 +1067,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2196623847209329472}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -1238,7 +1203,6 @@ RectTransform:
   m_Children:
   - {fileID: 7866865382989294190}
   m_Father: {fileID: 7727559189360859739}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -1361,6 +1325,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7727559189360859739}
     m_Modifications:
     - target: {fileID: 9076413306121961672, guid: a9d422b62b2692142a8738c39176b284, type: 3}
@@ -1452,20 +1417,12 @@ PrefabInstance:
       value: NumberStepper
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9d422b62b2692142a8738c39176b284, type: 3}
 --- !u!224 &6932829471433705476 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9076413306121961672, guid: a9d422b62b2692142a8738c39176b284, type: 3}
   m_PrefabInstance: {fileID: 2144767287598319820}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6932829471433705483 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9076413306121961671, guid: a9d422b62b2692142a8738c39176b284, type: 3}
-  m_PrefabInstance: {fileID: 2144767287598319820}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e2ecc2bd3c5254ebb542ce93278768, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
