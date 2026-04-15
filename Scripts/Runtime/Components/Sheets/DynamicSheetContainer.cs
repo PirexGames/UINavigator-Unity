@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+#if DOTWEEN_ENABLED
 using DG.Tweening;
+#endif
 using Cysharp.Threading.Tasks;
+
 namespace PirexGames.Core.UINavigator
 {
     public class DynamicSheetContainer : MonoBehaviour
@@ -144,22 +147,23 @@ namespace PirexGames.Core.UINavigator
 
         public async UniTask TransitionSheetAsync(SheetContainerType sheet, bool isOn)
         {
+            if (sheet == null || sheet.rectTransform == null || sheet.canvasGroup == null) return;
+
             var sheetRect = sheet.rectTransform;
             float xPivot = sheetRect.pivot.x;
             float yPivot = sheetRect.pivot.y;
 
+            float xPivotMinus05 = xPivot - 0.5f;
+            float yPivotMinus05 = yPivot - 0.5f;
+
             float xPivot1Minus = 1 - xPivot;
             float yPivot1Minus = 1 - yPivot;
-
-            float yPivotMinus05 = yPivot - 0.5f;
-            float xPivotMinus05 = xPivot - 0.5f;
 
             float width = sheetRect.rect.width;
             float height = sheetRect.rect.height;
 
-            float wCanvas = canvas.rect.width;
-            float hCanvas = canvas.rect.height;
-
+            float wCanvas = canvas != null ? canvas.rect.width : 0;
+            float hCanvas = canvas != null ? canvas.rect.height : 0;
 
             float hPosMoveTo = 0;
             float wPosMoveTo = 0;
@@ -226,13 +230,21 @@ namespace PirexGames.Core.UINavigator
                         wPosMoveTo = wCanvas / 2 + width * (sheet.isPivotEffectPosition ? 1 : xPivot);
                     break;
             }
+
             if (overlay != null)
                 overlay.gameObject.SetActive(isOn);
 
             if (!activeSelfSheet) sheet.canvasGroup.gameObject.SetActive(isOn);
 
-            sheet.canvasGroup.transform.DOLocalMove(new Vector2(wPosMoveTo, hPosMoveTo) + sheet.offset, duration);
+            Vector2 targetPos = new Vector2(wPosMoveTo, hPosMoveTo) + sheet.offset;
+#if DOTWEEN_ENABLED
+            sheet.canvasGroup.transform.DOLocalMove(targetPos, duration);
             await sheet.canvasGroup.DOFade(isOn ? 1 : 0, duration * 2).AsyncWaitForCompletion();
+#else
+            sheet.canvasGroup.transform.localPosition = targetPos;
+            sheet.canvasGroup.alpha = isOn ? 1 : 0;
+            await UniTask.CompletedTask;
+#endif
 
             sheet.canvasGroup.blocksRaycasts = isOn;
             if (!activeSelfSheet) sheet.canvasGroup.gameObject.SetActive(isOn);
@@ -251,16 +263,17 @@ namespace PirexGames.Core.UINavigator
         public bool isPivotEffectPosition = false;
         public Vector2 offset;
     }
-}
-public enum ScreenPosition
-{
-    TOP,
-    BOTTOM,
-    LEFT,
-    RIGHT,
-    TOPLEFT,
-    TOPRIGHT,
-    BOTTOMLEFT,
-    BOTTOMRIGHT,
-    NONE
+
+    public enum ScreenPosition
+    {
+        TOP,
+        BOTTOM,
+        LEFT,
+        RIGHT,
+        TOPLEFT,
+        TOPRIGHT,
+        BOTTOMLEFT,
+        BOTTOMRIGHT,
+        NONE
+    }
 }

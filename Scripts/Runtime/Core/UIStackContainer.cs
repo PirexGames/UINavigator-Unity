@@ -50,7 +50,7 @@ namespace PirexGames.Core.UINavigator
             if (instance == null) return null;
             onInit?.Invoke(instance as T);
 
-            var tasks = new List<UniTask>();
+            var tasks = ListPool<UniTask>.Get();
 
             // Handle current top (Parallel Hide)
             if (_stack.Count > 0)
@@ -66,14 +66,7 @@ namespace PirexGames.Core.UINavigator
             var showTask = OnShowView(instance);
             tasks.Add(showTask);
 
-            if (awaitAnimation)
-            {
-                await UniTask.WhenAll(tasks);
-            }
-            else
-            {
-                UniTask.WhenAll(tasks).Forget();
-            }
+            await AwaitTasks(tasks, awaitAnimation);
 
             return instance as T;
         }
@@ -85,7 +78,7 @@ namespace PirexGames.Core.UINavigator
             var top = _stack[^1];
             _stack.RemoveAt(_stack.Count - 1);
 
-            var tasks = new List<UniTask>();
+            var tasks = ListPool<UniTask>.Get();
 
             // Sequence: Animation -> Destroy/Release
             async UniTask HideAndCleanup(TView view)
@@ -103,14 +96,7 @@ namespace PirexGames.Core.UINavigator
                 tasks.Add(OnBeforeShowNewTop(newTop, top));
             }
 
-            if (awaitAnimation)
-            {
-                await UniTask.WhenAll(tasks);
-            }
-            else
-            {
-                UniTask.WhenAll(tasks).Forget();
-            }
+            await AwaitTasks(tasks, awaitAnimation);
         }
 
         public virtual async UniTask Pop(TView view, bool awaitAnimation = true)
