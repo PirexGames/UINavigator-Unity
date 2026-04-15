@@ -37,7 +37,7 @@ RectTransform:
   - {fileID: 2469268509818995459}
   - {fileID: 2235555416866031535}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -111,8 +111,8 @@ MonoBehaviour:
     PushExitAnimation: {fileID: 11400000, guid: b1d6453dcbfacba40a2e795a2e48d6ab, type: 2}
     PopEnterAnimation: {fileID: 11400000, guid: 04bf889a095b8c54a9de3fe2589b845b, type: 2}
     PopExitAnimation: {fileID: 11400000, guid: b1d6453dcbfacba40a2e795a2e48d6ab, type: 2}
-  isHidenOnPushOther: 1
-  btnBack: {fileID: 6017795023300841421}
+  btnsBack:
+  - {fileID: 6017795023300841421}
 --- !u!1 &241537716460074
 GameObject:
   m_ObjectHideFlags: 0
