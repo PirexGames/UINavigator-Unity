@@ -175,6 +175,36 @@ namespace PirexGames.Core.UINavigator
             var go = Instantiate(prefab, parent);
             return go;
         }
+
+        /// <summary>
+        /// Safely awaits multiple tasks using ListPool to avoid allocations and re-entrancy issues.
+        /// </summary>
+        protected async UniTask AwaitTasks(List<UniTask> tasks, bool awaitAnimation)
+        {
+            if (tasks == null || tasks.Count == 0)
+            {
+                if (tasks != null) ListPool<UniTask>.Release(tasks);
+                return;
+            }
+
+            try
+            {
+                if (awaitAnimation)
+                {
+                    if (tasks.Count == 1) await tasks[0];
+                    else await UniTask.WhenAll(tasks);
+                }
+                else
+                {
+                    if (tasks.Count == 1) tasks[0].Forget();
+                    else UniTask.WhenAll(tasks.ToArray()).Forget();
+                }
+            }
+            finally
+            {
+                ListPool<UniTask>.Release(tasks);
+            }
+        }
     }
 
     public abstract class UIContainer<TView> : UIContainer where TView : UIView

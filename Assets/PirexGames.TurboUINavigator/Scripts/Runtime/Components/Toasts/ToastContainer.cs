@@ -11,7 +11,6 @@ namespace PirexGames.Core.UINavigator
     {
         [SerializeField] private ToastMode mode = ToastMode.Multiple;
         private List<ToastView> _activeToasts = new();
-        private List<UniTask> _animationTasks = new(4);
         private bool _isProcessingMono = false;
 
         protected override string RegistryKey => base.RegistryKey + "_" + mode.ToString();
@@ -33,9 +32,9 @@ namespace PirexGames.Core.UINavigator
                     var oldToast = _activeToasts[0];
                     _activeToasts.RemoveAt(0);
                     
-                    _animationTasks.Clear();
-                    _animationTasks.Add(oldToast.OnHide());
-                    await AwaitTasks(_animationTasks, true);
+                    var tasks = ListPool<UniTask>.Get();
+                    tasks.Add(oldToast.OnHide());
+                    await AwaitTasks(tasks, true);
                     
                     ReleaseToast(oldToast);
                 }
@@ -77,27 +76,11 @@ namespace PirexGames.Core.UINavigator
 
             _activeToasts.RemoveAt(index);
             
-            _animationTasks.Clear();
-            _animationTasks.Add(toast.OnHide());
-            await AwaitTasks(_animationTasks, true);
+            var tasks = ListPool<UniTask>.Get();
+            tasks.Add(toast.OnHide());
+            await AwaitTasks(tasks, true);
             
             ReleaseToast(toast);
-        }
-
-        protected async UniTask AwaitTasks(List<UniTask> tasks, bool awaitAnimation)
-        {
-            if (tasks.Count == 0) return;
-            if (awaitAnimation)
-            {
-                if (tasks.Count == 1) await tasks[0];
-                else await UniTask.WhenAll(tasks);
-            }
-            else
-            {
-                if (tasks.Count == 1) tasks[0].Forget();
-                else UniTask.WhenAll(tasks.ToArray()).Forget();
-            }
-            tasks.Clear();
         }
 
         private void ReleaseToast(ToastView toast)

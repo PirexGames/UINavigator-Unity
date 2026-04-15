@@ -1,6 +1,8 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+#if DOTWEEN_ENABLED
 using DG.Tweening;
+#endif
 
 namespace PirexGames.Core.UINavigator
 {
@@ -22,19 +24,24 @@ namespace PirexGames.Core.UINavigator
         [SerializeField] protected PositionTransitionEnum positionAfter;
         [SerializeField] protected Vector3 offsetAfter;
         
+#if DOTWEEN_ENABLED
         [Header("Ease")]
         [SerializeField] protected Ease ease;
+#endif
         
         public float Duration => duration;
 
         public virtual async UniTask Excute(CanvasGroup target, RectTransform container = null)
         {
+            if (target == null) return;
+
             if (container == null)
             {
                 container = target.transform.parent as RectTransform;
                 if (container == null) container = (RectTransform)target.transform;
             }
 
+#if DOTWEEN_ENABLED
             target.alpha = alphaBefore;
             target.transform.localScale = scaleBefore;
             target.transform.localPosition = GetPosition(positionBefore, (RectTransform)target.transform, container, offsetBefore);
@@ -46,9 +53,19 @@ namespace PirexGames.Core.UINavigator
                 (GetPosition(positionAfter, (RectTransform)target.transform, container, offsetAfter), duration)
                 .SetEase(ease)
                 .AsyncWaitForCompletion();
+#else
+            target.alpha = alphaAfter;
+            target.transform.localScale = scaleAfter;
+            target.transform.localPosition = GetPosition(positionAfter, (RectTransform)target.transform, container, offsetAfter);
+            await UniTask.CompletedTask;
+#endif
         }
+
         public async UniTask Excute(CanvasGroup target, Vector2 position, bool isLocalPosition = false)
         {
+            if (target == null) return;
+
+#if DOTWEEN_ENABLED
             target.alpha = alphaBefore;
             target.transform.localScale = scaleBefore;
 
@@ -59,10 +76,21 @@ namespace PirexGames.Core.UINavigator
 
             target.DOFade(alphaAfter, duration).SetEase(ease);
             await target.transform.DOScale(scaleAfter, duration).SetEase(ease).AsyncWaitForCompletion();
+#else
+            target.alpha = alphaAfter;
+            target.transform.localScale = scaleAfter;
+            if (isLocalPosition)
+                target.transform.localPosition = position;
+            else
+                target.transform.position = position;
+            await UniTask.CompletedTask;
+#endif
         }
 
         private Vector3 GetPosition(PositionTransitionEnum position, RectTransform target, RectTransform container, Vector3 offset)
         {
+            if (target == null || container == null) return offset;
+            
             float pivotX = target.pivot.x;
             float pivotY = target.pivot.y;
             float tWidth = target.rect.width;

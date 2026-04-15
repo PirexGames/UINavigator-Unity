@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+#if DOTWEEN_ENABLED
 using DG.Tweening;
+#endif
+using Cysharp.Threading.Tasks;
 
 namespace PirexGames.Core.UINavigator
 {
@@ -31,11 +34,20 @@ namespace PirexGames.Core.UINavigator
             if (process)
             {
                 _loadingOverlay.gameObject.SetActive(true);
+#if DOTWEEN_ENABLED
                 _loadingOverlay.DOFade(1f, duration);
+#else
+                _loadingOverlay.alpha = 1f;
+#endif
             }
             else
             {
+#if DOTWEEN_ENABLED
                 await _loadingOverlay.DOFade(0f, duration).AsyncWaitForCompletion();
+#else
+                _loadingOverlay.alpha = 0f;
+                await UniTask.CompletedTask;
+#endif
                 _loadingOverlay.gameObject.SetActive(false);
             }
         }

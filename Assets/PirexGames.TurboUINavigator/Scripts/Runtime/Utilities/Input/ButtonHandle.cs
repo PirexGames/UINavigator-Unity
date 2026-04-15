@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+#if DOTWEEN_ENABLED
 using DG.Tweening;
+#endif
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 
@@ -34,7 +36,9 @@ namespace PirexGames.Core.UINavigator
 
         public static float s_lastTimeStampTriggerAction;
 
+#if DOTWEEN_ENABLED
         private Tweener scaleTween = default;
+#endif
 
         private Vector3 defaultSize;
 
@@ -109,16 +113,20 @@ namespace PirexGames.Core.UINavigator
 
             if (isPlayScaleEffect)
             {
-                if (scaleTween != default)
-                    scaleTween.Complete();
-
                 defaultSize = useCustomTransform ? customTransform.localScale : transform.localScale;
-
                 Vector3 targetSize = new Vector3(defaultSize.x * scaleEnd.x, defaultSize.y * scaleEnd.y, defaultSize.z * scaleEnd.z);
+
+#if DOTWEEN_ENABLED
+                if (scaleTween != default)
+                    scaleTween.Kill();
 
                 scaleTween = useCustomTransform ?
                 customTransform.DOScale(targetSize, duration) :
                 transform.DOScale(targetSize, duration);
+#else
+                if (useCustomTransform) customTransform.localScale = targetSize;
+                else transform.localScale = targetSize;
+#endif
 
                 if (jumpImg)
                     jumpImg.sprite = touchColorEffect;
@@ -145,13 +153,18 @@ namespace PirexGames.Core.UINavigator
 
             if (isPlayScaleEffect)
             {
+#if DOTWEEN_ENABLED
                 if (scaleTween != default)
-                    scaleTween.Complete();
+                    scaleTween.Kill();
 
                 if (useCustomTransform)
                     scaleTween = customTransform.DOScale(defaultSize, duration);
                 else
                     scaleTween = transform.DOScale(defaultSize, duration);
+#else
+                if (useCustomTransform) customTransform.localScale = defaultSize;
+                else transform.localScale = defaultSize;
+#endif
 
                 if (jumpImg)
                     jumpImg.sprite = normalColorEffect;

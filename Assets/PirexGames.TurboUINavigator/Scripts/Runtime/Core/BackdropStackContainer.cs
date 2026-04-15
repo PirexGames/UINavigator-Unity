@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+#if DOTWEEN_ENABLED
+using DG.Tweening;
+#endif
 
 namespace PirexGames.Core.UINavigator
 {
@@ -21,7 +24,7 @@ namespace PirexGames.Core.UINavigator
             view.Backdrop = backdrop;
 
             // Sync transitions
-            var tasks = new List<UniTask>();
+            var tasks = ListPool<UniTask>.Get();
             tasks.Add(view.OnPushEnter());
 
             if (backdropAnimation != null && backdropAnimation.ShowAnimation != null)
@@ -29,13 +32,13 @@ namespace PirexGames.Core.UINavigator
             else
                 tasks.Add(DefaultFade(backdrop, 1f));
 
-            await UniTask.WhenAll(tasks);
+            await AwaitTasks(tasks, true);
         }
 
         protected override async UniTask OnHideView(T view)
         {
             var backdrop = view.Backdrop;
-            var tasks = new List<UniTask>();
+            var tasks = ListPool<UniTask>.Get();
             tasks.Add(view.OnPopExit());
 
             if (backdrop != null)
@@ -47,7 +50,7 @@ namespace PirexGames.Core.UINavigator
 
                 try 
                 {
-                    await UniTask.WhenAll(tasks);
+                    await AwaitTasks(tasks, true);
                 }
                 finally
                 {
@@ -57,7 +60,7 @@ namespace PirexGames.Core.UINavigator
             }
             else
             {
-                await UniTask.WhenAll(tasks);
+                await AwaitTasks(tasks, true);
             }
         }
 
@@ -106,19 +109,28 @@ namespace PirexGames.Core.UINavigator
         {
             if (cg == null) return;
             float duration = 0.25f;
+
+#if DOTWEEN_ENABLED
+            await cg.DOFade(targetAlpha, duration).AsyncWaitForCompletion();
+#else
             float startAlpha = cg.alpha;
             float elapsed = 0;
 
             while (elapsed < duration)
             {
+                if (cg == null) break;
                 elapsed += Time.deltaTime;
                 cg.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
                 await UniTask.Yield();
             }
 
-            cg.alpha = targetAlpha;
-            cg.blocksRaycasts = targetAlpha > 0;
-            cg.interactable = targetAlpha > 0;
+            if (cg != null) cg.alpha = targetAlpha;
+#endif
+            if (cg != null)
+            {
+                cg.blocksRaycasts = targetAlpha > 0;
+                cg.interactable = targetAlpha > 0;
+            }
         }
     }
 }
