@@ -19,86 +19,118 @@ namespace PirexGames.Core.UINavigator
         protected override void Awake()
         {
             base.Awake();
-            Container = GetComponent<OverloadToastContainer>();
+            Container = GetComponent<TooltipContainer>();
             _currentTooltip = null;
         }
 
-        public static async UniTask Show(string keyAddressable, string content, RectTransform parent, TooltipPosition tooltipPosition, bool isCloseAnyClick = false)
+        public static async UniTask<Tooltip> Show(string keyAddressable, string content, RectTransform target, TooltipPosition tooltipPosition, bool isCloseAnyClick = false)
         {
-            await Show(keyAddressable, content, parent, tooltipPosition, Vector2.zero, isCloseAnyClick);
-            await UniTask.CompletedTask;
+            return await Show(keyAddressable, content, target, tooltipPosition, Vector2.zero, isCloseAnyClick);
         }
 
-        public static async UniTask Show(string keyAddressable, string content, RectTransform parent, TooltipPosition tooltipPosition, Vector2 offset, bool isCloseAnyClick = false)
+        public static async UniTask<Tooltip> Show(string keyAddressable, string content, RectTransform target, TooltipPosition tooltipPosition, Vector2 offset, bool isCloseAnyClick = false)
         {
-            await UniTask.WaitUntil(() => _currentTooltip == null);
-            var tooltipSpawn = await Addressables.InstantiateAsync(keyAddressable, parent).Task;
+            if (_currentTooltip != null)
+            {
+                CloseTooltipAsync();
+            }
 
+            var tooltipSpawn = await Addressables.InstantiateAsync(keyAddressable, Container.RectContainer).Task;
             var tooltip = tooltipSpawn.GetComponent<Tooltip>();
             _currentTooltip = tooltip;
             var tooltipRect = tooltipSpawn.GetComponent<RectTransform>();
+
             if (tooltip)
             {
-                Vector2 positionShow;
+                // Calculate target center in Container's local space
+                Vector3 targetWorldCenter = target.TransformPoint(target.rect.center);
+                Vector2 targetLocalCenter;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    Container.RectContainer,
+                    RectTransformUtility.WorldToScreenPoint(null, targetWorldCenter),
+                    null,
+                    out targetLocalCenter
+                );
+
                 float hPos = 0f;
                 float wPos = 0f;
                 switch (tooltipPosition)
                 {
                     case TooltipPosition.TOP:
-                        hPos = parent.rect.height / 2 + tooltipRect.rect.height / 2;
+                        hPos = target.rect.height / 2 + tooltipRect.rect.height / 2;
                         break;
                     case TooltipPosition.BOTTOM:
-                        hPos = -parent.rect.height / 2 - tooltipRect.rect.height / 2;
+                        hPos = -target.rect.height / 2 - tooltipRect.rect.height / 2;
                         break;
                     case TooltipPosition.LEFT:
-                        wPos = -parent.rect.width / 2 - tooltipRect.rect.width / 2;
+                        wPos = -target.rect.width / 2 - tooltipRect.rect.width / 2;
                         break;
                     case TooltipPosition.RIGHT:
-                        wPos = parent.rect.width / 2 + tooltipRect.rect.width / 2;
+                        wPos = target.rect.width / 2 + tooltipRect.rect.width / 2;
                         break;
                     case TooltipPosition.TOPLEFT:
-                        hPos = parent.rect.height / 2 + tooltipRect.rect.height / 2;
-                        wPos = -parent.rect.width / 2 - tooltipRect.rect.width / 2;
+                        hPos = target.rect.height / 2 + tooltipRect.rect.height / 2;
+                        wPos = -target.rect.width / 2 - tooltipRect.rect.width / 2;
                         break;
                     case TooltipPosition.TOPRIGHT:
-                        hPos = parent.rect.height / 2 + tooltipRect.rect.height / 2;
-                        wPos = parent.rect.width / 2 + tooltipRect.rect.width / 2;
+                        hPos = target.rect.height / 2 + tooltipRect.rect.height / 2;
+                        wPos = target.rect.width / 2 + tooltipRect.rect.width / 2;
                         break;
                     case TooltipPosition.BOTTOMLEFT:
-                        hPos = -parent.rect.height / 2 - tooltipRect.rect.height / 2;
-                        wPos = -parent.rect.width / 2 - tooltipRect.rect.width / 2;
+                        hPos = -target.rect.height / 2 - tooltipRect.rect.height / 2;
+                        wPos = -target.rect.width / 2 - tooltipRect.rect.width / 2;
                         break;
                     case TooltipPosition.BOTTOMRIGHT:
-                        hPos = -parent.rect.height / 2 - tooltipRect.rect.height / 2;
-                        wPos = parent.rect.width / 2 + tooltipRect.rect.width / 2;
+                        hPos = -target.rect.height / 2 - tooltipRect.rect.height / 2;
+                        wPos = target.rect.width / 2 + tooltipRect.rect.width / 2;
                         break;
                 }
-                positionShow = new Vector2(wPos, hPos) + offset;
-                tooltip.Init(content, positionShow, true);
-            }
-            var mousePressStream = InputSystem.onEvent
-                .Where(_ => Input.GetMouseButtonDown(0))
-                .Call(_ => CloseTooltipAsync());
 
-            await UniTask.WaitUntil(() => _currentTooltip == null);
-            mousePressStream.Dispose();
-            await UniTask.CompletedTask;
+                Vector2 positionShow = targetLocalCenter + new Vector2(wPos, hPos) + offset;
+                await tooltip.Init(content, positionShow, true);
+
+                if (isCloseAnyClick)
+                {
+                    HandleAutoClose().Forget();
+                }
+            }
+
+            return tooltip;
         }
 
-        private async static void CloseTooltipAsync()
+        private static async UniTaskVoid HandleAutoClose()
         {
-            if (!_currentTooltip)
-                if (!_currentTooltip.gameObject) return;
-            await _currentTooltip.OnHide(_currentTooltip.transform.position);
+            // Wait a frame to avoid immediate closing if the click that opened it is still registered
+            await UniTask.NextFrame();
+            
+            await UniTask.WaitUntil(() => 
+                Pointer.current != null && 
+                Pointer.current.press.wasPressedThisFrame
+            );
+
+            CloseTooltipAsync();
+        }
+
+        private static async void CloseTooltipAsync()
+        {
+            if (_currentTooltip == null) return;
+            
+            var tooltipToClose = _currentTooltip;
+            _currentTooltip = null;
+
+            await tooltipToClose.OnHide(tooltipToClose.transform.position);
+            
             try
             {
-                Addressables.ReleaseInstance(_currentTooltip.gameObject);
+                if (tooltipToClose.gameObject != null)
+                {
+                    Addressables.ReleaseInstance(tooltipToClose.gameObject);
+                }
             }
             catch
             {
-
+                // Ignore release errors if already destroyed
             }
-            _currentTooltip = null;
         }
     }
 

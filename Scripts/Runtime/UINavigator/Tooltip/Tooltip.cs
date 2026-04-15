@@ -9,7 +9,7 @@ namespace PirexGames.Core.UINavigator
     public class Tooltip : EView
     {
         [SerializeField] private TextMeshProUGUI contentTxt;
-        public async void Init(string content, Vector2 position, bool isLocalPosition = false)
+        public async UniTask Init(string content, Vector2 position, bool isLocalPosition = false)
         {
             if (contentTxt)
                 contentTxt.text = content;
