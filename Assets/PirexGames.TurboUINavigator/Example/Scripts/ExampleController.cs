@@ -8,6 +8,6 @@ public class ExampleController : MonoBehaviour
 {
     void Start()
     {
-        ScreenContainer.Push("MainScreen").Forget();
+        UINavigator.Screens.Push<MainScreen>("MainScreen").Forget();
     }
 }

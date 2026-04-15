@@ -15,9 +15,10 @@ MonoBehaviour:
   duration: 0.15
   alphaBefore: 0
   scaleBefore: {x: 1, y: 1, z: 1}
-  positionBefore: 1
+  positionBefore: 4
   offsetBefore: {x: 0, y: 0, z: 0}
   alphaAfter: 1
   scaleAfter: {x: 1, y: 1, z: 1}
   positionAfter: 0
   offsetAfter: {x: 0, y: 0, z: 0}
+  ease: 1

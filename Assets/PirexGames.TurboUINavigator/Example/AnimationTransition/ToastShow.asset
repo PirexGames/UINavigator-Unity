@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28745f68322a5a41a363469dfe61e9b, type: 3}
   m_Name: ToastShow
   m_EditorClassIdentifier: 
-  duration: 0.15
+  duration: 0.3
   alphaBefore: 1
   scaleBefore: {x: 0.3, y: 0.3, z: 0.3}
-  positionBefore: 0
+  positionBefore: 2
   offsetBefore: {x: 0, y: 0, z: 0}
   alphaAfter: 1
   scaleAfter: {x: 1, y: 1, z: 1}
