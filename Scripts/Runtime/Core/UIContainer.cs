@@ -185,7 +185,7 @@ namespace PirexGames.Core.UINavigator
                 if (cg)
                 {
                     cg.alpha = 0;
-                    cg.interactable = false;
+                    cg.blocksRaycasts = false;
                 }
                 
                 pooledView.SetActive(true);
@@ -203,7 +203,7 @@ namespace PirexGames.Core.UINavigator
             if (newCg)
             {
                 newCg.alpha = 0;
-                newCg.interactable = false;
+                newCg.blocksRaycasts = false;
             }
             
             return go;

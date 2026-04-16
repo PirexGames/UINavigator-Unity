@@ -27,7 +27,7 @@ namespace PirexGames.Core.UINavigator
                 transform.localScale = Vector3.one;
                 View.alpha = 1;
             }
-            View.interactable = true;
+            View.blocksRaycasts = true;
         }
 
         internal virtual async UniTask OnHide(Vector2? position = null, bool isLocalPosition = false)
@@ -46,7 +46,7 @@ namespace PirexGames.Core.UINavigator
             {
                 View.alpha = 0;
             }
-            View.interactable = false;
+            View.blocksRaycasts = false;
         }
     }
 }
