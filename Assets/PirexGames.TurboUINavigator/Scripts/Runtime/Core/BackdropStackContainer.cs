@@ -8,16 +8,18 @@ using DG.Tweening;
 
 namespace PirexGames.Core.UINavigator
 {
+    public enum ModalStackMode { Single, Multiple }
+
     public abstract class BackdropStackContainer<T> : UIStackContainer<T> where T : ModalBaseView
     {
         [Header("Backdrop Settings")]
         [SerializeField] protected AnimationContainerEView backdropAnimation;
         [SerializeField] protected Color backdropColor = new Color(0, 0, 0, 0.5f);
+        [SerializeField] protected ModalStackMode stackMode = ModalStackMode.Single;
 
         protected override async UniTask OnShowView(T view)
         {
             view.Owner = this;
-            view.ApplyPivotCenter();
             
             // Create per-modal backdrop
             var backdrop = CreateBackdrop(view);
@@ -66,12 +68,38 @@ namespace PirexGames.Core.UINavigator
 
         protected override async UniTask OnBeforeHideTop(T currentTop, T nextTop)
         {
-            await currentTop.OnPushExit(nextTop);
+            if (stackMode == ModalStackMode.Multiple) return;
+
+            var tasks = ListPool<UniTask>.Get();
+            tasks.Add(currentTop.OnPushExit(nextTop));
+            
+            if (currentTop.Backdrop != null)
+            {
+                if (backdropAnimation != null && backdropAnimation.HideAnimation != null)
+                    tasks.Add(backdropAnimation.HideAnimation.Excute(currentTop.Backdrop, RectContainer));
+                else
+                    tasks.Add(DefaultFade(currentTop.Backdrop, 0f));
+            }
+
+            await AwaitTasks(tasks, true);
         }
 
         protected override async UniTask OnBeforeShowNewTop(T newTop, T oldTop)
         {
-            await newTop.OnPopEnter();
+            if (stackMode == ModalStackMode.Multiple) return;
+
+            var tasks = ListPool<UniTask>.Get();
+            tasks.Add(newTop.OnPopEnter());
+
+            if (newTop.Backdrop != null)
+            {
+                if (backdropAnimation != null && backdropAnimation.ShowAnimation != null)
+                    tasks.Add(backdropAnimation.ShowAnimation.Excute(newTop.Backdrop, RectContainer));
+                else
+                    tasks.Add(DefaultFade(newTop.Backdrop, 1f));
+            }
+
+            await AwaitTasks(tasks, true);
         }
 
         private CanvasGroup CreateBackdrop(T forView)

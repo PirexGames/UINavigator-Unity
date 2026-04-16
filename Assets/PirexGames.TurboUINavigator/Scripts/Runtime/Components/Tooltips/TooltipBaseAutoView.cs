@@ -16,7 +16,6 @@ namespace PirexGames.Core.UINavigator
 
         internal async UniTask InitAuto(string content, RectTransform target, RectTransform container, Vector2 offset)
         {
-            View.alpha = 0;
             gameObject.SetActive(true);
 
             if (contentTxt != null) contentTxt.text = content;
@@ -132,6 +131,8 @@ namespace PirexGames.Core.UINavigator
             Vector2 finalPos = best.center + arrowRelCenter + offset;
 
             await Init(content, finalPos, true);
+            if (this == null) return;
+            
             View.alpha = 1;
         }
 

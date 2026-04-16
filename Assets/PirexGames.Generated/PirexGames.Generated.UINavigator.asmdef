@@ -1,0 +1,10 @@
+﻿{
+    "name": "PirexGames.Generated",
+    "rootNamespace": "",
+    "references": [
+        "PirexGames.Core.UINavigator",
+        "UniTask",
+        "Unity.Addressables"
+    ],
+    "autoReferenced": true
+}

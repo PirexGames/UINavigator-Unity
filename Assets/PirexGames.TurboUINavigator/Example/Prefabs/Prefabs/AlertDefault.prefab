@@ -1149,5 +1149,5 @@ MonoBehaviour:
   btnNegative: {fileID: 1348187245314973795}
   btnNeutral: {fileID: 1348187245636422330}
   txtPositive: {fileID: 1348187246788881844}
-  txtNegative: {fileID: 1348187245624768212}
-  txtNeutral: {fileID: 1348187246438445152}
+  txtNegative: {fileID: 1348187246438445152}
+  txtNeutral: {fileID: 1348187245624768212}

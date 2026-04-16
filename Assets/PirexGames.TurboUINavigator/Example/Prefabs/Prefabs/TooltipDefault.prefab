@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d802cb996ff28b24a843bb2b17bb4aad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPooling: 0
+  isPooling: 1
   animationTransition:
     ShowAnimation: {fileID: 11400000, guid: 2fd31a1f72e6dbb4a8f8375921f596a3, type: 2}
     HideAnimation: {fileID: 11400000, guid: a9b203c369667984786cc0bb55774ae4, type: 2}

@@ -5,11 +5,26 @@ using UnityEngine.AddressableAssets;
 
 namespace PirexGames.Core.UINavigator
 {
+    public enum ContainerNameMode { Default, Custom }
+
     public abstract class UIContainer : MonoBehaviour
     {
+        [SerializeField] protected ContainerNameMode nameMode = ContainerNameMode.Default;
         [SerializeField] protected string containerName = "Default";
+
         public string ContainerName => containerName;
+        public ContainerNameMode NameMode => nameMode;
         protected virtual string RegistryKey => containerName;
+
+#if UNITY_EDITOR
+        protected virtual void OnValidate()
+        {
+            if (nameMode == ContainerNameMode.Default)
+            {
+                containerName = "Default";
+            }
+        }
+#endif
 
         private static Dictionary<System.Type, Dictionary<string, UIContainer>> _registry = new();
         private static Dictionary<string, Stack<GameObject>> _pool = new();
@@ -164,15 +179,25 @@ namespace PirexGames.Core.UINavigator
             if (pooledView)
             {
                 pooledView.transform.SetParent(parent, false);
+                
+                // Ensure alpha is 0 before activating to prevent flickering
+                var cg = pooledView.GetComponent<CanvasGroup>();
+                if (cg != null) cg.alpha = 0;
+                
                 pooledView.SetActive(true);
                 return pooledView;
             }
 
-            // NEW: Use project utility helper for pre-loading prefabs
+            // Use project utility helper for pre-loading prefabs
             var prefab = await SpawnGOHelper.Spawn(key, parent);
             
-            // Manual instantiate for maximum responsiveness
+            // Manual instantiate
             var go = Instantiate(prefab, parent);
+            
+            // Ensure alpha is 0 immediately
+            var newCg = go.GetComponent<CanvasGroup>();
+            if (newCg != null) newCg.alpha = 0;
+            
             return go;
         }
 
@@ -205,6 +230,11 @@ namespace PirexGames.Core.UINavigator
                 ListPool<UniTask>.Release(tasks);
             }
         }
+
+        /// <summary>
+        /// Closes a specific view belonging to this container.
+        /// </summary>
+        public abstract UniTask Close(UIView view, bool awaitAnimation = true);
     }
 
     public abstract class UIContainer<TView> : UIContainer where TView : UIView

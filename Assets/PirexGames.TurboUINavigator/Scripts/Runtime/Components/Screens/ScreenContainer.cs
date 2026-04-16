@@ -7,7 +7,6 @@ namespace PirexGames.Core.UINavigator
         protected override async UniTask OnShowView(ScreenBaseView baseView)
         {
             baseView.Owner = this;
-            baseView.ApplyPivotCenter();
             await baseView.OnPushEnter();
         }
 
