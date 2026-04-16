@@ -1,0 +1,18 @@
+{
+    "name": "UINavigator.Example",
+    "rootNamespace": "",
+    "references": [
+        "GUID:8476aa54f14bff7469d7761ce48aba76",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:ec582bad84fb08d43b215a7c78cb24d0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

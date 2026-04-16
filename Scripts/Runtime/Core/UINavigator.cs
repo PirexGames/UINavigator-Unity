@@ -4,7 +4,7 @@ namespace PirexGames.Core.UINavigator
     /// The primary hub for all UI navigation operations in the project.
     /// Use this static class to control Screens, Modals, Toasts, and Tooltips globally.
     /// </summary>
-    public static class UINavigator
+    public static partial class UINavigator
     {
         /// <summary>
         /// If true, all object pools and Addressable asset caches will be cleared automatically 

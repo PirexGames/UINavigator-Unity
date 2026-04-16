@@ -28,7 +28,7 @@ namespace PirexGames.Core.UINavigator
 
         protected virtual void OnClose()
         {
-            UINavigator.Modals.Pop(this).Forget();
+            this.Pop();
         }
     }
 }

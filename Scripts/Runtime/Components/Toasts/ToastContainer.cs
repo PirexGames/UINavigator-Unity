@@ -101,5 +101,19 @@ namespace PirexGames.Core.UINavigator
                 }
             }
         }
+
+        public override async UniTask Close(UIView view, bool awaitAnimation = true)
+        {
+            if (view is ToastView toast && _activeToasts.Contains(toast))
+            {
+                _activeToasts.Remove(toast);
+                
+                var tasks = ListPool<UniTask>.Get();
+                tasks.Add(toast.OnHide());
+                await AwaitTasks(tasks, awaitAnimation);
+                
+                ReleaseToast(toast);
+            }
+        }
     }
 }

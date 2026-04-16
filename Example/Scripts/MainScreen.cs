@@ -21,7 +21,7 @@ namespace PirexGames.Core.UINavigator
         [SerializeField] private RectTransform tooltipTarget;
 
         [Header("Settings")]
-        [SerializeField] private TooltipPosition tooltipPos = TooltipPosition.AUTO;
+        [SerializeField] private TooltipPosition tooltipPos = TooltipPosition.Auto;
 
         protected override void Awake()
         {
@@ -41,7 +41,7 @@ namespace PirexGames.Core.UINavigator
         private void OnPushClicked()
         {
             // Use the Hub to push a screen by its Addressable key
-            UINavigator.Screens.Push<ScreenView>("Screen_Default").Forget();
+            UINavigatorHub.MainScreen.Push<ScreenView>("ScreenDefault").Forget();
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace PirexGames.Core.UINavigator
         private async void OnModalClicked()
         {
             // Modals can be awaited to get the instance for further setup
-            var modal = await UINavigator.Modals.Push<ModalView>("Modal_Default");
+            var modal = await UINavigator.Modals.Push<ModalView>("ModalDefault");
             
             if (modal != null)
             {
@@ -64,13 +64,16 @@ namespace PirexGames.Core.UINavigator
         private void OnAlertClicked()
         {
             UINavigator.Alerts.Show(
-                "Alert_Default",
+                "AlertDefault",
                 "System Notice",
                 "This is a high-performance alert box. Do you like it?",
                 (status) =>
                 {
                     if (status == CallbackStatus.Positive)
+                    {
+                        OnAlertClicked();
                         Debug.Log("User clicked YES");
+                    }
                     else
                         Debug.Log("User clicked NO");
                 },
@@ -85,7 +88,7 @@ namespace PirexGames.Core.UINavigator
         private void OnToastClicked()
         {
             // MonoToasts reuse the same container to show one toast at a time
-            UINavigator.MonoToasts.Show<ToastView>("Toast_Default", "Action successful!", 2f).Forget();
+            UINavigator.MonoToasts.Show<ToastView>("ToastDefault", "Action successful!", 2f).Forget();
         }
 
         /// <summary>
@@ -94,7 +97,7 @@ namespace PirexGames.Core.UINavigator
         private void OnTooltipClicked()
         {
             UINavigator.Tooltips.Show<TooltipBaseAutoView>(
-                "Tooltip_Default",
+                "TooltipDefault",
                 "I am a smart tooltip that knows screen boundaries!",
                 tooltipTarget,
                 tooltipPos

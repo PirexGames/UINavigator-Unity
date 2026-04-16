@@ -29,7 +29,7 @@ namespace PirexGames.Core.UINavigator
 
         protected virtual void OnBack()
         {
-            UINavigator.Screens.Pop().Forget();
+            this.Pop();
         }
     }
 }

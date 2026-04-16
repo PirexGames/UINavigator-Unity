@@ -9,119 +9,155 @@ namespace PirexGames.Core.UINavigator
     public abstract class UIStackContainer<TView> : UIContainer<TView> where TView : UIView
     {
         private readonly List<TView> _stack = new();
+        private readonly System.Threading.SemaphoreSlim _transitionLock = new(1, 1);
+        
         public int Count => _stack.Count;
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            _transitionLock?.Dispose();
+        }
 
         public virtual async UniTask<T> Push<T>(string key, ViewPushMode mode = ViewPushMode.Standard, bool awaitAnimation = true, Action<T> onInit = null) where T : TView
         {
-            TView instance = null;
-
-            switch (mode)
+            await _transitionLock.WaitAsync(DestroyToken);
+            try
             {
-                case ViewPushMode.Standard:
-                    instance = await InternalSpawn<T>(key);
-                    break;
+                TView instance = null;
 
-                case ViewPushMode.BringToFront:
-                    for (int i = 0; i < _stack.Count; i++)
-                    {
-                        if (_stack[i].NameAddressable == key)
-                        {
-                            instance = _stack[i];
-                            break;
-                        }
-                    }
-
-                    if (instance != null)
-                    {
-                        _stack.Remove(instance);
-                    }
-                    else
-                    {
+                switch (mode)
+                {
+                    case ViewPushMode.Standard:
                         instance = await InternalSpawn<T>(key);
-                    }
-                    break;
+                        break;
 
-                case ViewPushMode.SetRoot:
-                    await ClearStack();
-                    instance = await InternalSpawn<T>(key);
-                    break;
+                    case ViewPushMode.BringToFront:
+                        for (int i = 0; i < _stack.Count; i++)
+                        {
+                            if (_stack[i].NameAddressable == key)
+                            {
+                                instance = _stack[i];
+                                break;
+                            }
+                        }
+
+                        if (instance != null)
+                        {
+                            _stack.Remove(instance);
+                        }
+                        else
+                        {
+                            instance = await InternalSpawn<T>(key);
+                        }
+                        break;
+
+                    case ViewPushMode.SetRoot:
+                        await ClearStack();
+                        instance = await InternalSpawn<T>(key);
+                        break;
+                }
+
+                if (instance == null) return null;
+                onInit?.Invoke(instance as T);
+
+                var tasks = ListPool<UniTask>.Get();
+
+                // Handle current top (Parallel Hide)
+                if (_stack.Count > 0)
+                {
+                    var currentTop = _stack[^1];
+                    tasks.Add(OnBeforeHideTop(currentTop, instance));
+                }
+
+                _stack.Add(instance);
+                instance.transform.SetAsLastSibling();
+
+                // Handle new view (Parallel Show)
+                var showTask = OnShowView(instance);
+                tasks.Add(showTask);
+
+                await AwaitTasks(tasks, awaitAnimation);
+
+                return instance as T;
             }
-
-            if (instance == null) return null;
-            onInit?.Invoke(instance as T);
-
-            var tasks = ListPool<UniTask>.Get();
-
-            // Handle current top (Parallel Hide)
-            if (_stack.Count > 0)
+            finally
             {
-                var currentTop = _stack[^1];
-                tasks.Add(OnBeforeHideTop(currentTop, instance));
+                _transitionLock.Release();
             }
-
-            _stack.Add(instance);
-            instance.transform.SetAsLastSibling();
-
-            // Handle new view (Parallel Show)
-            var showTask = OnShowView(instance);
-            tasks.Add(showTask);
-
-            await AwaitTasks(tasks, awaitAnimation);
-
-            return instance as T;
         }
 
         public virtual async UniTask Pop(bool awaitAnimation = true)
         {
-            if (_stack.Count == 0) return;
-
-            var top = _stack[^1];
-            _stack.RemoveAt(_stack.Count - 1);
-
-            var tasks = ListPool<UniTask>.Get();
-
-            // Sequence: Animation -> Destroy/Release
-            async UniTask HideAndCleanup(TView view)
+            await _transitionLock.WaitAsync(DestroyToken);
+            try
             {
-                await OnHideView(view);
-                OnViewDestroyed(view);
+                if (_stack.Count == 0) return;
+
+                var top = _stack[^1];
+                _stack.RemoveAt(_stack.Count - 1);
+
+                var tasks = ListPool<UniTask>.Get();
+
+                // Sequence: Animation -> Destroy/Release
+                async UniTask HideAndCleanup(TView view)
+                {
+                    await OnHideView(view);
+                    OnViewDestroyed(view);
+                }
+
+                tasks.Add(HideAndCleanup(top));
+
+                // Handle the below view (Parallel PopEnter)
+                if (_stack.Count > 0)
+                {
+                    var newTop = _stack[^1];
+                    tasks.Add(OnBeforeShowNewTop(newTop, top));
+                }
+
+                await AwaitTasks(tasks, awaitAnimation);
             }
-
-            tasks.Add(HideAndCleanup(top));
-
-            // Handle the below view (Parallel PopEnter)
-            if (_stack.Count > 0)
+            finally
             {
-                var newTop = _stack[^1];
-                tasks.Add(OnBeforeShowNewTop(newTop, top));
+                _transitionLock.Release();
             }
-
-            await AwaitTasks(tasks, awaitAnimation);
         }
 
         public virtual async UniTask Pop(TView view, bool awaitAnimation = true)
         {
-            if (!view || !_stack.Contains(view)) return;
-
-            // If it's the top one, use normal Pop
-            if (_stack[^1] == view)
+            await _transitionLock.WaitAsync(DestroyToken);
+            try
             {
-                await Pop(awaitAnimation);
-                return;
-            }
+                if (!view || !_stack.Contains(view)) return;
 
-            // A: Pop from middle but ensure cleanup
-            _stack.Remove(view);
-            
-            async UniTask HideAndCleanup(TView v)
+                // If it's the top one, use normal Pop
+                if (_stack[^1] == view)
+                {
+                    // Release and call standard Pop which will handle the lock itself
+                    _transitionLock.Release();
+                    await Pop(awaitAnimation);
+                    return;
+                }
+
+                // Pop from middle but ensure cleanup
+                _stack.Remove(view);
+
+                async UniTask HideAndCleanup(TView v)
+                {
+                    await OnHideView(v);
+                    OnViewDestroyed(v);
+                }
+
+                var finalizeTask = HideAndCleanup(view);
+                if (awaitAnimation) await finalizeTask;
+                else finalizeTask.Forget();
+            }
+            finally
             {
-                await OnHideView(v);
-                OnViewDestroyed(v);
+                // Safety: Only release if we actually still hold it
+                if (_transitionLock.CurrentCount == 0)
+                    _transitionLock.Release();
             }
-
-            var finalizeTask = HideAndCleanup(view);
-            if (awaitAnimation) await finalizeTask;
-            else finalizeTask.Forget();
         }
 
         protected virtual async UniTask<T> InternalSpawn<T>(string key) where T : TView
@@ -163,6 +199,14 @@ namespace PirexGames.Core.UINavigator
                 {
                     Destroy(go);
                 }
+            }
+        }
+
+        public override async UniTask Close(UIView view, bool awaitAnimation = true)
+        {
+            if (view is TView tView)
+            {
+                await Pop(tView, awaitAnimation);
             }
         }
 

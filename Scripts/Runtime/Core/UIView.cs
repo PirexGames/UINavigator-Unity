@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -88,16 +89,36 @@ namespace PirexGames.Core.UINavigator
         }
 
         /// <summary>
-        /// Adjusts the anchoredPosition to keep the view centered even if the pivot is not (0.5, 0.5)
+        /// Adjusts the anchoredPosition to keep the view visually centered at its anchor point,
+        /// compensating for the pivot offset without changing the anchors themselves.
         /// </summary>
         internal void ApplyPivotCenter()
         {
             var rt = transform as RectTransform;
             if (rt == null) return;
 
-            // Calculate offset between current pivot and the center (0.5, 0.5)
+            // Calculate the pivot offset relative to the center (0.5).
+            // This allows us to set anchoredPosition to the correct 'zero' for this pivot.
             Vector2 pivotOffset = new Vector2(rt.pivot.x - 0.5f, rt.pivot.y - 0.5f);
             rt.anchoredPosition = new Vector2(pivotOffset.x * rt.rect.width, pivotOffset.y * rt.rect.height);
+        }
+
+        /// <summary>
+        /// Closes this view via its owner container.
+        /// </summary>
+        public async UniTask Close(bool awaitAnimation = true)
+        {
+            if (Owner != null)
+            {
+                await Owner.Close(this, awaitAnimation);
+            }
+            else
+            {
+                // Fallback if no owner (rare, but for safety)
+                SetActive(false);
+                if (IsPooling) UIContainer.ReturnToPool(NameAddressable, gameObject);
+                else Destroy(gameObject);
+            }
         }
     }
 }

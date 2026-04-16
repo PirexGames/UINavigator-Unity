@@ -458,11 +458,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1498465e1be79b4f9f898db53089940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nameMode: 0
   containerName: Default
   backdropAnimation:
     ShowAnimation: {fileID: 0}
     HideAnimation: {fileID: 0}
   backdropColor: {r: 0, g: 0, b: 0, a: 0.5}
+  stackMode: 0
 --- !u!114 &1265623730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,11 +477,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718321b6731ba0148a0cd96fca004eeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nameMode: 0
   containerName: Default
   backdropAnimation:
     ShowAnimation: {fileID: 0}
     HideAnimation: {fileID: 0}
   backdropColor: {r: 0, g: 0, b: 0, a: 0.5}
+  stackMode: 0
 --- !u!114 &1265623731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,6 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b216a80823f9d4c93312aeed6fce11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nameMode: 0
   containerName: Default
   mode: 0
 --- !u!1 &1380865227
@@ -609,7 +614,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e706010b58d0ed44fbf0618e809b990a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  containerName: Default
+  nameMode: 1
+  containerName: MainScreen
 --- !u!114 &1380865233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -622,6 +628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6554ab56593a474bb39d7fe2904b2fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nameMode: 0
   containerName: Default
 --- !u!1 &1947742438
 GameObject:

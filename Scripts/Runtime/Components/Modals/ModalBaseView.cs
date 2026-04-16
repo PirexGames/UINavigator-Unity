@@ -7,8 +7,8 @@ namespace PirexGames.Core.UINavigator
 {
     public class ModalBaseView : UIView
     {
-        [Header("Modal Animation (Simplified)")]
-        [SerializeField] protected AnimationContainerEView modalAnimation;
+        [Header("Modal Animation (CView)")]
+        [SerializeField] protected AnimationContainerCView modalAnimation;
         public CanvasGroup Backdrop { get; internal set; }
         public bool CloseOnClickBackdrop { get; set; } = false;
 
@@ -17,77 +17,54 @@ namespace PirexGames.Core.UINavigator
             await WaitInitialize();
             if (this == null) return;
             SetActive(true);
-            if (modalAnimation != null && modalAnimation.ShowAnimation != null)
-                await modalAnimation.ShowAnimation.Excute(View, Owner != null ? Owner.RectContainer : null);
-            
-            if (this == null) return;
-            if (modalAnimation == null || modalAnimation.ShowAnimation == null)
+
+            if (modalAnimation != null && modalAnimation.PushEnterAnimation != null)
+                await modalAnimation.PushEnterAnimation.Excute(View, Owner != null ? Owner.RectContainer : null);
+            else
             {
-                transform.localScale = Vector3.one;
                 View.alpha = 1;
                 View.blocksRaycasts = true;
                 View.interactable = true;
             }
         }
 
-        public virtual async UniTask OnPushEnter(Vector2 position, bool isLocalPosition = false)
-        {
-            await WaitInitialize();
-            SetActive(true);
-            if (modalAnimation != null && modalAnimation.ShowAnimation != null)
-                await modalAnimation.ShowAnimation.Excute(View, position, isLocalPosition);
-            else
-            {
-                transform.localScale = Vector3.one;
-                View.alpha = 1;
-            }
-        }
-
         public virtual async UniTask OnPushExit(ModalBaseView screenBelow)
         {
             if (this == null) return;
-            // Modals usually don't animate when something is pushed on top of them,
-            // but we must disable it to save performance.
-            SetActive(false);
-            await UniTask.CompletedTask;
+
+            if (modalAnimation != null && modalAnimation.PushExitAnimation != null)
+                await modalAnimation.PushExitAnimation.Excute(View, Owner != null ? Owner.RectContainer : null);
+            else
+            {
+                View.alpha = 0;
+                View.interactable = false;
+                View.blocksRaycasts = false;
+            }
         }
 
         public virtual async UniTask OnPopEnter()
         {
             await WaitInitialize();
+            if (this == null) return;
             SetActive(true);
-            View.alpha = 1;
-            View.blocksRaycasts = true;
-            View.interactable = true;
-            await UniTask.CompletedTask;
-        }
 
-        public virtual async UniTask OnPopEnter(Vector2 position, bool isLocalPosition = false)
-        {
-            await WaitInitialize();
-            SetActive(true);
-            View.alpha = 1;
+            if (modalAnimation != null && modalAnimation.PopEnterAnimation != null)
+                await modalAnimation.PopEnterAnimation.Excute(View, Owner != null ? Owner.RectContainer : null);
+            else
+            {
+                View.alpha = 1;
+                View.blocksRaycasts = true;
+                View.interactable = true;
+            }
         }
 
         public virtual async UniTask OnPopExit()
         {
             if (this == null) return;
-            if (modalAnimation != null && modalAnimation.HideAnimation != null)
-                await modalAnimation.HideAnimation.Excute(View, Owner != null ? Owner.RectContainer : null);
-            
-            SetActive(false);
-        }
 
-        public virtual async UniTask OnPopExit(Vector2 position, bool isLocalPosition = false)
-        {
-            if (this == null) return;
-            if (modalAnimation != null && modalAnimation.HideAnimation != null)
-                await modalAnimation.HideAnimation.Excute(View, position, isLocalPosition);
-            else
-            {
-                transform.localScale = Vector3.zero;
-                View.alpha = 1;
-            }
+            if (modalAnimation != null && modalAnimation.PopExitAnimation != null)
+                await modalAnimation.PopExitAnimation.Excute(View, Owner != null ? Owner.RectContainer : null);
+            
             SetActive(false);
         }
     }
