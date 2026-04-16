@@ -23,7 +23,7 @@ namespace PirexGames.Core.UINavigator
             {
                 View.alpha = 1f;
             }
-            View.blocksRaycasts = true;
+            View.interactable = true;
         }
 
         public virtual async UniTask OnHide()

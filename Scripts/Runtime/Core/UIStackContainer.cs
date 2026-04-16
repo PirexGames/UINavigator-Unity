@@ -23,9 +23,12 @@ namespace PirexGames.Core.UINavigator
 
         public virtual async UniTask<T> Push<T>(string key, ViewPushMode mode = ViewPushMode.Standard, bool awaitAnimation = false, Action<T> onInit = null) where T : TView
         {
-            await _transitionLock.WaitAsync(DestroyToken);
+            bool lockAcquired = false;
             try
             {
+                await _transitionLock.WaitAsync(DestroyToken);
+                lockAcquired = true;
+
                 TView instance = null;
 
                 switch (mode)
@@ -85,15 +88,18 @@ namespace PirexGames.Core.UINavigator
             }
             finally
             {
-                _transitionLock.Release();
+                if (lockAcquired) _transitionLock.Release();
             }
         }
 
         public virtual async UniTask Pop(bool awaitAnimation = true)
         {
-            await _transitionLock.WaitAsync(DestroyToken);
+            bool lockAcquired = false;
             try
             {
+                await _transitionLock.WaitAsync(DestroyToken);
+                lockAcquired = true;
+
                 if (_stack.Count == 0) return;
 
                 var top = _stack[^1];
@@ -121,22 +127,27 @@ namespace PirexGames.Core.UINavigator
             }
             finally
             {
-                _transitionLock.Release();
+                if (lockAcquired) _transitionLock.Release();
             }
         }
 
         public virtual async UniTask Pop(TView view, bool awaitAnimation = true)
         {
-            await _transitionLock.WaitAsync(DestroyToken);
+            bool lockAcquired = false;
             try
             {
+                await _transitionLock.WaitAsync(DestroyToken);
+                lockAcquired = true;
+
                 if (!view || !_stack.Contains(view)) return;
 
                 // If it's the top one, use normal Pop
                 if (_stack[^1] == view)
                 {
-                    // Release and call standard Pop which will handle the lock itself
+                    // Relinquish our lock BEFORE calling the nested Pop
+                    lockAcquired = false;
                     _transitionLock.Release();
+                    
                     await Pop(awaitAnimation);
                     return;
                 }
@@ -156,9 +167,7 @@ namespace PirexGames.Core.UINavigator
             }
             finally
             {
-                // Safety: Only release if we actually still hold it
-                if (_transitionLock.CurrentCount == 0)
-                    _transitionLock.Release();
+                if (lockAcquired) _transitionLock.Release();
             }
         }
 

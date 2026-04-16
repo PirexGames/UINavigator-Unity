@@ -25,9 +25,12 @@ namespace PirexGames.Core.UINavigator
 
         public async UniTask<T> Show<T>(string key, string content, RectTransform target, TooltipPosition tooltipPosition, Vector2 offset, bool isCloseAnyClick = true) where T : TooltipBaseView
         {
-            await _transitionLock.WaitAsync(DestroyToken);
+            bool lockAcquired = false;
             try
             {
+                await _transitionLock.WaitAsync(DestroyToken);
+                lockAcquired = true;
+
                 if (_currentTooltipBase != null)
                 {
                     // Call internal hide logic that bypasses the lock to avoid deadlock
@@ -49,8 +52,8 @@ namespace PirexGames.Core.UINavigator
                 if (this == null || _currentTooltipBase != tooltip) return null; // Safety check after async spawn
 
                 // Calculate target center in Container's local space
-                Vector3 targetWorldCenter = target.TransformPoint(target.rect.center);
                 Vector2 targetLocalCenter;
+                Vector3 targetWorldCenter = target.TransformPoint(target.rect.center);
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(
                     RectContainer,
                     RectTransformUtility.WorldToScreenPoint(null, targetWorldCenter),
@@ -121,7 +124,7 @@ namespace PirexGames.Core.UINavigator
             }
             finally
             {
-                _transitionLock.Release();
+                if (lockAcquired) _transitionLock.Release();
             }
         }
 
@@ -141,14 +144,16 @@ namespace PirexGames.Core.UINavigator
 
         public async UniTask Hide()
         {
-            await _transitionLock.WaitAsync(DestroyToken);
+            bool lockAcquired = false;
             try
             {
+                await _transitionLock.WaitAsync(DestroyToken);
+                lockAcquired = true;
                 await InternalHide();
             }
             finally
             {
-                _transitionLock.Release();
+                if (lockAcquired) _transitionLock.Release();
             }
         }
 
@@ -176,9 +181,11 @@ namespace PirexGames.Core.UINavigator
 
         public override async UniTask Close(UIView view, bool awaitAnimation = true)
         {
-            await _transitionLock.WaitAsync(DestroyToken);
+            bool lockAcquired = false;
             try
             {
+                await _transitionLock.WaitAsync(DestroyToken);
+                lockAcquired = true;
                 if (view == _currentTooltipBase)
                 {
                     await InternalHide();
@@ -186,7 +193,7 @@ namespace PirexGames.Core.UINavigator
             }
             finally
             {
-                _transitionLock.Release();
+                if (lockAcquired) _transitionLock.Release();
             }
         }
     }
