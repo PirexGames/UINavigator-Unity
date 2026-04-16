@@ -182,7 +182,11 @@ namespace PirexGames.Core.UINavigator
                 
                 // Ensure alpha is 0 before activating to prevent flickering
                 var cg = pooledView.GetComponent<CanvasGroup>();
-                if (cg != null) cg.alpha = 0;
+                if (cg)
+                {
+                    cg.alpha = 0;
+                    cg.blocksRaycasts = false;
+                }
                 
                 pooledView.SetActive(true);
                 return pooledView;
@@ -196,7 +200,11 @@ namespace PirexGames.Core.UINavigator
             
             // Ensure alpha is 0 immediately
             var newCg = go.GetComponent<CanvasGroup>();
-            if (newCg != null) newCg.alpha = 0;
+            if (newCg)
+            {
+                newCg.alpha = 0;
+                newCg.blocksRaycasts = false;
+            }
             
             return go;
         }

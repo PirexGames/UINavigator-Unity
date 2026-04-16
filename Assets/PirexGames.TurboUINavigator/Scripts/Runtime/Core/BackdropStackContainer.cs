@@ -119,7 +119,6 @@ namespace PirexGames.Core.UINavigator
             var cg = overlayGO.GetComponent<CanvasGroup>();
             cg.alpha = 0;
             cg.blocksRaycasts = true;
-            cg.interactable = true;
 
             if (forView.CloseOnClickBackdrop)
             {
@@ -157,7 +156,6 @@ namespace PirexGames.Core.UINavigator
             if (cg != null)
             {
                 cg.blocksRaycasts = targetAlpha > 0;
-                cg.interactable = targetAlpha > 0;
             }
         }
     }

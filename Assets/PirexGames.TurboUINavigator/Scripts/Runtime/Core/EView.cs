@@ -10,6 +10,7 @@ namespace PirexGames.Core.UINavigator
 
         internal virtual async UniTask OnShow(Vector2? position = null, bool isLocalPosition = false)
         {
+            View.alpha = 0f;
             await WaitInitialize();
             
             if (View == null) return; // Safety check
@@ -25,9 +26,8 @@ namespace PirexGames.Core.UINavigator
             {
                 transform.localScale = Vector3.one;
                 View.alpha = 1;
-                View.blocksRaycasts = true;
-                View.interactable = true;
             }
+            View.blocksRaycasts = true;
         }
 
         internal virtual async UniTask OnHide(Vector2? position = null, bool isLocalPosition = false)
@@ -45,9 +45,8 @@ namespace PirexGames.Core.UINavigator
             else
             {
                 View.alpha = 0;
-                View.blocksRaycasts = false;
-                View.interactable = false;
             }
+            View.blocksRaycasts = false;
         }
     }
 }

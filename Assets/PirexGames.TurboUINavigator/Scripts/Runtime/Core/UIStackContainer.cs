@@ -19,7 +19,9 @@ namespace PirexGames.Core.UINavigator
             _transitionLock?.Dispose();
         }
 
-        public virtual async UniTask<T> Push<T>(string key, ViewPushMode mode = ViewPushMode.Standard, bool awaitAnimation = true, Action<T> onInit = null) where T : TView
+        public virtual async UniTask Push(string key, ViewPushMode mode = ViewPushMode.Standard, bool awaitAnimation = false) => await Push<TView>(key, mode, awaitAnimation);
+
+        public virtual async UniTask<T> Push<T>(string key, ViewPushMode mode = ViewPushMode.Standard, bool awaitAnimation = false, Action<T> onInit = null) where T : TView
         {
             await _transitionLock.WaitAsync(DestroyToken);
             try
