@@ -96,7 +96,7 @@ namespace PirexGames.Core.UINavigator
             var go = await UIContainer.SpawnView(key, contentRoot);
             if (go != null)
             {
-                _currentTab = go.GetComponent<Tab>();
+                _currentTab = go.GetComponent<TabView>();
                 if (_currentTab != null)
                 {
                     _currentTab.NameAddressable = key;
