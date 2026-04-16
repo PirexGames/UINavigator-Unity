@@ -23,9 +23,9 @@ namespace PirexGames.Core.UINavigator
             else
             {
                 View.alpha = 1;
-                View.blocksRaycasts = true;
-                View.interactable = true;
             }
+            
+            View.blocksRaycasts = true;
         }
 
         public virtual async UniTask OnPushExit(ModalBaseView screenBelow)
@@ -37,9 +37,8 @@ namespace PirexGames.Core.UINavigator
             else
             {
                 View.alpha = 0;
-                View.interactable = false;
-                View.blocksRaycasts = false;
             }
+            View.blocksRaycasts = false;
         }
 
         public virtual async UniTask OnPopEnter()
@@ -53,9 +52,9 @@ namespace PirexGames.Core.UINavigator
             else
             {
                 View.alpha = 1;
-                View.blocksRaycasts = true;
-                View.interactable = true;
             }
+            
+            View.blocksRaycasts = true;
         }
 
         public virtual async UniTask OnPopExit()

@@ -21,10 +21,9 @@ namespace PirexGames.Core.UINavigator
                 await tabAnimation.ShowAnimation.Excute(View, Owner != null ? Owner.RectContainer : null);
             else
             {
-                View.alpha = 1;
-                View.blocksRaycasts = true;
-                View.interactable = true;
+                View.alpha = 1f;
             }
+            View.blocksRaycasts = true;
         }
 
         public virtual async UniTask OnHide()
