@@ -111,7 +111,7 @@ MonoBehaviour:
     PushEnterAnimation: {fileID: 11400000, guid: 284203af59248eb49a7a3ff876b9ee4f, type: 2}
     PushExitAnimation: {fileID: 11400000, guid: 5f2f2b359f3371a4f924dd7c34d4445b, type: 2}
     PopEnterAnimation: {fileID: 11400000, guid: 04bf889a095b8c54a9de3fe2589b845b, type: 2}
-    PopExitAnimation: {fileID: 11400000, guid: b1d6453dcbfacba40a2e795a2e48d6ab, type: 2}
+    PopExitAnimation: {fileID: 0}
   btnsBack:
   - {fileID: 6017795023300841421}
 --- !u!1 &241537716460074

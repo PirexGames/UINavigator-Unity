@@ -10,20 +10,25 @@ namespace PirexGames.Core.UINavigator
 {
     public static class AddressableHelper<T>
     {
-        private static Dictionary<string, T> cachedList = new Dictionary<string, T>();
+        private static Dictionary<string, AsyncOperationHandle<T>> cachedHandles = new Dictionary<string, AsyncOperationHandle<T>>();
+        
         public static async UniTask<T> GetAsync(string key)
         {
-            if (cachedList.TryGetValue(key, out var result))
+            if (cachedHandles.TryGetValue(key, out var handle))
             {
-                return result;
+                if (handle.IsValid()) return handle.Result;
+                cachedHandles.Remove(key);
             }
-            var go = Addressables.LoadAssetAsync<T>(key);
-            await go.Task;
-            if (go.Status == AsyncOperationStatus.Succeeded)
+
+            var asyncHandle = Addressables.LoadAssetAsync<T>(key);
+            await asyncHandle.Task;
+            
+            if (asyncHandle.Status == AsyncOperationStatus.Succeeded)
             {
-                cachedList[key] = go.Result;
-                return go.Result;
+                cachedHandles[key] = asyncHandle;
+                return asyncHandle.Result;
             }
+
             return default(T);
         }
 
@@ -36,16 +41,19 @@ namespace PirexGames.Core.UINavigator
 
         public static void ClearCache()
         {
-            if (cachedList == null) return;
+            if (cachedHandles == null) return;
 
-            foreach (var item in cachedList.Values)
+            // Use a HashSet to ensure we only release each unique handle once
+            // though with Dic<Key, Handle>, handles should be unique per key already.
+            // Addressables handles are struct, so we check Validity.
+            foreach (var handle in cachedHandles.Values)
             {
-                if (item != null)
+                if (handle.IsValid())
                 {
-                    Addressables.Release(item);
+                    Addressables.Release(handle);
                 }
             }
-            cachedList.Clear();
+            cachedHandles.Clear();
         }
     }
 }

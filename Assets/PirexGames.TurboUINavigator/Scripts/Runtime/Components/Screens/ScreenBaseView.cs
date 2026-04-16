@@ -23,7 +23,7 @@ namespace PirexGames.Core.UINavigator
                 transform.localScale = Vector3.one;
                 View.alpha = 1;
             }
-            View.blocksRaycasts = true;
+            View.interactable = true;
         }
 
         public virtual async UniTask OnPushExit(ScreenBaseView screenBaseBelow)
@@ -46,7 +46,7 @@ namespace PirexGames.Core.UINavigator
                 transform.localScale = Vector3.one;
                 View.alpha = 1;
             }
-            View.blocksRaycasts = true;
+            View.interactable = true;
         }
 
         public virtual async UniTask OnPopExit()
