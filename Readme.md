@@ -75,6 +75,23 @@ UINavigator.Tooltips.Show<TooltipBaseAutoView>(
 
 ## 🛠 Advanced Features
 
+### Type-Safe Access (Code Generation)
+Turbo UINavigator includes a generator that scans your project for custom containers and generates a type-safe hub.
+
+1. Set your Container's **Name Mode** to `Custom` and give it a unique **Container Name**.
+2. Run the generator via: `Tools > PirexGames > UINavigator > Regenerate Hub Accessors`.
+3. Access your custom containers via `UINavigatorHub` with full IDE IntelliSense:
+
+```csharp
+// Instead of searching by string:
+var inventory = UINavigator.GetContainer<ModalContainer>("Inventory");
+
+// Use the generated hub:
+UINavigatorHub.Inventory.Push<InventoryView>("Modal_Inventory").Forget();
+```
+
+*Note: The generator automatically runs whenever you save a Scene or a Prefab.*
+
 ### Automatic Memory Cleanup
 By default, Turbo UINavigator clears all object pools and Addressable asset caches when the scene changes to prevent memory leaks.
 ```csharp
