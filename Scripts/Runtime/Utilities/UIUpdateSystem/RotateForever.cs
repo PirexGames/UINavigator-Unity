@@ -9,7 +9,7 @@ namespace PirexGames.Core.UINavigator
         [SerializeField] private float speed = 180f;
         public override void OnUpdate()
         {
-            transform.Rotate(Vector3.forward * speed * Time.deltaTime);
+            transform.Rotate(Vector3.forward * speed * Time.unscaledDeltaTime);
         }
     }
 }

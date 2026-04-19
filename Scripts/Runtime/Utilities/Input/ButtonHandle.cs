@@ -121,8 +121,8 @@ namespace PirexGames.Core.UINavigator
                     scaleTween.Kill();
 
                 scaleTween = useCustomTransform ?
-                customTransform.DOScale(targetSize, duration) :
-                transform.DOScale(targetSize, duration);
+                customTransform.DOScale(targetSize, duration).SetUpdate(true) :
+                transform.DOScale(targetSize, duration).SetUpdate(true);
 #else
                 if (useCustomTransform) customTransform.localScale = targetSize;
                 else transform.localScale = targetSize;
@@ -158,9 +158,9 @@ namespace PirexGames.Core.UINavigator
                     scaleTween.Kill();
 
                 if (useCustomTransform)
-                    scaleTween = customTransform.DOScale(defaultSize, duration);
+                    scaleTween = customTransform.DOScale(defaultSize, duration).SetUpdate(true);
                 else
-                    scaleTween = transform.DOScale(defaultSize, duration);
+                    scaleTween = transform.DOScale(defaultSize, duration).SetUpdate(true);
 #else
                 if (useCustomTransform) customTransform.localScale = defaultSize;
                 else transform.localScale = defaultSize;
@@ -180,7 +180,7 @@ namespace PirexGames.Core.UINavigator
 
                 //prevent spam click on multiple buttons: temporarily disable the button, so the button click action don't trigger in the current frame------------------
 
-                float curTime = Time.time;
+                float curTime = Time.unscaledTime;
                 if (curTime <= s_lastTimeStampTriggerAction + PREVENT_MULTIPLE_BUTTON_CLICK_COOLDOWN)
                 {
                     PreventSpamCoolDownMultipleButtonsClick();
@@ -199,7 +199,7 @@ namespace PirexGames.Core.UINavigator
         {
             selectableController.image.raycastTarget = false;
 
-            await UniTask.Delay(spamCooldownInMs);
+            await UniTask.Delay(spamCooldownInMs, ignoreTimeScale: true);
 
             if (selectableController || selectableController.image)
             {
