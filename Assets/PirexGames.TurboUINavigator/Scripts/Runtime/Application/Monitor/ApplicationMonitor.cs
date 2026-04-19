@@ -35,7 +35,7 @@ namespace PirexGames.Core.UINavigator
             {
                 _loadingOverlay.gameObject.SetActive(true);
 #if DOTWEEN_ENABLED
-                _loadingOverlay.DOFade(1f, duration);
+                _loadingOverlay.DOFade(1f, duration).SetUpdate(true);
 #else
                 _loadingOverlay.alpha = 1f;
 #endif
@@ -43,7 +43,7 @@ namespace PirexGames.Core.UINavigator
             else
             {
 #if DOTWEEN_ENABLED
-                await _loadingOverlay.DOFade(0f, duration).AsyncWaitForCompletion();
+                await _loadingOverlay.DOFade(0f, duration).SetUpdate(true).AsyncWaitForCompletion();
 #else
                 _loadingOverlay.alpha = 0f;
                 await UniTask.CompletedTask;

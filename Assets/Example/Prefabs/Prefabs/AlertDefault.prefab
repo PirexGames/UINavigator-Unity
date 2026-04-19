@@ -1141,8 +1141,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPooling: 0
   modalAnimation:
-    ShowAnimation: {fileID: 11400000, guid: 2fd31a1f72e6dbb4a8f8375921f596a3, type: 2}
-    HideAnimation: {fileID: 11400000, guid: a9b203c369667984786cc0bb55774ae4, type: 2}
+    PushEnterAnimation: {fileID: 11400000, guid: 2fd31a1f72e6dbb4a8f8375921f596a3, type: 2}
+    PushExitAnimation: {fileID: 0}
+    PopEnterAnimation: {fileID: 0}
+    PopExitAnimation: {fileID: 0}
   titleTxt: {fileID: 1348187245090932304}
   contentTxt: {fileID: 7727559188010631821}
   btnPositive: {fileID: 1348187245745434872}

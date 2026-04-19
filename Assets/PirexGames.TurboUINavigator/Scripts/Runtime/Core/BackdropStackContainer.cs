@@ -138,7 +138,7 @@ namespace PirexGames.Core.UINavigator
             float duration = 0.25f;
 
 #if DOTWEEN_ENABLED
-            await cg.DOFade(targetAlpha, duration).AsyncWaitForCompletion();
+            await cg.DOFade(targetAlpha, duration).SetUpdate(true).AsyncWaitForCompletion();
 #else
             float startAlpha = cg.alpha;
             float elapsed = 0;
@@ -146,7 +146,7 @@ namespace PirexGames.Core.UINavigator
             while (elapsed < duration)
             {
                 if (cg == null) break;
-                elapsed += Time.deltaTime;
+                elapsed += Time.unscaledDeltaTime;
                 cg.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
                 await UniTask.Yield();
             }

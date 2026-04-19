@@ -62,7 +62,7 @@ namespace PirexGames.Core.UINavigator
 
         private async UniTaskVoid HandleAutoClose(ToastView toast, float duration)
         {
-            await UniTask.Delay((int)(duration * 1000), cancellationToken: toast.SessionToken);
+            await UniTask.Delay((int)(duration * 1000), ignoreTimeScale: true, cancellationToken: toast.SessionToken);
             
             if (!toast) return;
 

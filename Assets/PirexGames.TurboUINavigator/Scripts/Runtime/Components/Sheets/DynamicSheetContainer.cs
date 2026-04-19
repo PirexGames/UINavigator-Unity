@@ -238,8 +238,8 @@ namespace PirexGames.Core.UINavigator
 
             Vector2 targetPos = new Vector2(wPosMoveTo, hPosMoveTo) + sheet.offset;
 #if DOTWEEN_ENABLED
-            sheet.canvasGroup.transform.DOLocalMove(targetPos, duration);
-            await sheet.canvasGroup.DOFade(isOn ? 1 : 0, duration * 2).AsyncWaitForCompletion();
+            sheet.canvasGroup.transform.DOLocalMove(targetPos, duration).SetUpdate(true);
+            await sheet.canvasGroup.DOFade(isOn ? 1 : 0, duration * 2).SetUpdate(true).AsyncWaitForCompletion();
 #else
             sheet.canvasGroup.transform.localPosition = targetPos;
             sheet.canvasGroup.alpha = isOn ? 1 : 0;

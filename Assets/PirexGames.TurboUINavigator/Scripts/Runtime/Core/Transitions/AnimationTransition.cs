@@ -47,12 +47,12 @@ namespace PirexGames.Core.UINavigator
             target.transform.localScale = scaleBefore;
             target.transform.localPosition = GetPosition(positionBefore, (RectTransform)target.transform, container, offsetBefore);
 
-            target.DOFade(alphaAfter, duration).SetEase(ease);
-            target.transform.DOScale(scaleAfter, duration).SetEase(ease);
+            target.DOFade(alphaAfter, duration).SetEase(ease).SetUpdate(true);
+            target.transform.DOScale(scaleAfter, duration).SetEase(ease).SetUpdate(true);
 
             var moveTask = target.transform.DOLocalMove
                 (GetPosition(positionAfter, (RectTransform)target.transform, container, offsetAfter), duration)
-                .SetEase(ease)
+                .SetEase(ease).SetUpdate(true)
                 .AsyncWaitForCompletion();
             
             await moveTask;
@@ -80,8 +80,8 @@ namespace PirexGames.Core.UINavigator
             else
                 target.transform.position = position;
 
-            target.DOFade(alphaAfter, duration).SetEase(ease);
-            var scaleTask = target.transform.DOScale(scaleAfter, duration).SetEase(ease).AsyncWaitForCompletion();
+            target.DOFade(alphaAfter, duration).SetEase(ease).SetUpdate(true);
+            var scaleTask = target.transform.DOScale(scaleAfter, duration).SetEase(ease).SetUpdate(true).AsyncWaitForCompletion();
             await scaleTask;
             if (!target) return;
 #else
