@@ -19,12 +19,36 @@
 
 ## 📦 Installation
 
-This package requires **UniTask** and **Addressables**.
+### Prerequisites
 
-1. Install [UniTask](https://github.com/Cysharp/UniTask) via UPM.
-2. Install [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest) via Package Manager.
-3. Import the `TurboUINavigator` folder into your project.
-4. (Optional) Add `DOTWEEN_ENABLED` to your **Scripting Define Symbols** to enable smooth animations.
+Before installing, add the following dependencies to your `Packages/manifest.json`:
+
+```json
+{
+  "dependencies": {
+    "com.unity.addressables": "2.3.1",
+    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask"
+  }
+}
+```
+
+*(Optional)* For smooth animations, install **DOTween** from the [Unity Asset Store](https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676), then add `DOTWEEN_ENABLED` to **Edit > Project Settings > Player > Scripting Define Symbols**.
+
+---
+
+### Install Turbo UINavigator
+
+Add the following entry to your `Packages/manifest.json`:
+
+```json
+{
+  "dependencies": {
+    "com.pirexgames.uinavigator": "https://github.com/PirexGames/UINavigator-Unity.git#[version]"
+  }
+}
+```
+
+Replace `[version]` with a specific tag, e.g. `#1.0.0`, or use `#upm` for the latest.
 
 ---
 
