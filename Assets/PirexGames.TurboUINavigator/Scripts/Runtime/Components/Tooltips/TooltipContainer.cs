@@ -1,0 +1,228 @@
+using System;
+using UnityEngine;
+using Cysharp.Threading.Tasks;
+using UnityEngine.InputSystem;
+using UnityEngine.AddressableAssets;
+
+namespace PirexGames.Core.UINavigator
+{
+    public class TooltipContainer : UIContainer<TooltipBaseView>
+    {
+        private TooltipBaseView _currentTooltipBase;
+        private readonly System.Threading.SemaphoreSlim _transitionLock = new(1, 1);
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            _transitionLock?.Dispose();
+        }
+
+        public async UniTask Show(string key, string content, RectTransform target,
+            TooltipPosition tooltipPosition, bool isCloseAnyClick = true)
+        {
+            await Show<TooltipBaseView>(key, content, target, tooltipPosition, Vector2.zero, isCloseAnyClick);
+        }
+
+        public async UniTask Show(string key, string content, RectTransform target,
+            TooltipPosition tooltipPosition, Vector2 offset, bool isCloseAnyClick = true)
+        {
+            await Show<TooltipBaseView>(key, content, target, tooltipPosition, offset, isCloseAnyClick);
+        }
+
+        public async UniTask<T> Show<T>(string key, string content, RectTransform target,
+            TooltipPosition tooltipPosition, bool isCloseAnyClick = true, Action<T> onInit = null) where T : TooltipBaseView
+        {
+            return await Show<T>(key, content, target, tooltipPosition, Vector2.zero, isCloseAnyClick, onInit);
+        }
+
+        public async UniTask<T> Show<T>(string key, string content, RectTransform target, TooltipPosition tooltipPosition, Vector2 offset, bool isCloseAnyClick = true, Action<T> onInit = null) where T : TooltipBaseView
+        {
+            bool lockAcquired = false;
+            try
+            {
+                await _transitionLock.WaitAsync(DestroyToken);
+                lockAcquired = true;
+
+                if (_currentTooltipBase != null)
+                {
+                    // Call internal hide logic that bypasses the lock to avoid deadlock
+                    await InternalHide();
+                }
+
+                var go = await SpawnView(key, RectContainer);
+                var tooltip = go.GetComponent<T>();
+                if (tooltip == null)
+                {
+                    Debug.LogError($"[TooltipContainer] Prefab '{key}' does not have component '{typeof(T).Name}' attached!");
+                    return null;
+                }
+
+                _currentTooltipBase = tooltip;
+                tooltip.NameAddressable = key;
+                await tooltip.DoInitialize();
+                onInit?.Invoke(tooltip);
+
+                if (this == null || _currentTooltipBase != tooltip) return null; // Safety check after async spawn
+
+                // Calculate target center in Container's local space
+                Vector2 targetLocalCenter;
+                Vector3 targetWorldCenter = target.TransformPoint(target.rect.center);
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    RectContainer,
+                    RectTransformUtility.WorldToScreenPoint(null, targetWorldCenter),
+                    null,
+                    out targetLocalCenter
+                );
+
+                var tooltipRect = (RectTransform)tooltip.transform;
+                float pivotX = tooltipRect.pivot.x;
+                float pivotY = tooltipRect.pivot.y;
+                float tWidth = tooltipRect.rect.width;
+                float tHeight = tooltipRect.rect.height;
+
+                float hPos = 0f;
+                float wPos = 0f;
+
+                switch (tooltipPosition)
+                {
+                    case TooltipPosition.Top:
+                        hPos = (target.rect.height / 2) + (pivotY * tHeight);
+                        break;
+                    case TooltipPosition.Bottom:
+                        hPos = (-target.rect.height / 2) - ((1 - pivotY) * tHeight);
+                        break;
+                    case TooltipPosition.Left:
+                        wPos = (-target.rect.width / 2) - ((1 - pivotX) * tWidth);
+                        break;
+                    case TooltipPosition.Right:
+                        wPos = (target.rect.width / 2) + (pivotX * tWidth);
+                        break;
+                    case TooltipPosition.TopLeft:
+                        hPos = (target.rect.height / 2) + (pivotY * tHeight);
+                        wPos = (-target.rect.width / 2) - ((1 - pivotX) * tWidth);
+                        break;
+                    case TooltipPosition.TopRight:
+                        hPos = (target.rect.height / 2) + (pivotY * tHeight);
+                        wPos = (target.rect.width / 2) + (pivotX * tWidth);
+                        break;
+                    case TooltipPosition.BottomLeft:
+                        hPos = (-target.rect.height / 2) - ((1 - pivotY) * tHeight);
+                        wPos = (-target.rect.width / 2) - ((1 - pivotX) * tWidth);
+                        break;
+                    case TooltipPosition.BottomRight:
+                        hPos = (-target.rect.height / 2) - ((1 - pivotY) * tHeight);
+                        wPos = (target.rect.width / 2) + (pivotX * tWidth);
+                        break;
+                }
+
+                Vector2 positionShow = targetLocalCenter + new Vector2(wPos, hPos) + offset;
+
+                if (tooltipPosition == TooltipPosition.Auto && tooltip is TooltipBaseAutoView autoTooltip)
+                {
+                    await autoTooltip.InitAuto(content, target, RectContainer, offset);
+                }
+                else
+                {
+                    await tooltip.Init(content, positionShow, true);
+                }
+
+                if (this == null || _currentTooltipBase != tooltip) return null; // Post-animation safety check
+
+                if (isCloseAnyClick)
+                {
+                    HandleAutoClose(tooltip).Forget();
+                }
+
+                return tooltip;
+            }
+            finally
+            {
+                if (lockAcquired) _transitionLock.Release();
+            }
+        }
+
+        private async UniTaskVoid HandleAutoClose(TooltipBaseView tooltipBase)
+        {
+            await UniTask.NextFrame();
+            await UniTask.WaitUntil(() => 
+                Pointer.current != null && Pointer.current.press.wasPressedThisFrame,
+                cancellationToken: tooltipBase.SessionToken
+            );
+
+            if (this != null && tooltipBase == _currentTooltipBase)
+            {
+                await Hide();
+            }
+        }
+
+        public async UniTask Hide()
+        {
+            bool lockAcquired = false;
+            try
+            {
+                await _transitionLock.WaitAsync(DestroyToken);
+                lockAcquired = true;
+                await InternalHide();
+            }
+            finally
+            {
+                if (lockAcquired) _transitionLock.Release();
+            }
+        }
+
+        private async UniTask InternalHide()
+        {
+            if (_currentTooltipBase == null) return;
+
+            var tooltip = _currentTooltipBase;
+            _currentTooltipBase = null; // Prevent re-entry immediately
+
+            await tooltip.OnHide();
+            
+            if (tooltip && tooltip.gameObject)
+            {
+                if (tooltip.IsPooling)
+                {
+                    UIContainer.ReturnToPool(tooltip.NameAddressable, tooltip.gameObject);
+                }
+                else
+                {
+                    Destroy(tooltip.gameObject);
+                }
+            }
+        }
+
+        public override async UniTask Close(UIView view, bool awaitAnimation = true)
+        {
+            bool lockAcquired = false;
+            try
+            {
+                await _transitionLock.WaitAsync(DestroyToken);
+                lockAcquired = true;
+                if (view == _currentTooltipBase)
+                {
+                    await InternalHide();
+                }
+            }
+            finally
+            {
+                if (lockAcquired) _transitionLock.Release();
+            }
+        }
+    }
+
+    [Flags]
+    public enum TooltipPosition
+    {
+        None = 0,
+        Top = 1 << 0,
+        Bottom = 1 << 1,
+        Left = 1 << 2,
+        Right = 1 << 3,
+        TopLeft = 1 << 4,
+        TopRight = 1 << 5,
+        BottomLeft = 1 << 6,
+        BottomRight = 1 << 7,
+        Auto = 1 << 8
+    }
+}

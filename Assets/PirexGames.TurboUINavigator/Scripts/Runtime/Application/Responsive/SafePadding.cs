@@ -1,13 +1,12 @@
-using System;
 using UnityEngine;
+using System;
 
 namespace PirexGames.SafePadding
 {
-
+    [DisallowMultipleComponent]
+    [DefaultExecutionOrder(-999)]
     public class SafePadding : MonoBehaviour
     {
-        #region Simulations
-
         public enum SimDevice
         {
             None,
@@ -16,125 +15,118 @@ namespace PirexGames.SafePadding
         }
 
         public static SimDevice Sim = SimDevice.None;
-        protected Rect[] NSA_iPhoneX = new Rect[]
+
+        // Giả lập SafeArea trong Editor
+        private readonly Rect[] SimSafeAreas_iPhoneX = new Rect[]
         {
-            new Rect (0f, 102f / 2436f, 1f, 2202f / 2436f),  // Portrait
-            new Rect (132f / 2436f, 63f / 1125f, 2172f / 2436f, 1062f / 1125f)  // Landscape
+            new Rect(0f, 102f / 2436f, 1f, 2202f / 2436f),     // Portrait
+            new Rect(132f / 2436f, 63f / 1125f, 2172f / 2436f, 1062f / 1125f)  // Landscape
         };
 
-        protected Rect[] NSA_iPhoneXsMax = new Rect[]
+        private readonly Rect[] SimSafeAreas_iPhoneXsMax = new Rect[]
         {
-        new Rect (0f, 102f / 2688f, 1f, 2454f / 2688f),  // Portrait
-        new Rect (132f / 2688f, 63f / 1242f, 2424f / 2688f, 1179f / 1242f)  // Landscape
+            new Rect(0f, 102f / 2688f, 1f, 2454f / 2688f),     // Portrait
+            new Rect(132f / 2688f, 63f / 1242f, 2424f / 2688f, 1179f / 1242f)  // Landscape
         };
 
-        #endregion
-
-        #region Bigfoot variables
-        public static Rect CurrentSA;
+        public static Rect CurrentSafeArea { get; private set; }
         public static Action OnUpdate;
-        #endregion
 
-        protected RectTransform Panel;
+        [SerializeField] private bool ConformX = true;
+        [SerializeField] private bool ConformY = true;
 
-        protected Rect LastSafeArea = new Rect(0, 0, 0, 0);
-        [SerializeField] bool ConformX = true;
-        [SerializeField] bool ConformY = true;
+        private RectTransform panel;
+        private Rect lastSafeArea = new Rect(0, 0, 0, 0);
 
         void Awake()
         {
-            Panel = GetComponent<RectTransform>();
+            panel = GetComponent<RectTransform>();
 
-            if (Panel == null)
+            if (panel == null)
             {
-                Debug.LogError("Cannot apply safe area - no RectTransform found on " + name);
-                Destroy(gameObject);
+                Destroy(this);
+                return;
             }
 
-            Refresh();
+            ApplySafeArea(GetSafeArea());
         }
 
         void Update()
         {
-            Refresh();
+            Rect current = GetSafeArea();
+            if (current != lastSafeArea)
+                ApplySafeArea(current);
         }
 
-        void Refresh()
-        {
-            Rect safeArea = GetSafeArea();
-
-            if (safeArea != LastSafeArea)
-                ApplySafeArea(safeArea);
-        }
-
-        Rect GetSafeArea()
+        private Rect GetSafeArea()
         {
             Rect safeArea = Screen.safeArea;
+
 #if UNITY_EDITOR
             if (Application.isEditor && Sim != SimDevice.None)
             {
-                Rect nsa = new Rect(0, 0, Screen.width, Screen.height);
+                Rect simulated = new Rect(0, 0, 1, 1); // fallback
+                if (Sim == SimDevice.iPhoneX)
+                    simulated = (Screen.height > Screen.width) ? SimSafeAreas_iPhoneX[0] : SimSafeAreas_iPhoneX[1];
+                else if (Sim == SimDevice.iPhoneXsMax)
+                    simulated = (Screen.height > Screen.width) ? SimSafeAreas_iPhoneXsMax[0] : SimSafeAreas_iPhoneXsMax[1];
 
-                switch (Sim)
-                {
-                    case SimDevice.iPhoneX:
-                        if (Screen.height > Screen.width)  // Portrait
-                            nsa = NSA_iPhoneX[0];
-                        else  // Landscape
-                            nsa = NSA_iPhoneX[1];
-                        break;
-                    case SimDevice.iPhoneXsMax:
-                        if (Screen.height > Screen.width)  // Portrait
-                            nsa = NSA_iPhoneXsMax[0];
-                        else  // Landscape
-                            nsa = NSA_iPhoneXsMax[1];
-                        break;
-                    default:
-                        break;
-                }
-
-                safeArea = new Rect(Screen.width * nsa.x, Screen.height * nsa.y, Screen.width * nsa.width, Screen.height * nsa.height);
+                safeArea = new Rect(
+                    simulated.x * Screen.width,
+                    simulated.y * Screen.height,
+                    simulated.width * Screen.width,
+                    simulated.height * Screen.height
+                );
             }
 #endif
-            CurrentSA = safeArea;
 
+            CurrentSafeArea = safeArea;
             return safeArea;
         }
 
-        protected virtual void ApplySafeArea(Rect r)
+        private void ApplySafeArea(Rect r)
         {
-            LastSafeArea = r;
+            lastSafeArea = r;
 
-            // Ignore x-axis?
+#if UNITY_ANDROID
+            // Xử lý cân bằng padding 2 bên trong chế độ landscape
+            if (Screen.width > Screen.height && ConformX)
+            {
+                float leftPadding = r.x;
+                float rightPadding = Screen.width - (r.x + r.width);
+                float paddingDiff = Mathf.Abs(leftPadding - rightPadding);
+
+                // Nếu chỉ lệch 1 bên rõ rệt, ta sẽ cân lại để đều 2 bên
+                if (paddingDiff > 50f) // ngưỡng 50 pixels
+                {
+                    float maxPadding = Mathf.Max(leftPadding, rightPadding);
+                    r.x = maxPadding;
+                    r.width = Screen.width - (2f * maxPadding);
+                }
+            }
+#endif
+
             if (!ConformX)
             {
                 r.x = 0;
                 r.width = Screen.width;
             }
 
-            // Ignore y-axis?
             if (!ConformY)
             {
                 r.y = 0;
                 r.height = Screen.height;
             }
 
-            float widthPadding = Screen.width - r.width;
-            Vector2 minPadding = new Vector2(r.position.x > 0f ? 0f : widthPadding, 0f);
-            Vector2 maxPadding = new Vector2(r.position.x > 0f ? widthPadding : 0f, 0f);
+            Vector2 anchorMin = new Vector2(r.x / Screen.width, r.y / Screen.height);
+            Vector2 anchorMax = new Vector2((r.x + r.width) / Screen.width, (r.y + r.height) / Screen.height);
 
-            Vector2 anchorMin = r.position + minPadding;
-            Vector2 anchorMax = r.position + (r.size - maxPadding);
-            anchorMin.x /= Screen.width;
-            anchorMin.y /= Screen.height;
-            anchorMax.x /= Screen.width;
-            anchorMax.y /= Screen.height;
-            Panel.anchorMin = anchorMin;
-            Panel.anchorMax = anchorMax;
+            panel.anchorMin = anchorMin;
+            panel.anchorMax = anchorMax;
+            panel.offsetMin = Vector2.zero;
+            panel.offsetMax = Vector2.zero;
 
             OnUpdate?.Invoke();
         }
     }
-
-
 }
