@@ -14,7 +14,8 @@
 - **Smart Tooltips**: Boundary-aware, pivot-independent tooltips with automatic repositioning.
 - **Memory Management**: Automatic release of object pools and asset caches during scene transitions.
 - **Universal Sheets**: High-performance Tab/Sheet container with O(1) lookup speeds.
-
+- **Object Pooling**: Optional turn on pooling in prefab ui view (Screen, Modal, Alert, Tooltip, Toast...)
+  
 ---
 
 ## 📦 Installation
