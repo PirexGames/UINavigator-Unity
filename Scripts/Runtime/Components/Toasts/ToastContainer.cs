@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -15,7 +16,12 @@ namespace PirexGames.Core.UINavigator
 
         protected override string RegistryKey => base.RegistryKey + "_" + mode.ToString();
 
-        public async UniTask<T> Show<T>(string key, string content, float duration = 2f) where T : ToastView
+        public async UniTask Show(string key, string content, float duration = 2f)
+        {
+            await Show<ToastView>(key, content, duration);
+        }
+
+        public async UniTask<T> Show<T>(string key, string content, float duration = 2f, Action<T> onInit = null) where T : ToastView
         {
             // Lock-like mechanism: Wait if already processing
             while (_isProcessingMono)
@@ -52,6 +58,7 @@ namespace PirexGames.Core.UINavigator
             toast.NameAddressable = key;
             toast.ApplyPivotCenter();
             await toast.DoInitialize();
+            onInit?.Invoke(toast);
             await toast.Init(content);
             
             _isProcessingMono = false;
