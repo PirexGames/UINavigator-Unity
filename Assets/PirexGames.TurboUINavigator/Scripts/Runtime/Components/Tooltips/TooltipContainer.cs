@@ -17,13 +17,25 @@ namespace PirexGames.Core.UINavigator
             _transitionLock?.Dispose();
         }
 
-        public async UniTask<T> Show<T>(string key, string content, RectTransform target,
-            TooltipPosition tooltipPosition, bool isCloseAnyClick = true) where T : TooltipBaseView
+        public async UniTask Show(string key, string content, RectTransform target,
+            TooltipPosition tooltipPosition, bool isCloseAnyClick = true)
         {
-            return await Show<T>(key, content, target, tooltipPosition, Vector2.zero, isCloseAnyClick);
+            await Show<TooltipBaseView>(key, content, target, tooltipPosition, Vector2.zero, isCloseAnyClick);
         }
 
-        public async UniTask<T> Show<T>(string key, string content, RectTransform target, TooltipPosition tooltipPosition, Vector2 offset, bool isCloseAnyClick = true) where T : TooltipBaseView
+        public async UniTask Show(string key, string content, RectTransform target,
+            TooltipPosition tooltipPosition, Vector2 offset, bool isCloseAnyClick = true)
+        {
+            await Show<TooltipBaseView>(key, content, target, tooltipPosition, offset, isCloseAnyClick);
+        }
+
+        public async UniTask<T> Show<T>(string key, string content, RectTransform target,
+            TooltipPosition tooltipPosition, bool isCloseAnyClick = true, Action<T> onInit = null) where T : TooltipBaseView
+        {
+            return await Show<T>(key, content, target, tooltipPosition, Vector2.zero, isCloseAnyClick, onInit);
+        }
+
+        public async UniTask<T> Show<T>(string key, string content, RectTransform target, TooltipPosition tooltipPosition, Vector2 offset, bool isCloseAnyClick = true, Action<T> onInit = null) where T : TooltipBaseView
         {
             bool lockAcquired = false;
             try
@@ -48,6 +60,7 @@ namespace PirexGames.Core.UINavigator
                 _currentTooltipBase = tooltip;
                 tooltip.NameAddressable = key;
                 await tooltip.DoInitialize();
+                onInit?.Invoke(tooltip);
 
                 if (this == null || _currentTooltipBase != tooltip) return null; // Safety check after async spawn
 
