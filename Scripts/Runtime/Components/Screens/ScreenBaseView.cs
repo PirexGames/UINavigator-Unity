@@ -29,6 +29,7 @@ namespace PirexGames.Core.UINavigator
         public virtual async UniTask OnPushExit(ScreenBaseView screenBaseBelow)
         {
             if (this == null) return;
+            View.blocksRaycasts = false; // Disable immediately to prevent user interaction during exit animation
             if (animationTransition.PushExitAnimation)
                 await animationTransition.PushExitAnimation.Excute(View, Owner != null ? Owner.RectContainer : null);
             
