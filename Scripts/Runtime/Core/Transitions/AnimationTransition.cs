@@ -1,6 +1,9 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+using LitMotion;
+using LitMotion.Extensions;
+#elif DOTWEEN_ENABLED
 using DG.Tweening;
 #endif
 
@@ -24,7 +27,7 @@ namespace PirexGames.Core.UINavigator
         [SerializeField] protected PositionTransitionEnum positionAfter;
         [SerializeField] protected Vector3 offsetAfter;
         
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED || DOTWEEN_ENABLED
         [Header("Ease")]
         [SerializeField] protected Ease ease;
 #endif
@@ -41,7 +44,22 @@ namespace PirexGames.Core.UINavigator
                 if (container == null) container = (RectTransform)target.transform;
             }
 
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+            if (!target) return;
+            target.alpha = alphaBefore;
+            target.transform.localScale = scaleBefore;
+            target.transform.localPosition = GetPosition(positionBefore, (RectTransform)target.transform, container, offsetBefore);
+
+            LMotion.Create(alphaBefore, alphaAfter, duration).WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToAlpha(target);
+            LMotion.Create(scaleBefore, scaleAfter, duration).WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToLocalScale(target.transform);
+
+            await LMotion.Create(target.transform.localPosition, GetPosition(positionAfter, (RectTransform)target.transform, container, offsetAfter), duration)
+                .WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale)
+                .BindToLocalPosition(target.transform)
+                .ToUniTask();
+            
+            if (!target) return;
+#elif DOTWEEN_ENABLED
             if (!target) return;
             target.alpha = alphaBefore;
             target.transform.localScale = scaleBefore;
@@ -70,7 +88,20 @@ namespace PirexGames.Core.UINavigator
         {
             if (!target) return;
 
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+            if (!target) return;
+            target.alpha = alphaBefore;
+            target.transform.localScale = scaleBefore;
+
+            if (isLocalPosition)
+                target.transform.localPosition = position;
+            else
+                target.transform.position = position;
+
+            LMotion.Create(alphaBefore, alphaAfter, duration).WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToAlpha(target);
+            await LMotion.Create(scaleBefore, scaleAfter, duration).WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToLocalScale(target.transform).ToUniTask();
+            if (!target) return;
+#elif DOTWEEN_ENABLED
             if (!target) return;
             target.alpha = alphaBefore;
             target.transform.localScale = scaleBefore;
