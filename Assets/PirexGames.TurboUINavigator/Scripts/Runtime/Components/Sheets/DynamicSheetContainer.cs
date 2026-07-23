@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+using LitMotion;
+using LitMotion.Extensions;
+#elif DOTWEEN_ENABLED
 using DG.Tweening;
 #endif
 using Cysharp.Threading.Tasks;
@@ -236,8 +239,11 @@ namespace PirexGames.Core.UINavigator
 
             if (!activeSelfSheet) sheet.canvasGroup.gameObject.SetActive(isOn);
 
-            Vector2 targetPos = new Vector2(wPosMoveTo, hPosMoveTo) + sheet.offset;
-#if DOTWEEN_ENABLED
+            Vector3 targetPos = new Vector3(wPosMoveTo, hPosMoveTo, 0) + (Vector3)sheet.offset;
+#if LITMOTION_ENABLED
+            LMotion.Create(sheet.canvasGroup.transform.localPosition, targetPos, duration).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToLocalPosition(sheet.canvasGroup.transform);
+            await LMotion.Create(sheet.canvasGroup.alpha, isOn ? 1 : 0, duration * 2).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToAlpha(sheet.canvasGroup).ToUniTask();
+#elif DOTWEEN_ENABLED
             sheet.canvasGroup.transform.DOLocalMove(targetPos, duration).SetUpdate(true);
             await sheet.canvasGroup.DOFade(isOn ? 1 : 0, duration * 2).SetUpdate(true).AsyncWaitForCompletion();
 #else

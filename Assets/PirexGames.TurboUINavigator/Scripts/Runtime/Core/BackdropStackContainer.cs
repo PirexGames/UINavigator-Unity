@@ -2,7 +2,10 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+using LitMotion;
+using LitMotion.Extensions;
+#elif DOTWEEN_ENABLED
 using DG.Tweening;
 #endif
 
@@ -137,7 +140,9 @@ namespace PirexGames.Core.UINavigator
             if (cg == null) return;
             float duration = 0.25f;
 
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+            await LMotion.Create(cg.alpha, targetAlpha, duration).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToAlpha(cg).ToUniTask();
+#elif DOTWEEN_ENABLED
             await cg.DOFade(targetAlpha, duration).SetUpdate(true).AsyncWaitForCompletion();
 #else
             float startAlpha = cg.alpha;

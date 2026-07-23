@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+using LitMotion;
+using LitMotion.Extensions;
+#elif DOTWEEN_ENABLED
 using DG.Tweening;
 #endif
 using UnityEngine.UI;
@@ -36,7 +39,9 @@ namespace PirexGames.Core.UINavigator
 
         public static float s_lastTimeStampTriggerAction;
 
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+        private MotionHandle scaleTween = default;
+#elif DOTWEEN_ENABLED
         private Tweener scaleTween = default;
 #endif
 
@@ -116,7 +121,14 @@ namespace PirexGames.Core.UINavigator
                 defaultSize = useCustomTransform ? customTransform.localScale : transform.localScale;
                 Vector3 targetSize = new Vector3(defaultSize.x * scaleEnd.x, defaultSize.y * scaleEnd.y, defaultSize.z * scaleEnd.z);
 
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+                if (scaleTween.IsActive())
+                    scaleTween.Cancel();
+
+                scaleTween = LMotion.Create(useCustomTransform ? customTransform.localScale : transform.localScale, targetSize, duration)
+                    .WithScheduler(MotionScheduler.UpdateIgnoreTimeScale)
+                    .BindToLocalScale(useCustomTransform ? customTransform : transform);
+#elif DOTWEEN_ENABLED
                 if (scaleTween != default)
                     scaleTween.Kill();
 
@@ -153,7 +165,14 @@ namespace PirexGames.Core.UINavigator
 
             if (isPlayScaleEffect)
             {
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+                if (scaleTween.IsActive())
+                    scaleTween.Cancel();
+
+                scaleTween = LMotion.Create(useCustomTransform ? customTransform.localScale : transform.localScale, defaultSize, duration)
+                    .WithScheduler(MotionScheduler.UpdateIgnoreTimeScale)
+                    .BindToLocalScale(useCustomTransform ? customTransform : transform);
+#elif DOTWEEN_ENABLED
                 if (scaleTween != default)
                     scaleTween.Kill();
 

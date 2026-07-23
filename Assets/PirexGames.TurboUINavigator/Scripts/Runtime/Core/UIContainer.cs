@@ -95,7 +95,7 @@ namespace PirexGames.Core.UINavigator
             _pool.Clear();
 
             // IMPORTANT: Also clear Addressable prefab caches to free RAM
-            AddressableHelper<GameObject>.ClearCache();
+            AddressableHelper.ClearAllCaches();
 
             if (_poolRoot != null)
             {
@@ -155,6 +155,11 @@ namespace PirexGames.Core.UINavigator
                 if (_registry[type].ContainsKey(name) && _registry[type][name] == this)
                 {
                     _registry[type].Remove(name);
+                }
+
+                if (_registry[type].Count == 0)
+                {
+                    _registry.Remove(type);
                 }
             }
         }
