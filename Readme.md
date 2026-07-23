@@ -10,7 +10,7 @@
 - **Zero-Allocation Core**: All core systems are optimized to avoid GC allocations during transitions.
 - **Addressables Integration**: Native support for Unity Addressables, ensuring efficient asset loading and unloading.
 - **Static Hub API**: Control your entire UI via the `UINavigator` static class.
-- **Modular Animations**: Use the built-in animation system or plug in **DOTween** (optional).
+- **Modular Animations**: Use the built-in animation system or plug in **LitMotion** (recommended) or **DOTween** (optional).
 - **Smart Tooltips**: Boundary-aware, pivot-independent tooltips with automatic repositioning.
 - **Memory Management**: Automatic release of object pools and asset caches during scene transitions.
 - **Universal Sheets**: High-performance Tab/Sheet container with O(1) lookup speeds.
@@ -32,7 +32,9 @@ Before installing, add the following dependencies to your `Packages/manifest.jso
 }
 ```
 
-*(Optional)* For smooth animations, install **DOTween** from the [Unity Asset Store](https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676), then add `DOTWEEN_ENABLED` to **Edit > Project Settings > Player > Scripting Define Symbols**.
+*(Optional)* For smooth animations, you can install **LitMotion** (Recommended) or **DOTween**:
+- **LitMotion**: Add `"com.annulusgames.lit-motion": "https://github.com/annulusgames/LitMotion.git?path=src/LitMotion/Assets/LitMotion"` to your dependencies, then add `LITMOTION_ENABLED` to **Edit > Project Settings > Player > Scripting Define Symbols**.
+- **DOTween**: Install from the [Unity Asset Store](https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676), then add `DOTWEEN_ENABLED` to **Scripting Define Symbols**.
 
 ---
 
