@@ -17,6 +17,7 @@ namespace PirexGames.Core.UINavigator
         protected bool IsInitialized;
 
         private System.Threading.CancellationTokenSource _sessionCts;
+        private System.Threading.CancellationTokenSource _transitionCts;
 
         /// <summary>
         /// Global token for the life of the GameObject
@@ -45,6 +46,12 @@ namespace PirexGames.Core.UINavigator
         protected virtual void OnDestroy()
         {
             CancelSession();
+            if (_transitionCts != null)
+            {
+                _transitionCts.Cancel();
+                _transitionCts.Dispose();
+                _transitionCts = null;
+            }
         }
 
         private void CancelSession()
@@ -55,6 +62,17 @@ namespace PirexGames.Core.UINavigator
                 _sessionCts.Dispose();
                 _sessionCts = null;
             }
+        }
+
+        protected System.Threading.CancellationToken GetTransitionToken()
+        {
+            if (_transitionCts != null)
+            {
+                _transitionCts.Cancel();
+                _transitionCts.Dispose();
+            }
+            _transitionCts = new System.Threading.CancellationTokenSource();
+            return System.Threading.CancellationTokenSource.CreateLinkedTokenSource(_transitionCts.Token, DestroyToken).Token;
         }
 
         protected async UniTask WaitInitialize()
