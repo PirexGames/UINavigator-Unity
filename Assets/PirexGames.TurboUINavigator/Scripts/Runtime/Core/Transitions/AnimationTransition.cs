@@ -34,7 +34,7 @@ namespace PirexGames.Core.UINavigator
         
         public float Duration => duration;
 
-        public virtual async UniTask Excute(CanvasGroup target, RectTransform container = null)
+        public virtual async UniTask Excute(CanvasGroup target, RectTransform container = null, System.Threading.CancellationToken cancellationToken = default)
         {
             if (!target) return;
 
@@ -50,17 +50,21 @@ namespace PirexGames.Core.UINavigator
             target.transform.localScale = scaleBefore;
             target.transform.localPosition = GetPosition(positionBefore, (RectTransform)target.transform, container, offsetBefore);
 
-            LMotion.Create(alphaBefore, alphaAfter, duration).WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToAlpha(target);
-            LMotion.Create(scaleBefore, scaleAfter, duration).WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToLocalScale(target.transform);
+            var t1 = LMotion.Create(alphaBefore, alphaAfter, duration).WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToAlpha(target).ToUniTask(cancellationToken).SuppressCancellationThrow();
+            var t2 = LMotion.Create(scaleBefore, scaleAfter, duration).WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToLocalScale(target.transform).ToUniTask(cancellationToken).SuppressCancellationThrow();
 
-            await LMotion.Create(target.transform.localPosition, GetPosition(positionAfter, (RectTransform)target.transform, container, offsetAfter), duration)
+            var t3 = LMotion.Create(target.transform.localPosition, GetPosition(positionAfter, (RectTransform)target.transform, container, offsetAfter), duration)
                 .WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale)
                 .BindToLocalPosition(target.transform)
-                .ToUniTask();
+                .ToUniTask(cancellationToken).SuppressCancellationThrow();
             
+            await UniTask.WhenAll(t1, t2, t3);
             if (!target) return;
 #elif DOTWEEN_ENABLED
             if (!target) return;
+            target.DOKill();
+            target.transform.DOKill();
+            
             target.alpha = alphaBefore;
             target.transform.localScale = scaleBefore;
             target.transform.localPosition = GetPosition(positionBefore, (RectTransform)target.transform, container, offsetBefore);
@@ -71,7 +75,7 @@ namespace PirexGames.Core.UINavigator
             var moveTask = target.transform.DOLocalMove
                 (GetPosition(positionAfter, (RectTransform)target.transform, container, offsetAfter), duration)
                 .SetEase(ease).SetUpdate(true)
-                .AsyncWaitForCompletion();
+                .ToUniTask(cancellationToken: cancellationToken).SuppressCancellationThrow();
             
             await moveTask;
             if (!target) return;
@@ -84,7 +88,7 @@ namespace PirexGames.Core.UINavigator
 #endif
         }
 
-        public async UniTask Excute(CanvasGroup target, Vector2 position, bool isLocalPosition = false)
+        public async UniTask Excute(CanvasGroup target, Vector2 position, bool isLocalPosition = false, System.Threading.CancellationToken cancellationToken = default)
         {
             if (!target) return;
 
@@ -98,11 +102,15 @@ namespace PirexGames.Core.UINavigator
             else
                 target.transform.position = position;
 
-            LMotion.Create(alphaBefore, alphaAfter, duration).WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToAlpha(target);
-            await LMotion.Create(scaleBefore, scaleAfter, duration).WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToLocalScale(target.transform).ToUniTask();
+            var t1 = LMotion.Create(alphaBefore, alphaAfter, duration).WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToAlpha(target).ToUniTask(cancellationToken).SuppressCancellationThrow();
+            var t2 = LMotion.Create(scaleBefore, scaleAfter, duration).WithEase(ease).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToLocalScale(target.transform).ToUniTask(cancellationToken).SuppressCancellationThrow();
+            await UniTask.WhenAll(t1, t2);
             if (!target) return;
 #elif DOTWEEN_ENABLED
             if (!target) return;
+            target.DOKill();
+            target.transform.DOKill();
+            
             target.alpha = alphaBefore;
             target.transform.localScale = scaleBefore;
 
@@ -112,7 +120,7 @@ namespace PirexGames.Core.UINavigator
                 target.transform.position = position;
 
             target.DOFade(alphaAfter, duration).SetEase(ease).SetUpdate(true);
-            var scaleTask = target.transform.DOScale(scaleAfter, duration).SetEase(ease).SetUpdate(true).AsyncWaitForCompletion();
+            var scaleTask = target.transform.DOScale(scaleAfter, duration).SetEase(ease).SetUpdate(true).ToUniTask(cancellationToken: cancellationToken).SuppressCancellationThrow();
             await scaleTask;
             if (!target) return;
 #else
