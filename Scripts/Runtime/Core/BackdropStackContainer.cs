@@ -21,18 +21,20 @@ namespace PirexGames.Core.UINavigator
         {
             view.Owner = this;
             
-            // Create per-modal backdrop
-            var backdrop = CreateBackdrop(view);
-            view.Backdrop = backdrop;
-
-            // Sync transitions
             var tasks = ListPool<UniTask>.Get();
             tasks.Add(view.OnPushEnter());
 
-            if (backdropAnimation != null && backdropAnimation.ShowAnimation != null)
-                tasks.Add(backdropAnimation.ShowAnimation.Excute(backdrop, RectContainer));
-            else
-                tasks.Add(DefaultFade(backdrop, 1f));
+            if (view.EnableBackdrop)
+            {
+                // Create per-modal backdrop
+                var backdrop = CreateBackdrop(view);
+                view.Backdrop = backdrop;
+
+                if (backdropAnimation != null && backdropAnimation.ShowAnimation != null)
+                    tasks.Add(backdropAnimation.ShowAnimation.Excute(backdrop, RectContainer));
+                else
+                    tasks.Add(DefaultFade(backdrop, 1f));
+            }
 
             await AwaitTasks(tasks, true);
         }
