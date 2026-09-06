@@ -160,5 +160,19 @@ namespace PirexGames.Core.UINavigator
                 cg.blocksRaycasts = targetAlpha > 0;
             }
         }
+
+        public new virtual async UniTask Push(string key, ViewPushMode mode = ViewPushMode.Standard, bool awaitAnimation = false, bool enableBackdrop = true)
+        {
+            await Push<T>(key, mode, awaitAnimation, null, enableBackdrop);
+        }
+
+        public new virtual async UniTask<TOverride> Push<TOverride>(string key, ViewPushMode mode = ViewPushMode.Standard, bool awaitAnimation = false, System.Action<TOverride> onInit = null, bool enableBackdrop = true) where TOverride : T
+        {
+            return await base.Push<TOverride>(key, mode, awaitAnimation, (modal) =>
+            {
+                modal.EnableBackdrop = enableBackdrop;
+                onInit?.Invoke(modal);
+            });
+        }
     }
 }
