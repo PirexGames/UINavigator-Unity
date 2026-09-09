@@ -26,7 +26,7 @@ namespace PirexGames.Core.UINavigator
         }
 #endif
 
-        private static Dictionary<System.Type, Dictionary<string, UIContainer>> _registry = new();
+        private static Dictionary<System.Type, Dictionary<string, List<UIContainer>>> _registry = new();
         private static Dictionary<string, Stack<GameObject>> _pool = new();
         private static Transform _poolRoot;
         private System.Threading.CancellationTokenSource _cts;
@@ -137,10 +137,24 @@ namespace PirexGames.Core.UINavigator
 
         protected void RegisterAs(System.Type type, string name)
         {
-            if (!_registry.ContainsKey(type))
-                _registry[type] = new Dictionary<string, UIContainer>();
+            if (!_registry.TryGetValue(type, out var dict))
+            {
+                dict = new Dictionary<string, List<UIContainer>>();
+                _registry[type] = dict;
+            }
 
-            _registry[type][name] = this;
+            if (!dict.TryGetValue(name, out var list))
+            {
+                list = new List<UIContainer>();
+                dict[name] = list;
+            }
+
+            list.RemoveAll(c => c == null);
+
+            if (!list.Contains(this))
+            {
+                list.Add(this);
+            }
         }
 
         protected virtual void Unregister()
@@ -150,11 +164,17 @@ namespace PirexGames.Core.UINavigator
 
         protected void UnregisterFrom(System.Type type, string name)
         {
-            if (_registry.ContainsKey(type))
+            if (_registry.TryGetValue(type, out var dict))
             {
-                if (_registry[type].ContainsKey(name) && _registry[type][name] == this)
+                if (dict.TryGetValue(name, out var list))
                 {
-                    _registry[type].Remove(name);
+                    list.Remove(this);
+                    list.RemoveAll(c => c == null);
+
+                    if (list.Count == 0)
+                    {
+                        dict.Remove(name);
+                    }
                 }
             }
         }
@@ -163,8 +183,17 @@ namespace PirexGames.Core.UINavigator
         {
             if (_registry.TryGetValue(typeof(T), out var dict))
             {
-                if (dict.TryGetValue(name, out var container))
-                    return (T)container;
+                if (dict.TryGetValue(name, out var list) && list.Count > 0)
+                {
+                    for (int i = list.Count - 1; i >= 0; i--)
+                    {
+                        var container = list[i];
+                        if (container != null)
+                            return (T)container;
+
+                        list.RemoveAt(i);
+                    }
+                }
             }
             return null;
         }
