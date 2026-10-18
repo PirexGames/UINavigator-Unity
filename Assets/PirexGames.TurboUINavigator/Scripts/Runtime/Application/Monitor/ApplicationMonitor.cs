@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+using LitMotion;
+using LitMotion.Extensions;
+#elif DOTWEEN_ENABLED
 using DG.Tweening;
 #endif
 using Cysharp.Threading.Tasks;
@@ -34,7 +37,9 @@ namespace PirexGames.Core.UINavigator
             if (process)
             {
                 _loadingOverlay.gameObject.SetActive(true);
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+                LMotion.Create(_loadingOverlay.alpha, 1f, duration).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToAlpha(_loadingOverlay);
+#elif DOTWEEN_ENABLED
                 _loadingOverlay.DOFade(1f, duration).SetUpdate(true);
 #else
                 _loadingOverlay.alpha = 1f;
@@ -42,7 +47,9 @@ namespace PirexGames.Core.UINavigator
             }
             else
             {
-#if DOTWEEN_ENABLED
+#if LITMOTION_ENABLED
+                await LMotion.Create(_loadingOverlay.alpha, 0f, duration).WithScheduler(MotionScheduler.UpdateIgnoreTimeScale).BindToAlpha(_loadingOverlay).ToUniTask();
+#elif DOTWEEN_ENABLED
                 await _loadingOverlay.DOFade(0f, duration).SetUpdate(true).AsyncWaitForCompletion();
 #else
                 _loadingOverlay.alpha = 0f;

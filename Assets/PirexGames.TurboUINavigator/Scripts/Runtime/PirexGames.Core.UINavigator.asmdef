@@ -8,7 +8,9 @@
         "Unity.ResourceManager",
         "DOTween.Modules",
         "UniTask.DOTween",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "LitMotion",
+        "LitMotion.Extensions"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

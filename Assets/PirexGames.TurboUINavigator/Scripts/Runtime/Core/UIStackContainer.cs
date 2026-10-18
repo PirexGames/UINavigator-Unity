@@ -13,10 +13,17 @@ namespace PirexGames.Core.UINavigator
         
         public int Count => _stack.Count;
 
+        /// <summary>
+        /// Fired whenever the stack count changes (after a Push or Pop operation).
+        /// The int argument is the new stack count.
+        /// </summary>
+        public event Action<int> OnStackCountChanged;
+
         protected override void OnDestroy()
         {
             base.OnDestroy();
             _transitionLock?.Dispose();
+            OnStackCountChanged = null;
         }
 
         public virtual async UniTask Push(string key, ViewPushMode mode = ViewPushMode.Standard, bool awaitAnimation = false) => await Push<TView>(key, mode, awaitAnimation);
@@ -77,6 +84,7 @@ namespace PirexGames.Core.UINavigator
 
                 _stack.Add(instance);
                 instance.transform.SetAsLastSibling();
+                OnStackCountChanged?.Invoke(_stack.Count);
 
                 // Handle new view (Parallel Show)
                 var showTask = OnShowView(instance);
@@ -104,6 +112,7 @@ namespace PirexGames.Core.UINavigator
 
                 var top = _stack[^1];
                 _stack.RemoveAt(_stack.Count - 1);
+                OnStackCountChanged?.Invoke(_stack.Count);
 
                 var tasks = ListPool<UniTask>.Get();
 
@@ -154,6 +163,7 @@ namespace PirexGames.Core.UINavigator
 
                 // Pop from middle but ensure cleanup
                 _stack.Remove(view);
+                OnStackCountChanged?.Invoke(_stack.Count);
 
                 async UniTask HideAndCleanup(TView v)
                 {
@@ -191,6 +201,7 @@ namespace PirexGames.Core.UINavigator
                 OnViewDestroyed(view);
             }
             _stack.Clear();
+            OnStackCountChanged?.Invoke(_stack.Count);
             await UniTask.CompletedTask;
         }
 
