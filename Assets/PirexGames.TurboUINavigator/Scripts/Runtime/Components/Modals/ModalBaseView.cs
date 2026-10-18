@@ -11,6 +11,7 @@ namespace PirexGames.Core.UINavigator
         [SerializeField] protected AnimationContainerCView modalAnimation;
         public CanvasGroup Backdrop { get; internal set; }
         public bool CloseOnClickBackdrop { get; set; } = false;
+        public bool EnableBackdrop { get; set; } = true;
 
         public virtual async UniTask OnPushEnter()
         {

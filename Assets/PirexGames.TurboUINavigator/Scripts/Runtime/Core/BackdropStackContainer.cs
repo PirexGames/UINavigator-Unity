@@ -24,18 +24,20 @@ namespace PirexGames.Core.UINavigator
         {
             view.Owner = this;
             
-            // Create per-modal backdrop
-            var backdrop = CreateBackdrop(view);
-            view.Backdrop = backdrop;
-
-            // Sync transitions
             var tasks = ListPool<UniTask>.Get();
             tasks.Add(view.OnPushEnter());
 
-            if (backdropAnimation != null && backdropAnimation.ShowAnimation != null)
-                tasks.Add(backdropAnimation.ShowAnimation.Excute(backdrop, RectContainer));
-            else
-                tasks.Add(DefaultFade(backdrop, 1f));
+            if (view.EnableBackdrop)
+            {
+                // Create per-modal backdrop
+                var backdrop = CreateBackdrop(view);
+                view.Backdrop = backdrop;
+
+                if (backdropAnimation != null && backdropAnimation.ShowAnimation != null)
+                    tasks.Add(backdropAnimation.ShowAnimation.Excute(backdrop, RectContainer));
+                else
+                    tasks.Add(DefaultFade(backdrop, 1f));
+            }
 
             await AwaitTasks(tasks, true);
         }
@@ -162,6 +164,20 @@ namespace PirexGames.Core.UINavigator
             {
                 cg.blocksRaycasts = targetAlpha > 0;
             }
+        }
+
+        public new virtual async UniTask Push(string key, ViewPushMode mode = ViewPushMode.Standard, bool awaitAnimation = false, bool enableBackdrop = true)
+        {
+            await Push<T>(key, mode, awaitAnimation, null, enableBackdrop);
+        }
+
+        public new virtual async UniTask<TOverride> Push<TOverride>(string key, ViewPushMode mode = ViewPushMode.Standard, bool awaitAnimation = false, System.Action<TOverride> onInit = null, bool enableBackdrop = true) where TOverride : T
+        {
+            return await base.Push<TOverride>(key, mode, awaitAnimation, (modal) =>
+            {
+                modal.EnableBackdrop = enableBackdrop;
+                onInit?.Invoke(modal);
+            });
         }
     }
 }
